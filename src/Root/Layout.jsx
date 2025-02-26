@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import BackToTop from "../components/BackToTop";
 
 function Layout() {
   return (
@@ -12,9 +13,7 @@ function Layout() {
         <Outlet />
       </div>
       <Footer />
-      <a href="#" className="btn btn-lg btn-primary back-to-top">
-        <i className="bi bi-arrow-up"></i>
-      </a>
+      <BackToTop />
     </div>
   );
 }
