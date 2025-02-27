@@ -291,7 +291,7 @@
 }
 
 .service-item:hover * {
-    color: var(--light) !important;
+    color: var(--dark) !important;
 }
 
 
@@ -329,43 +329,61 @@
 }
 
 /*** Testimonial ***/
-.testimonial-carousel .owl-item .testimonial-item,
-.testimonial-carousel .owl-item.center .testimonial-item * {
-    transition: .5s;
+.testimonial-item {
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+    transition: 0.5s;
+    background: #fff;
+    border: 1px solid var(--primary);
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.testimonial-carousel .owl-item.center .testimonial-item {
+.testimonial-item:hover {
     background: var(--primary) !important;
     border-color: var(--primary) !important;
 }
 
-.testimonial-carousel .owl-item.center .testimonial-item * {
-    color: var(--light) !important;
+.testimonial-item:hover * {
+    color: var(--dark) !important;
 }
 
-.testimonial-carousel .owl-dots {
-    margin-top: 24px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.testimonial-carousel .owl-dot {
-    position: relative;
-    display: inline-block;
-    margin: 0 5px;
+.swiper-pagination-bullet {
     width: 15px;
     height: 15px;
-    border: 1px solid #CCCCCC;
-    border-radius: 15px;
-    transition: .5s;
+    background: transparent;
+    opacity: 1;
+    margin-top: 5px;
 }
 
-.testimonial-carousel .owl-dot.active {
+.swiper-pagination-bullet-active {
     background: var(--primary);
-    border-color: var(--primary);
 }
 
+.carousel-container {
+    position: relative;
+    overflow: hidden; /* Ensure shadows don't overflow */
+}
+
+.carousel-container::before,
+.carousel-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px; /* Adjust the width of the shadow area */
+    z-index: 10; /* Ensure shadows are above the carousel */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+.carousel-container::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
+}
+
+.carousel-container::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.08), transparent);
+}
 
 /*** Footer ***/
 .footer .btn.btn-social {
