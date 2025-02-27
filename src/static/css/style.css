@@ -303,26 +303,30 @@
 /*** Team ***/
 .team-item {
     box-shadow: 0 0 45px rgba(0, 0, 0, .08);
-    height: calc(100% - 38px);
-    transition: .5s;
+    transition: .3s;
 }
 
-.team-item img {
-    transition: .5s;
-}
+@media (max-width: 767px) {
+    .team-item {
+        width: 70%;
+        margin: 0 auto;
+    }
 
-.team-item:hover img {
-    transform: scale(1.1);
-}
+    .team-item .rounded-circle {
+        width: 70%;
+        margin: 0 auto;
+    }
 
-.team-item:hover {
-    height: 100%;
-}
+    .team-item img {
+        width: 100%;
+        height: auto;
+    }
 
-.team-item .btn {
-    border-radius: 38px 38px 0 0;
+    .team-item .rounded-circle.overflow-hidden.m-4 {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
-
 
 /*** Testimonial ***/
 .testimonial-carousel .owl-item .testimonial-item,
