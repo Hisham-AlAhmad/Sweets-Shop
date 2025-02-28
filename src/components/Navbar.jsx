@@ -21,14 +21,16 @@ const Navbar = () => {
                             `nav-item nav-link ${isActive ? 'active' : ''}`
                         }>Home
                     </NavLink>
-                    <NavLink to="/about" 
+                    <NavLink to="/menu" 
                         className={({ isActive }) => 
                             `nav-item nav-link ${isActive ? 'active' : ''}`
-                        }>About
+                        }>Menu
                     </NavLink>
-
-                    <a href="menu.html" className="nav-item nav-link">Menu</a>
-                    <a href="contact.html" className="nav-item nav-link">Contact</a>
+                    <NavLink to="/contact" 
+                        className={({ isActive }) => 
+                            `nav-item nav-link ${isActive ? 'active' : ''}`
+                        }>Contact
+                    </NavLink>
                     <a href="#" className="nav-item nav-link d-flex align-items-center">
                         <img src="/img/cart.svg" alt="cart-img" className="me-2 img-fluid" style={{ maxWidth: "24px" }} /> Cart
                     </a>

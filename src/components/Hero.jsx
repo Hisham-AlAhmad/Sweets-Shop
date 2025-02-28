@@ -9,7 +9,7 @@ const Hero = () => {
                             Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos.
                             Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
                         </p> */}
-                        <a href="#" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Go to menu</a>
+                        <a href="/menu" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Go to menu</a>
                     </div>
                     <div className="col-lg-5 text-center text-lg-end overflow-hidden">
                         <img className="img-fluid hero-image" src="/img/crepe.png" alt="Weeeee" />

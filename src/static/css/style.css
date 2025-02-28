@@ -32,6 +32,13 @@
     visibility: visible;
 }
 
+.home-menu {
+    text-align: center;
+}
+
+.home-menu a {
+    margin: 10px;
+}
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -104,11 +111,12 @@
     display: flex;
     flex-direction: column;
     padding-top: 85px;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
 .content {
-    flex: 1; /* Pushes the footer down */
+    flex: 1;
+    /* Pushes the footer down */
 }
 
 
@@ -300,6 +308,93 @@
     border-bottom: 2px solid var(--primary);
 }
 
+/* Category Navigation */
+.nav-pills {
+    border-bottom: 2px solid #e9ecef;
+}
+
+.nav-pills .nav-item {
+    margin: 0 10px;
+}
+
+.nav-pills .nav-item button {
+    background: none;
+    border: none;
+    padding: 10px 0;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-pills .nav-item button.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    background-color: transparent;
+}
+
+.nav-pills .nav-item button:hover {
+    color: var(--primary);
+}
+
+/* Product Cards */
+.tab-content {
+    padding: 20px 0;
+    /* Add padding to the product section */
+}
+
+.row.g-4 {
+    margin: 0 -10px;
+    /* Negative margin to counteract column padding */
+}
+
+.col-lg-3 {
+    padding: 0 10px;
+    /* Add spacing between products */
+}
+
+.product-item {
+    height: 175px;
+    width: auto;
+    display: flex;
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Add shadow on hover */
+}
+
+.product-item img {
+    border-radius: 8px;
+    width: 80px;
+    height: auto;
+}
+
+.product-item h5 {
+    font-size: 1.1rem;
+    /* Slightly larger title */
+    margin-bottom: 10px;
+}
+
+.product-item .text-primary {
+    font-size: 1rem;
+    /* Price font size */
+}
+
+.product-item small {
+    color: #666;
+}
+
+
 /*** Team ***/
 .team-item {
     box-shadow: 0 0 45px rgba(0, 0, 0, .08);
@@ -361,7 +456,8 @@
 
 .carousel-container {
     position: relative;
-    overflow: hidden; /* Ensure shadows don't overflow */
+    overflow: hidden;
+    /* Ensure shadows don't overflow */
 }
 
 .carousel-container::before,
@@ -370,9 +466,12 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 100px; /* Adjust the width of the shadow area */
-    z-index: 10; /* Ensure shadows are above the carousel */
-    pointer-events: none; /* Allow clicks to pass through */
+    width: 100px;
+    /* Adjust the width of the shadow area */
+    z-index: 10;
+    /* Ensure shadows are above the carousel */
+    pointer-events: none;
+    /* Allow clicks to pass through */
 }
 
 .carousel-container::before {

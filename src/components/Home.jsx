@@ -12,6 +12,9 @@ const Home = () => {
             <About />
             <Team />
             <Testimonial />
+            <div className="home-menu">
+            <a href="/menu" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInDown">Go to menu</a>
+            </div>
         </>
     );
 }
