@@ -148,7 +148,7 @@
     max-width: 100%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
 
     .navbar-dark .navbar-brand img {
         max-height: 85px;
@@ -243,7 +243,7 @@
 }
 
 /* Adjust the image size and centering for screens between 767px and 992px */
-@media (min-width: 767px) and (max-width: 992px) {
+@media (min-width: 767.98px) and (max-width: 992px) {
     .hero-image {
         max-width: 70%;
         margin: 0 auto;
@@ -412,7 +412,7 @@
     transition: .3s;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
     .team-item {
         width: 70%;
         margin: 0 auto;

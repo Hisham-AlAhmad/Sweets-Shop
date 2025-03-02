@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark sticky-top shadow-sm px-4 px-lg-5 py-3 py-lg-0">
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark sticky-top shadow-sm px-4 px-lg-5 py-lg-0">
             {/* Logo */}
             <NavLink to="/" className="navbar-brand p-0 d-flex align-items-center me-auto">
                 <img src="/img/freshTime_noBg.png" alt="logo image" className="img-fluid" style={{ maxHeight: '100px' }} />
