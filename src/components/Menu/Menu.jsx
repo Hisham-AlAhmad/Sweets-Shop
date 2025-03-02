@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Spinner from './Spinner';
+import Spinner from '../Spinner';
+import './menu.css';
 
 const Menu = () => {
     const [products, setProducts] = useState([]);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Spinner from './Spinner';
+import Spinner from '../Spinner';
+import './productDetail.css';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -96,7 +97,7 @@ const ProductDetail = () => {
 
                         {/* Add to Cart Button */}
                         <button 
-                            className="btn btn-primary py-3 px-5"
+                            className="btn btn-primary py-3 px-3 me-3 animated slideIUp"
                             onClick={handleAddToCart}
                         >
                             Add to Cart

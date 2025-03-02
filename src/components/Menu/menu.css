@@ -1,0 +1,104 @@
+/*** Food Menu ***/
+.nav-pills .nav-item .active {
+    border-bottom: 2px solid var(--primary);
+}
+
+/* Category Navigation */
+.nav-pills {
+    border-bottom: 2px solid #e9ecef;
+}
+
+.nav-pills .nav-item {
+    margin: 0 10px;
+}
+
+.nav-pills .nav-item button {
+    background: none;
+    border: none;
+    padding: 10px 0;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-pills .nav-item button.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    background-color: transparent;
+}
+
+.nav-pills .nav-item button:hover {
+    color: var(--primary);
+}
+
+/* Product Cards */
+.tab-content {
+    padding: 20px 0;
+    /* Add padding to the product section */
+}
+
+.row.g-4 {
+    margin: 0 -10px;
+    /* Negative margin to counteract column padding */
+}
+
+.col-lg-3 {
+    padding: 0 10px;
+    /* Add spacing between products */
+}
+
+.product-item {
+    height: 200px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    /* Vertically center content */
+    justify-content: left;
+    /* Horizontally center content */
+    padding: 20px 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    /* Rounded corners */
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Add shadow on hover */
+}
+
+.product-item img {
+    border-radius: 8px;
+    width: 80px;
+    height: auto;
+}
+
+.product-item h5 {
+    font-size: 1.1rem;
+    /* Slightly larger title */
+    margin-bottom: 10px;
+    margin-top: 20px;
+    overflow-y: hidden;
+}
+
+.product-item .text-primary {
+    font-size: 1rem;
+    /* Price font size */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-shadow:
+        0 0 1px black,
+        0 0 2px black,
+        0 0 4px black,
+        0 0 8px black;
+}
+
+.product-item small {
+    color: #666;
+}

@@ -3,8 +3,8 @@ import Layout from "./Layout";
 import Home from "/src/components/Home";
 import About from "/src/components/About";
 import NotFound from "/src/components/NotFound";
-import Menu from "../components/Menu";
-import ProductDetail from "../components/ProductDetails";
+import Menu from "../components/Menu/Menu";
+import ProductDetail from "../components/ProductDetail/ProductDetails";
 
 function AppRoutes() {
   return (

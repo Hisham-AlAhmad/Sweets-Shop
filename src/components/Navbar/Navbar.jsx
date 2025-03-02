@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-
+import "./navbar.css";
 const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-md navbar-dark bg-dark sticky-top shadow-sm px-4 px-lg-5 py-lg-0">

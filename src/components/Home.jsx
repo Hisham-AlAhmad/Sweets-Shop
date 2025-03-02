@@ -2,7 +2,7 @@ import About from "./About";
 import Hero from "./hero";
 import Services from "./Services";
 import Team from "./Team";
-import Testimonial from "./Testimonial";
+import Testimonial from "./Testimonial/Testimonial";
 
 const Home = () => {
     return (
@@ -13,7 +13,7 @@ const Home = () => {
             <Team />
             <Testimonial />
             <div className="home-menu">
-            <a href="/menu" className="btn btn-primary py-3 px-5 me-3 animated slideInDown">Go to menu</a>
+            <a href="/menu" className="btn btn-primary py-3 px-5 me-3 animated slideInUp">Go to menu</a>
             </div>
         </>
     );
