@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import Spinner from '../Spinner';
 import './productDetail.css';
 
@@ -32,7 +32,13 @@ const ProductDetail = () => {
         console.log(`Added ${quantity} ${selectedSize} size to cart of product: ${product.title}`);
     };
 
-    if (!product) return <Spinner loading={loading} />;
+    if (!product) return (
+        <>
+            <Spinner loading={loading} />
+            <h1 className="product-not-found">Product Not Found...</h1>
+            <NavLink to="/menu" className="back-to-menu">Back to Menu</NavLink>
+        </>
+    );
 
     return (
         <div className="container-xxl py-5">
