@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, NavLink } from 'react-router-dom';
 import Spinner from '../Spinner';
-import './productDetail.css';
+import './ProductDetail.css';
 
 const ProductDetail = () => {
     const { id } = useParams();
