@@ -2,8 +2,7 @@
 .product-detail-img {
     border-radius: 12px;
     box-shadow: 0 0 45px rgba(0, 0, 0, 0.08);
-    padding: 15px;
-    background: white;
+    background: transparent;
 }
 
 .quantity-selector {
@@ -18,7 +17,7 @@
 }
 
 .size-selector .btn {
-    min-width: 60px;
+    min-width: 45px;
     padding: 10px 15px;
     border-radius: 8px !important;
     transition: all 0.3s ease;

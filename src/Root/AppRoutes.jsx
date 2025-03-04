@@ -5,6 +5,7 @@ import About from "/src/components/About";
 import NotFound from "/src/components/NotFound";
 import Menu from "../components/Menu/Menu";
 import ProductDetail from "../components/ProductDetail/ProductDetails";
+import Cart from "../components/Cart/Cart";
 
 function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/menu/:id" element={<ProductDetail />} />
+        <Route path="cart" element={<Cart />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

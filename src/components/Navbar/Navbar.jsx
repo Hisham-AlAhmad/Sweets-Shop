@@ -16,24 +16,26 @@ const Navbar = () => {
             {/* Links */}
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <div className="navbar-nav ms-auto py-0 pe-4">
-                    <NavLink to="/" 
-                        className={({ isActive }) => 
+                    <NavLink to="/"
+                        className={({ isActive }) =>
                             `nav-item nav-link ${isActive ? 'active' : ''}`
                         }>Home
                     </NavLink>
-                    <NavLink to="/menu" 
-                        className={({ isActive }) => 
+                    <NavLink to="/menu"
+                        className={({ isActive }) =>
                             `nav-item nav-link ${isActive ? 'active' : ''}`
                         }>Menu
                     </NavLink>
-                    <NavLink to="/contact" 
-                        className={({ isActive }) => 
+                    <NavLink to="/contact"
+                        className={({ isActive }) =>
                             `nav-item nav-link ${isActive ? 'active' : ''}`
                         }>Contact
                     </NavLink>
-                    <a href="#" className="nav-item nav-link d-flex align-items-center">
-                        <img src="/img/cart.svg" alt="cart-img" className="me-2 img-fluid" style={{ maxWidth: "24px" }} /> Cart
-                    </a>
+                    <NavLink to="/cart"
+                        className={({ isActive }) =>
+                            `nav-item nav-link ${isActive ? 'active' : ''}`
+                        }> <i className="fas fa-shopping-cart me-2"></i> Cart
+                    </NavLink>
                 </div>
             </div>
         </nav>

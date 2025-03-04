@@ -34,7 +34,6 @@
 /* Product Cards */
 .tab-content {
     padding: 20px 0;
-    /* Add padding to the product section */
 }
 
 .row.g-4 {
@@ -68,7 +67,7 @@
 .product-item:hover {
     transform: translateY(-5px);
     /* Lift effect on hover */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     /* Add shadow on hover */
 }
 
@@ -80,7 +79,6 @@
 
 .product-item h5 {
     font-size: 1.1rem;
-    /* Slightly larger title */
     margin-bottom: 10px;
     margin-top: 20px;
     overflow-y: hidden;
@@ -101,4 +99,10 @@
 
 .product-item small {
     color: #666;
+}
+
+@media (max-width: 575.98px) {
+    .product-item {
+        height: 140px;
+    }
 }

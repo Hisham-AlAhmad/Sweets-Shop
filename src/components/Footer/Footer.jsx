@@ -3,7 +3,7 @@ import './footer.css';
 const Footer = () => {
     return (
         <div className="container-fluid bg-dark text-light footer pt-2 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div className="container py-5">
+            <div className="container py-4">
                 <div className="row g-5">
                     <div className="col-lg-3 col-md-6 newM">
                         <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Opening</h4>
