@@ -6,15 +6,44 @@ const Cart = () => {
     const location = useLocation();
     const { product, size, quantity } = location.state || {};
 
+    // Delivery states
+    const [delivery, setDelivery] = useState(false);
+    const [deliveryCost, setDeliveryCost] = useState(0);
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+
     const [cartItems, setCartItems] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    // Save the cart to local storage whenever it changes
+    // Save the data to local storage whenever it changes
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cartItems));
     }, [cartItems]);
+    
+    useEffect(() => {
+        if (name) { // Ensure we don't save empty values unnecessarily
+            localStorage.setItem("name", JSON.stringify(name));
+        }
+    }, [name]);
+    
+    useEffect(() => {
+        if (address) {
+            localStorage.setItem("address", JSON.stringify(address));
+        }
+    }, [address]);
+
+    useEffect(() => {
+        const savedName = localStorage.getItem("name");
+        if (savedName) {
+            setName(JSON.parse(savedName));
+        }
+        const savedAddress = localStorage.getItem("address");
+        if (savedAddress) {
+            setAddress(JSON.parse(savedAddress));
+        }
+    }, []);
 
     // Add the new product to the cart when the component mounts
     useEffect(() => {
@@ -34,9 +63,9 @@ const Cart = () => {
             });
         }
     }, []); // Runs only once to prevent refresh issue
-    
+
     // Calculate total price
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    var totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     // Handle quantity change
     const handleQuantityChange = (id, newQuantity) => {
@@ -87,7 +116,7 @@ const Cart = () => {
                                         <img
                                             src={item.image}
                                             alt={item.name}
-                                            className="img-fluid rounded-start cart-item-image py-2"
+                                            className="img-fluid rounded-start cart-item-image p-2"
                                         />
                                     </div>
                                     {/* Product Details */}
@@ -133,8 +162,41 @@ const Cart = () => {
                             </div>
                         ))}
                     </div>
-                    {/* Order Summary */}
+                    {/* Delivery Section */}
                     <div className="col-lg-4">
+                        <div className="d-flex gap-3 align-items-center mb-3">
+                            <h5 className="mb-0">Delivery?</h5>
+                            <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
+                                onClick={() => (setDelivery(true), setDeliveryCost(20))}>
+                                Yes
+                            </button>
+                            <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
+                                onClick={() => (setDelivery(false), setDeliveryCost(0))}>
+                                No
+                            </button>
+                        </div>
+                        {delivery && (
+                            <div className="card order-summary-card">
+                                <div className="card-body">
+                                    <h5 className="card-title">Delivery Address</h5>
+                                    <hr />
+                                    <div className="d-flex align-items-center mb-2">
+                                        <span className="me-2"><strong>Name:</strong></span>
+                                        <input type="text" className="form-control" placeholder="Enter your name"
+                                            value={name} onChange={(e) => setName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="d-flex align-items-center mb-2">
+                                        <span className="me-2"><strong>Address:</strong></span>
+                                        <input type="text" className="form-control" placeholder="Enter your address"
+                                            value={address} onChange={(e) => setAddress(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        <br />
+                        {/* Order Summary */}
                         <div className="card order-summary-card">
                             <div className="card-body">
                                 <h5 className="card-title">Order Summary</h5>
@@ -147,12 +209,12 @@ const Cart = () => {
                                 {/* Delivery */}
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Delivery</span>
-                                    <span>$0</span>
+                                    <span>{delivery ? deliveryCost + ",000" : 0} L.L</span>
                                 </div>
                                 {/* Total */}
                                 <div className="d-flex justify-content-between mb-3">
                                     <strong>Total</strong>
-                                    <strong>${totalPrice}</strong>
+                                    <strong>${totalPrice += deliveryCost}</strong>
                                 </div>
                                 <hr />
                                 {/* Checkout Button */}

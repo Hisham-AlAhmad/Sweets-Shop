@@ -71,6 +71,17 @@
 @media (max-width: 576px) {
     .cart-item-card {
         flex-direction: column;
-        max-height: 1750px;
+        height: auto; /* Let it adjust naturally */
+        padding: 8px; /* Reduce padding if needed */
+    }
+
+    .cart-item-card img {
+        max-width: 100px; /* Reduce image size */
+        height: auto;
+    }
+
+    .cart-item-card .text-content {
+        font-size: 14px; /* Reduce text size */
     }
 }
+    
