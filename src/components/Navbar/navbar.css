@@ -21,23 +21,16 @@
 }
 
 .navbar-dark .navbar-brand img {
-    max-height: 85px !important;
+    max-height: 85px;
     transition: .5s;
     max-width: 100%;
 }
 
+.sticky-top.navbar-dark .navbar-brand img {
+    max-height: 70px;
+}
+
 @media (max-width: 767.98px) {
-
-    .navbar-dark .navbar-brand img {
-        max-height: 85px;
-        transition: .5s;
-        max-width: 100%;
-    }
-
-    .sticky-top.navbar-dark .navbar-brand img {
-        max-height: 70px;
-    }
-
     .sticky-top.navbar-dark .navbar-nav .nav-link {
         padding: 10px 0;
     }
