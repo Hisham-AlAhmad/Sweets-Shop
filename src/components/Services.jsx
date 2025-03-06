@@ -1,39 +1,37 @@
 const Services = () => {
     return ( 
-        <div className="container-xxl py-5">
+        <div className="container-xxl py-3">
             <div className="container">
-                <div className="row g-4">
-                    <div className="col-lg-3 col-sm-6 mx-auto wow fadeInUp" data-wow-delay="0.1s">
-                        <div className="service-item rounded pt-3">
-                            <div className="p-4">
-                                <i className="fa fa-3x fa-headset text-primary mb-4"></i>
-                                <h5>Available Everyday</h5>
-                                <p>From 5:00 PM to 11:00 PM</p>
-                            </div>
-                        </div>
+                <div className="row g-4 justify-content-center">
+                    {/* First Service */}
+                    <div className="col-lg-3 col-sm-4 mx-auto wow fadeInUp" data-wow-delay="0.1s">
+                        <ServiceItem icon="fa-headset" title="Available Everyday" text="From 5:00 PM to 11:00 PM" />
                     </div>
-                    <div className="col-lg-3 col-sm-6 mx-auto wow fadeInUp" data-wow-delay="0.3s">
-                        <div className="service-item rounded pt-3">
-                            <div className="p-4">
-                                <i className="fa fa-3x fa-utensils text-primary mb-4"></i>
-                                <h5>Quality Food</h5>
-                                <p>Try it & you won't regret</p>
-                            </div>
-                        </div>
+
+                    {/* Middle Service (Hidden on Phones) */}
+                    <div className="col-lg-3 col-sm-4 mx-auto d-none d-sm-block wow fadeInUp" data-wow-delay="0.3s">
+                        <ServiceItem icon="fa-utensils" title="Quality Food" text="Try it & you won't regret" />
                     </div>
-                    <div className="col-lg-3 col-sm-6 mx-auto wow fadeInUp" data-wow-delay="0.5s">
-                        <div className="service-item rounded pt-3">
-                            <div className="p-4">
-                                <i className="fa fa-3x fa-cart-plus text-primary mb-4"></i>
-                                <h5>Delivery Order</h5>
-                                <p>Only for 20,000 L.L</p>
-                            </div>
-                        </div>
+
+                    {/* Third Service */}
+                    <div className="col-lg-3 col-sm-4 mx-auto wow fadeInUp" data-wow-delay="0.5s">
+                        <ServiceItem icon="fa-cart-plus" title="Delivery Order" text="Only for 20,000 L.L" />
                     </div>
                 </div>
             </div>
         </div>
-     );
+    );
 }
- 
+
+/* Reusable Service Item Component */
+const ServiceItem = ({ icon, title, text }) => (
+    <div className="service-item rounded pt-2">
+        <div className="p-3 text-center">
+            <i className={`fa fa-2x ${icon} text-primary mb-3`}></i>
+            <h6>{title}</h6>
+            <p>{text}</p>
+        </div>
+    </div>
+);
+
 export default Services;
