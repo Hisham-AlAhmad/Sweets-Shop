@@ -5,29 +5,45 @@ import './cart.css';
 const Cart = () => {
     const location = useLocation();
     const { product, size, quantity } = location.state || {};
-
-    // Delivery states
-    const [delivery, setDelivery] = useState(false);
-    const [deliveryCost, setDeliveryCost] = useState(0);
-    const [name, setName] = useState("");
-    const [address, setAddress] = useState("");
-
     const [cartItems, setCartItems] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
+    // Delivery states
+    const [delivery, setDelivery] = useState(() => {
+        const savedDelivery = localStorage.getItem("delivery");
+        return savedDelivery ? JSON.parse(savedDelivery) : false;
+    });
+
+    const [deliveryCost, setDeliveryCost] = useState(() => {
+        return delivery ? 20 : 0;
+    });
+    
+    const [name, setName] = useState(() => {
+        return localStorage.getItem("name") ? JSON.parse(localStorage.getItem("name")) : "";
+    });
+
+    const [address, setAddress] = useState(() => {
+        return localStorage.getItem("address") ? JSON.parse(localStorage.getItem("address")) : "";
+    });
+
+    const [phoneNum, setPhoneNum] = useState(() => {
+        return localStorage.getItem("phoneNum") ? JSON.parse(localStorage.getItem("phoneNum")) : "";
+    });
+
+
     // Save the data to local storage whenever it changes
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cartItems));
     }, [cartItems]);
-    
+
     useEffect(() => {
         if (name) { // Ensure we don't save empty values unnecessarily
             localStorage.setItem("name", JSON.stringify(name));
         }
     }, [name]);
-    
+
     useEffect(() => {
         if (address) {
             localStorage.setItem("address", JSON.stringify(address));
@@ -35,15 +51,12 @@ const Cart = () => {
     }, [address]);
 
     useEffect(() => {
-        const savedName = localStorage.getItem("name");
-        if (savedName) {
-            setName(JSON.parse(savedName));
-        }
-        const savedAddress = localStorage.getItem("address");
-        if (savedAddress) {
-            setAddress(JSON.parse(savedAddress));
-        }
-    }, []);
+        localStorage.setItem("delivery", JSON.stringify(delivery));
+    }, [delivery]);
+
+    useEffect(() => {
+        localStorage.setItem("phoneNum", JSON.stringify(phoneNum));
+    }, [phoneNum]);
 
     // Add the new product to the cart when the component mounts
     useEffect(() => {
@@ -167,18 +180,18 @@ const Cart = () => {
                         <div className="d-flex gap-3 align-items-center mb-3">
                             <h5 className="mb-0">Delivery?</h5>
                             <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
-                                onClick={() => (setDelivery(true), setDeliveryCost(20))}>
+                                onClick={() => setDelivery(true)}>
                                 Yes
                             </button>
                             <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
-                                onClick={() => (setDelivery(false), setDeliveryCost(0))}>
+                                onClick={() => setDelivery(false)}>
                                 No
                             </button>
                         </div>
                         {delivery && (
                             <div className="card order-summary-card">
                                 <div className="card-body">
-                                    <h5 className="card-title">Delivery Address</h5>
+                                    <h5 className="card-title">Delivery Details</h5>
                                     <hr />
                                     <div className="d-flex align-items-center mb-2">
                                         <span className="me-2"><strong>Name:</strong></span>
@@ -190,6 +203,12 @@ const Cart = () => {
                                         <span className="me-2"><strong>Address:</strong></span>
                                         <input type="text" className="form-control" placeholder="Enter your address"
                                             value={address} onChange={(e) => setAddress(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="d-flex align-items-center mb-2">
+                                        <span className="me-2"><strong>Phone Number:</strong></span>
+                                        <input type="text" className="form-control" placeholder="Enter your phone number"
+                                            value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)}
                                         />
                                     </div>
                                 </div>
