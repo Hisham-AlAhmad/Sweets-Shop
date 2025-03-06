@@ -5,7 +5,7 @@ const Team = () => {
                 <div className="container">
                     <div className="text-center wow fadeInUp" >
                         <h5 className="section-title ff-secondary text-center text-primary fw-normal">Team Members</h5>
-                        <h1 className="mb-5">Our Master Chef</h1>
+                        <h1 className="mb-2">Our Master Chef</h1>
                     </div>
                     <div className="row g-4">
                         <div className="col-lg-3 col-md-6 col-sm-9 mx-auto wow fadeInUp" data-wow-delay="0.1s">

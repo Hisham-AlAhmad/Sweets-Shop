@@ -194,8 +194,9 @@
 
 /*** Service ***/
 .service-item {
-    box-shadow: 0 0 45px rgba(0, 0, 0, .08);
-    transition: .5s;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+    transition: 0.5s;
+    text-align: center;
 }
 
 .service-item:hover {
@@ -203,11 +204,28 @@
 }
 
 .service-item * {
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .service-item:hover * {
     color: var(--dark) !important;
+}
+
+/* Reduce sizes for better fit */
+.service-item .p-3 {
+    padding: 15px;
+}
+
+.service-item h6 {
+    font-size: 16px;
+}
+
+.service-item p {
+    font-size: 14px;
+}
+
+.service-item i {
+    font-size: 40px;
 }
 
 
@@ -237,9 +255,4 @@
         margin-left: auto !important;
         margin-right: auto !important;
     }
-}
-
-.newM {
-    margin-left: auto;
-    margin-right: auto;
 }
