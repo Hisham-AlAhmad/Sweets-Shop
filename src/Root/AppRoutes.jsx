@@ -6,6 +6,7 @@ import NotFound from "/src/components/NotFound";
 import Menu from "../components/Menu/Menu";
 import ProductDetail from "../components/ProductDetail/ProductDetails";
 import Cart from "../components/Cart/Cart";
+import Contact from "../components/Contact";
 
 function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ function AppRoutes() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/menu/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

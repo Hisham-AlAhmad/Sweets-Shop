@@ -256,3 +256,10 @@
         margin-right: auto !important;
     }
 }
+
+/* removed the number up / down from the number input */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

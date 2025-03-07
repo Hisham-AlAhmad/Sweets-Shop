@@ -19,7 +19,7 @@ const Cart = () => {
     const [deliveryCost, setDeliveryCost] = useState(() => {
         return delivery ? 20 : 0;
     });
-    
+
     const [name, setName] = useState(() => {
         return localStorage.getItem("name") ? JSON.parse(localStorage.getItem("name")) : "";
     });
@@ -188,32 +188,30 @@ const Cart = () => {
                                 No
                             </button>
                         </div>
-                        {delivery && (
-                            <div className="card order-summary-card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Delivery Details</h5>
-                                    <hr />
-                                    <div className="d-flex align-items-center mb-2">
-                                        <span className="me-2"><strong>Name:</strong></span>
-                                        <input type="text" className="form-control" placeholder="Enter your name"
-                                            value={name} onChange={(e) => setName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center mb-2">
-                                        <span className="me-2"><strong>Address:</strong></span>
-                                        <input type="text" className="form-control" placeholder="Enter your address"
-                                            value={address} onChange={(e) => setAddress(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center mb-2">
-                                        <span className="me-2"><strong>Phone Number:</strong></span>
-                                        <input type="text" className="form-control" placeholder="Enter your phone number"
-                                            value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)}
-                                        />
-                                    </div>
+                        <div className="card order-summary-card">
+                            <div className="card-body g-2 row">
+                                <h5 className="card-title">Order Details</h5>
+                                <hr />
+                                <div className="form-floating">
+                                    <input type="text" className="form-control" placeholder="Enter your name" id="name"
+                                        value={name} onChange={(e) => setName(e.target.value)}
+                                    />
+                                    <label htmlFor="name">Name</label>
+                                </div>
+                                <div className="form-floating">
+                                    <input type="text" className="form-control" placeholder="Enter your Address" id="address"
+                                        value={address} onChange={(e) => setAddress(e.target.value)}
+                                    />
+                                    <label htmlFor="address">Address</label>
+                                </div>
+                                <div className="form-floating">
+                                    <input type="number" className="form-control" placeholder="Enter your Number" id="phoneNum"
+                                        value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)}
+                                    />
+                                    <label htmlFor="phoneNum">Phone Number</label>
                                 </div>
                             </div>
-                        )}
+                        </div>
                         <br />
                         {/* Order Summary */}
                         <div className="card order-summary-card">
@@ -236,8 +234,10 @@ const Cart = () => {
                                     <strong>${totalPrice += deliveryCost}</strong>
                                 </div>
                                 <hr />
-                                {/* Checkout Button */}
-                                <button className="btn btn-primary w-100">Proceed to Checkout</button>
+                                {/* Checkout Button */} {/* Disable the btn if there's no details */}
+                                <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}>
+                                    Proceed to Checkout
+                                </button>
                             </div>
                         </div>
                     </div>
