@@ -19,16 +19,14 @@ const Footer = () => {
                             <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-whatsapp"></i></a>
                             <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-instagram"></i></a>
                             <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-facebook-f"></i></a>
-                            {/* <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-youtube"></i></a> */}
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 mx-auto">
-                        <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Company</h4>
-                        <a className="btn btn-link" href="#">About Us</a>
-                        <a className="btn btn-link" href="#">Contact Us</a>
-                        <a className="btn btn-link" href="#">Reservation</a>
-                        <a className="btn btn-link" href="#">Privacy Policy</a>
-                        <a className="btn btn-link" href="#">Terms & Condition</a>
+                        <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Quick Links</h4>
+                        <a className="btn btn-link" href="/">Home</a>
+                        <a className="btn btn-link" href="/menu">Menu</a>
+                        <a className="btn btn-link" href="/contact">Contact</a>
+                        <a className="btn btn-link" href="/cart">Cart</a>
                     </div>
                 </div>
             </div>
