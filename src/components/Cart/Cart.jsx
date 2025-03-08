@@ -94,6 +94,16 @@ const Cart = () => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
+    // Function to add commas in thousands
+    const commaInThousands = (num) => {
+        let noThousands = num % 1000;
+        let thousands = Math.floor(num / 1000);
+        if (thousands === 0) {
+            return noThousands;
+        }
+        return thousands + ',' + noThousands.toFixed(0);
+    };        
+
     if (cartItems.length === 0) return (
         <>
             <div className="container py-5">
@@ -222,7 +232,7 @@ const Cart = () => {
                                 <hr />
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Subtotal</span>
-                                    <span>${totalPrice}</span>
+                                    <span>{commaInThousands(totalPrice) + ",000 L.L"}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Delivery</span>
@@ -230,7 +240,7 @@ const Cart = () => {
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <strong>Total</strong>
-                                    <strong>${totalPrice += deliveryCost}</strong>
+                                    <strong>{commaInThousands(totalPrice += deliveryCost) + ",000 L.L"}</strong>
                                 </div>
                                 <hr />
                                 {/* Checkout Button */} {/* Disable the btn if there's no details */}
