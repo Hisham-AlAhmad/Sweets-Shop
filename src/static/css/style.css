@@ -122,7 +122,7 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(15, 23, 43, .9), rgba(15, 23, 43, .9)), url(../img/crepe1.png);
+    background: linear-gradient(rgba(15, 23, 43, .75), rgba(15, 23, 43, .9)), url(../img/madloka.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

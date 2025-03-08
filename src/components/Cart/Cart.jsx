@@ -188,6 +188,8 @@ const Cart = () => {
                                 No
                             </button>
                         </div>
+
+                        {/* Order Details */}
                         <div className="card order-summary-card">
                             <div className="card-body g-2 row">
                                 <h5 className="card-title">Order Details</h5>
@@ -218,17 +220,14 @@ const Cart = () => {
                             <div className="card-body">
                                 <h5 className="card-title">Order Summary</h5>
                                 <hr />
-                                {/* Subtotal */}
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Subtotal</span>
                                     <span>${totalPrice}</span>
                                 </div>
-                                {/* Delivery */}
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Delivery</span>
                                     <span>{delivery ? deliveryCost + ",000" : 0} L.L</span>
                                 </div>
-                                {/* Total */}
                                 <div className="d-flex justify-content-between mb-3">
                                     <strong>Total</strong>
                                     <strong>${totalPrice += deliveryCost}</strong>

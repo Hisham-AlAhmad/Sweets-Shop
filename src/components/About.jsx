@@ -7,18 +7,18 @@ const About = () => {
                         <div className="col-lg-6">
                             <div className="row g-3">
                                 <div className="col-6 text-start">
-                                    <img className="img-fluid rounded w-100 wow zoomIn x" data-wow-delay="0.1s" src="img/about.jpg"
+                                    <img className="img-fluid rounded w-100 wow zoomIn x" data-wow-delay="0.1s" src="img/about-1.jpg"
                                         style={{aspectRatio: "1/1", objectFit: "cover"}}
                                     />
                                 </div>
                                 <div className="col-6 text-start">
-                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.25s" src="img/about-2.jpg" style={{marginTop: "25%"}} />
+                                    <img className="img-fluid rounded wow zoomIn" data-wow-delay="0.25s" src="img/about-2.jpg" style={{marginTop: "36%", width: "85%"}} />
                                 </div>
                                 <div className="col-6 text-end">
-                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.4s" src="img/about-3.jpg" />
+                                    <img className="img-fluid rounded wow zoomIn" data-wow-delay="0.4s" src="img/crepe1.png" style={{width: "85%"}}/>
                                 </div>
                                 <div className="col-6 text-end">
-                                    <img className="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.6s" src="img/about-4.jpg" />
+                                    <img className="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.6s" src="img/about-4.jpg"/>
                                 </div>
                             </div>
                         </div>
