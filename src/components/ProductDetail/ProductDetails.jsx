@@ -53,7 +53,7 @@ const ProductDetail = () => {
 
                     {/* Product Details */}
                     <div className="col-6 ">
-                        <h1 className="mb-4">{product.title}</h1>
+                        <h1 className="mb-4 text-center ">{product.title}</h1>
                         <h3 className="text-primary mb-4">${product.price}</h3>
 
                         {/* Size Selection */}
@@ -97,6 +97,13 @@ const ProductDetail = () => {
                             <h5 className="mb-3">Description:</h5>
                             <p className="lead">{product.description}</p>
                         </div>
+                        
+                        {/* this is how u can make a div disappear */}
+                        {/* {product.description = ""}
+                        {product.description && <div className="mb-5">
+                            <h5 className="mb-3">Description:</h5>
+                            <p className="lead">{product.description}</p>
+                        </div> */}
 
                         {/* Add to Cart Button */}
                         <Link
@@ -113,7 +120,7 @@ const ProductDetail = () => {
                             }}
                             className="text-decoration-none"
                         >
-                            <button className="btn btn-primary py-3 px-3 me-3 animated slideInUp">
+                            <button className="btn btn-primary py-3 px-3 me-3 mb-2 mb-md-0 animated slideInUp">
                                 Add to Cart
                             </button>
                         </Link>
