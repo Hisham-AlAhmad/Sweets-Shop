@@ -96,13 +96,45 @@ const Cart = () => {
 
     // Function to add commas in thousands
     const commaInThousands = (num) => {
+        num = Math.round(num);
         let noThousands = num % 1000;
         let thousands = Math.floor(num / 1000);
         if (thousands === 0) {
             return noThousands;
         }
-        return thousands + ',' + noThousands.toFixed(0);
-    };        
+        // handling the thousands part
+        if (noThousands < 10) {
+            noThousands = '00' + noThousands;
+        } else if (noThousands < 100) {
+            noThousands = '0' + noThousands;
+        }
+        return thousands + ',' + noThousands;
+    };
+
+    // Redirect to WhatsApp
+    function redirectToWhatsApp(cartItems) {
+        const phoneNumber = '96181212862'; // Seller's WhatsApp number in international format
+        let message = 'Name: ' + name + '\n';
+        message += 'Address: ' + address + '\n\n';
+        message += 'Order Details:\n';
+        cartItems.forEach(item => {
+            message += `-  ${item.name}:\n`;
+            message += `        Size: ${item.size}\n`;
+            message += `        Quantity: ${item.quantity}\n`;
+            // don't forget to remove the Math.round() when you're done testing
+            message += `        Price: ${Math.round(item.price)},000 x ${item.quantity} = ${Math.round(item.price) * item.quantity},000\n`;
+        });
+        message += '\nDelivery: ' + (delivery ? '*Yes*' : '*No*');
+        if (delivery) {
+            message += `\nDelivery Cost: ${deliveryCost},000 L.L`;
+        }
+        totalPrice = commaInThousands(totalPrice);
+        message += `\nTotal Amount: *${totalPrice},000* L.L`;
+        const encodedMessage = encodeURIComponent(message);
+        const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        window.open(waLink, '_blank');
+    }
+
 
     if (cartItems.length === 0) return (
         <>
@@ -149,6 +181,11 @@ const Cart = () => {
                                             <p className="card-text mb-1">
                                                 <strong>Price:</strong> ${item.price}
                                             </p>
+                                            {item.quantity > 1 &&
+                                                <p className="card-text mb-1">
+                                                    <strong>Subtotal:</strong> ${item.price * item.quantity}
+                                                </p>
+                                            }
                                             <p className="card-text mb-2">
                                                 <strong>Size:</strong> {item.size}
                                             </p>
@@ -244,7 +281,8 @@ const Cart = () => {
                                 </div>
                                 <hr />
                                 {/* Checkout Button */} {/* Disable the btn if there's no details */}
-                                <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}>
+                                <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}
+                                    onClick={() => redirectToWhatsApp(cartItems)} >
                                     Proceed to Checkout
                                 </button>
                             </div>
