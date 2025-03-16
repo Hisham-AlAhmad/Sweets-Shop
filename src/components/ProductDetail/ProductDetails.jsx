@@ -53,7 +53,7 @@ const ProductDetail = () => {
 
                     {/* Product Details */}
                     <div className="col-6 ">
-                        <h1 className="mb-4">{product.title}</h1>
+                        <h1 className="mb-4 product-title">{product.title}</h1>
                         <h3 className="text-primary mb-4">${product.price}</h3>
                         {quantity > 1 && <h5 className="mb-4">Total: <span className='text-primary'>${product.price * quantity}</span></h5>}
 

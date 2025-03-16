@@ -122,7 +122,7 @@ const Cart = () => {
             message += `        Size: ${item.size}\n`;
             message += `        Quantity: ${item.quantity}\n`;
             // don't forget to remove the Math.round() when you're done testing
-            message += `        Price: ${Math.round(item.price)},000 x ${item.quantity} = ${Math.round(item.price) * item.quantity},000\n`;
+            message += `        Price: ${Math.round(item.price)},000 x ${item.quantity} = ${Math.round(item.price) * item.quantity},000\n\n`;
         });
         message += '\nDelivery: ' + (delivery ? '*Yes*' : '*No*');
         if (delivery) {

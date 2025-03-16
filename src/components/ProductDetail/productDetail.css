@@ -5,6 +5,10 @@
     background: transparent;
 }
 
+.product-title {
+    overflow: hidden;
+}
+
 .quantity-selector {
     align-items: center;
     gap: 15px;
