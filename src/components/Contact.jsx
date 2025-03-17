@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Testimonial from "./Testimonial/Testimonial";
 
 const Contact = () => {
     const [name, setName] = useState(() => {
@@ -58,6 +59,7 @@ const Contact = () => {
                                 </form>
                             </div>
                         </div>
+                        <Testimonial />
                     </div>
                 </div>
             </div >
