@@ -1,0 +1,13 @@
+/* Ensure the body-wrapper accounts for the fixed header */
+.body-wrapper {
+    margin-left: 270px; /* Match the width of the sidebar */
+    padding-top: 70px; /* Match the height of the header */
+    width: calc(100% - 270px); /* Adjust width to account for the sidebar */
+    min-height: 100vh; /* Ensure it takes the full height of the viewport */
+  }
+  
+  /* Ensure the container-fluid doesn't overlap with the header */
+  .container-fluid {
+    padding: 20px; /* Add some padding */
+    margin-top: 0; /* Reset any default margin */
+  }

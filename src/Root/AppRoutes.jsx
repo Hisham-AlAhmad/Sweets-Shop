@@ -7,10 +7,13 @@ import Menu from "../components/Menu/Menu";
 import ProductDetail from "../components/ProductDetail/ProductDetails";
 import Cart from "../components/Cart/Cart";
 import Contact from "../components/Contact";
+import AdminLayout from "../admin/AdminLayout";
+import Dashboard from "../admin/Dashboard";
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* User side routes */}
       <Route element={<Layout />} >
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -18,6 +21,11 @@ function AppRoutes() {
         <Route path="/menu/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
         <Route path="/contact" element={<Contact />} />
+      </Route>
+      {/* Admin side routes */}
+      <Route element={<AdminLayout />} >
+        <Route path="/admin" element={<Dashboard />} />
+        {/* <Route path="/admin/dashboard" element={<Dashboard />} /> */}
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -1,0 +1,108 @@
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 270px;
+    width: calc(100% - 270px);
+    z-index: 50;
+    background: #fff;
+    padding: 0 25px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+  }
+
+.app-header .container-fluid,
+.app-header .container-lg,
+.app-header .container-md,
+.app-header .container-sm,
+.app-header .container-xl,
+.app-header .container-xxl {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px
+}
+
+.app-header .navbar {
+    min-height: 70px;
+    padding: 0
+}
+
+.app-header .navbar .navbar-nav .nav-item .nav-link {
+    padding: 8px 16px;
+    line-height: 70px;
+    height: 70px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    font-size: 20px;
+    z-index: 2
+}
+
+.app-header .navbar .navbar-nav.quick-links .nav-item .nav-link {
+    font-size: 0.875rem;
+    position: relative;
+    z-index: 2
+}
+
+.app-header .navbar .navbar-nav.quick-links .nav-item:hover .nav-link {
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    color: #5D87FF !important
+}
+
+.app-header .navbar .navbar-nav.quick-links .nav-item:hover .nav-link:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 36px;
+    width: 100%;
+    border-radius: 7px;
+    background: #ECF2FF;
+    z-index: -1
+}
+
+@media (max-width:991.98px) {
+    .app-header .navbar {
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap
+    }
+
+    .app-header .navbar .navbar-nav {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row
+    }
+}
+
+#main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header {
+    position: fixed;
+    z-index: 10
+}
+
+@media (min-width:1200px) {
+    #main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {
+        width: 100%
+    }
+
+    #main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header {
+        width: calc(100% - 270px)
+    }
+
+    #main-wrapper[data-layout=vertical][data-sidebartype=full] .body-wrapper {
+        margin-left: 270px
+    }
+}
+
+.page-wrapper {
+    position: relative
+}
+
+.body-wrapper {
+    position: relative
+}
