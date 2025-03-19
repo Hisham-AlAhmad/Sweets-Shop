@@ -31,7 +31,7 @@ const ProductDetail = () => {
         <>
             <Spinner loading={loading} />
             <div className="text-center">
-                <h1 className="product-not-found">Product Not Found...</h1>
+                <h1 className="product-not-found mb-4">Product Not Found...</h1>
                 <NavLink to="/menu" className="btn btn-primary py-3 px-5 me-3 animated slideInUp">Back to Menu</NavLink>
             </div>
         </>
@@ -42,17 +42,17 @@ const ProductDetail = () => {
             <div className="container">
                 <div className="row g-5">
                     {/* Product Image */}
-                    <div className="col-6 pt-5 text-center">
+                    <div className="col-sm-6 pt-2 text-center">
                         <img
                             src={product.image}
                             alt={product.title}
                             className="img-fluid rounded product-detail-img"
-                            style={{ maxHeight: '500px', objectFit: 'contain' }}
+                            style={{ maxHeight: '300px', objectFit: 'contain' }}
                         />
                     </div>
 
                     {/* Product Details */}
-                    <div className="col-6 ">
+                    <div className="col-sm-6 ">
                         <h1 className="mb-4 product-title">{product.title}</h1>
                         <h3 className="text-primary mb-4">${product.price}</h3>
                         {quantity > 1 && <h5 className="mb-4">Total: <span className='text-primary'>${product.price * quantity}</span></h5>}
@@ -121,7 +121,7 @@ const ProductDetail = () => {
                             }}
                             className="text-decoration-none"
                         >
-                            <button className="btn btn-primary py-3 px-3 me-3 mb-2 mb-md-0 animated slideInUp">
+                            <button className="btn btn-primary py-3 px-3 me-3 animated slideInUp">
                                 Add to Cart
                             </button>
                         </Link>
