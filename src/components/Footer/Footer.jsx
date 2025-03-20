@@ -1,6 +1,17 @@
 import './footer.css';
 
 const Footer = () => {
+    function whatsapp() {
+        const message = "Hi Fresh Time! I wanna order something.";
+        const encodedMessage = encodeURIComponent(message);
+        const phoneNumber = "96176763445";
+        const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        window.open(waLink, '_blank');
+    }
+    function instagram() {
+        window.open('https://www.instagram.com/freshtime72/', '_blank');
+    }
+    
     return (
         <div className="container-fluid bg-dark text-light footer pt-2 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div className="container py-4">
@@ -16,9 +27,9 @@ const Footer = () => {
                         <p className="mb-2"><i className="fa fa-map-marker-alt me-3"></i>Al Rachideia Camp, Fresh Time</p>
                         <p className="mb-2"><i className="fa fa-phone-alt me-3"></i>+961 76 763 445</p>
                         <div className="d-flex pt-2">
-                            <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-whatsapp"></i></a>
-                            <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-instagram"></i></a>
-                            <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-facebook-f"></i></a>
+                            <a className="btn btn-lg btn-primary me-2" onClick={() => whatsapp()}><i className="fab fa-whatsapp"></i></a>
+                            <a className="btn btn-lg btn-primary me-2" onClick={() => instagram()}><i className="fab fa-instagram"></i></a>
+                            {/* <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-facebook-f"></i></a> */}
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-6 mx-auto">
