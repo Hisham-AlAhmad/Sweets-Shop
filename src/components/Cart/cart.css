@@ -45,6 +45,9 @@
     margin-top: 10px;
 }
 
+.form-control{
+    border-radius: 15px;
+}
 @media (max-width: 768px) {
     .cart-item-card {
         flex-direction: row;

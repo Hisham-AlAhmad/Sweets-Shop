@@ -227,11 +227,13 @@ const Cart = () => {
                         <div className="d-flex gap-3 align-items-center mb-3">
                             <h5 className="mb-0">Delivery?</h5>
                             <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
-                                onClick={() => (setDelivery(true), setDeliveryCost(20))}>
+                                onClick={() => (setDelivery(true), setDeliveryCost(20))}
+                                style={{ borderRadius: '5px' }}>
                                 Yes
                             </button>
                             <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
-                                onClick={() => (setDelivery(false), setDeliveryCost(0))}>
+                                onClick={() => (setDelivery(false), setDeliveryCost(0))}
+                                style={{ borderRadius: '5px' }}>
                                 No
                             </button>
                         </div>
