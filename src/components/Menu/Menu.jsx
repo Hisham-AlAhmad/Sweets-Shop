@@ -14,7 +14,7 @@ const Menu = () => {
         const fetchData = async () => {
             try {
                 // Fetch categories
-                const categoriesResponse = await fetch('https://fakestoreapi.com/products/categories');
+                const categoriesResponse = await fetch('http://localhost:8000/src/backend/api/category.php');
                 if (!categoriesResponse.ok) throw new Error('Failed to fetch categories');
                 const categoriesData = await categoriesResponse.json();
                 console.log("Categories API Response:", categoriesData);

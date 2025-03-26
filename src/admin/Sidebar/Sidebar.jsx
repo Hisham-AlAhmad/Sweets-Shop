@@ -36,17 +36,20 @@ const Sidebar = () => {
                                 <span className="hide-menu">CATEGORY</span>
                             </li>
                             <li className="sidebar-item">
-                                <a className="sidebar-link" href="./add-category.php" aria-expanded="false">
+                                <NavLink to="/addCategory"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
                                     <span>
-                                        <i className="ti ti-article"></i>
+                                    <i class="ti ti-category-plus"></i>
                                     </span>
                                     <span className="hide-menu">Add Category</span>
-                                </a>
+                                </NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <a className="sidebar-link" href="./view-category.php" aria-expanded="false">
                                     <span>
-                                        <i className="ti ti-article"></i>
+                                        <i className="ti ti-category"></i>
                                     </span>
                                     <span className="hide-menu">View Category</span>
                                 </a>

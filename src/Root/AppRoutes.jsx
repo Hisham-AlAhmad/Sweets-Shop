@@ -9,6 +9,7 @@ import Cart from "../components/Cart/Cart";
 import Contact from "../components/Contact";
 import AdminLayout from "../admin/AdminLayout";
 import Dashboard from "../admin/Dashboard";
+import AddCategory from "../admin/Category/AddCategory";
 
 function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ function AppRoutes() {
       {/* Admin side routes */}
       <Route element={<AdminLayout />} >
         <Route path="/admin" element={<Dashboard />} />
+        <Route path="/addCategory" element={<AddCategory /> }/>
         {/* <Route path="/admin/dashboard" element={<Dashboard />} /> */}
       </Route>
       <Route path="*" element={<NotFound />} />
