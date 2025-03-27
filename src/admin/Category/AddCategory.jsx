@@ -8,7 +8,7 @@ const AddCategory = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:8000/src/backend/api/Category.php", {
+        const response = await fetch("http://localhost:8000/src/backend/api/category.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name: categoryName }),

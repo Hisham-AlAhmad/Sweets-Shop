@@ -135,6 +135,17 @@ const Cart = () => {
         window.open(waLink, '_blank');
     }
 
+    const addCustomer = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:8000/src/backend/api/customer.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name, phoneNum: phoneNum, address: address }),
+        });
+
+        const result = await response.json();
+    };
 
     if (cartItems.length === 0) return (
         <>
@@ -283,10 +294,12 @@ const Cart = () => {
                                 </div>
                                 <hr />
                                 {/* Checkout Button */} {/* Disable the btn if there's no details */}
-                                <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}
-                                    onClick={() => redirectToWhatsApp(cartItems)} >
-                                    Proceed to Checkout
-                                </button>
+                                <form onSubmit={addCustomer}>
+                                    <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}
+                                        onClick={() => redirectToWhatsApp(cartItems)} >
+                                        Proceed to Checkout
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

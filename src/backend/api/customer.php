@@ -16,21 +16,30 @@ if ($method === 'GET') {
 
 elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data['name']) || !isset($data['phoneNum'])) {
-        echo json_encode(["error" => "Name, and phone are required"]);
+    if (!isset($data['name']) || !isset($data['phoneNum']) || !isset($data['address'])) {
+        echo json_encode(["error" => "Name, phone and address are required"]);
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO customer (name, phoneNum, address, created_at) VALUES (?, ?, ?, NOW())");
-    $stmt->bind_param("ssi", $data['name'], $data['phoneNum'], $data['address']);
+    // Check if the phone number already exists
+    $stmt = $conn->prepare("SELECT id FROM customer WHERE phoneNum = ?");
+    $stmt->bind_param("s", $data['phoneNum']);
     $stmt->execute();
+    $stmt->store_result();
 
-    if ($conn->query($query)) {
-        echo json_encode(["message" => "Customer added"]);
-    } else {
-        echo json_encode(["error" => "Failed to add customer"]);
+    if ($stmt->num_rows > 0) {
+        exit;
     }
+    else{
+        $stmt = $conn->prepare("INSERT INTO customer (name, phoneNum, address) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $data['name'], $data['phoneNum'], $data['address']);
+        $stmt->execute();
+    }
+    // Insert new customer
+
+    echo json_encode(["message" => "Customer added successfully"]);
 }
+
 
 elseif ($method === 'PUT') {
     $data = json_decode(file_get_contents("php://input"), true);
@@ -40,7 +49,7 @@ elseif ($method === 'PUT') {
     }
 
     $stmt = $conn->prepare("UPDATE customer SET name = ?, phoneNum = ?, address = ? WHERE id = ?");
-    $stmt->bind_param("ssii", $data['name'], $data['phoneNum'], $data['address'], $data['id']);
+    $stmt->bind_param("sssi", $data['name'], $data['phoneNum'], $data['address'], $data['id']);
     $stmt->execute();
 
     echo json_encode(["message" => "Customer updated successfully"]);
