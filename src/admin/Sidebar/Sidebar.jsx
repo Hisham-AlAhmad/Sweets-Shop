@@ -1,18 +1,15 @@
 import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
     return (
         <>
-            <aside className="left-sidebar">
+            <aside className={`left-sidebar ${isOpen ? 'open' : ''}`}>
                 <div>
                     <div className="brand-logo d-flex align-items-center justify-content-between">
                         <a href="/admin" className="text-nowrap logo-img">
-                            <img src="/img/freshTime_noBg.png" width="180" alt="" />
+                            <img src="/img/freshTime_noBg.png" width="180" alt="Logo" />
                         </a>
-                        <div className="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                            <i className="ti ti-x fs-8"></i>
-                        </div>
                     </div>
                     <nav className="sidebar-nav scroll-sidebar" data-simplebar="">
                         <ul id="sidebarnav">
@@ -41,64 +38,79 @@ const Sidebar = () => {
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
                                     <span>
-                                    <i class="ti ti-category-plus"></i>
+                                        <i className="ti ti-category-plus"></i>
                                     </span>
                                     <span className="hide-menu">Add Category</span>
                                 </NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <a className="sidebar-link" href="./view-category.php" aria-expanded="false">
+                                <NavLink to="/viewCategory"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
                                     <span>
                                         <i className="ti ti-category"></i>
                                     </span>
                                     <span className="hide-menu">View Category</span>
-                                </a>
-                            </li>
-                            <li className="nav-small-cap">
-                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
-                                <span className="hide-menu">BRAND</span>
-                            </li>
-                            <li className="sidebar-item">
-                                <a className="sidebar-link" href="./add-brand.php" aria-expanded="false">
-                                    <span>
-                                        <i className="ti ti-article"></i>
-                                    </span>
-                                    <span className="hide-menu">Add Brand</span>
-                                </a>
-                            </li>
-                            <li className="sidebar-item">
-                                <a className="sidebar-link" href="./view-brand.php" aria-expanded="false">
-                                    <span>
-                                        <i className="ti ti-article"></i>
-                                    </span>
-                                    <span className="hide-menu">View Brand</span>
-                                </a>
+                                </NavLink>
                             </li>
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">PRODUCT</span>
                             </li>
                             <li className="sidebar-item">
-                                <a className="sidebar-link" href="./add-product.php" aria-expanded="false">
+                                <NavLink to="/addProduct"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
                                     <span>
-                                        <i className="ti ti-article"></i>
+                                        <i className="ti ti-package"></i>
                                     </span>
                                     <span className="hide-menu">Add Product</span>
-                                </a>
+                                </NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <a className="sidebar-link" href="./view-product.php" aria-expanded="false">
+                                <NavLink to="/viewProduct"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
                                     <span>
-                                        <i className="ti ti-article"></i>
+                                        <i className="ti ti-packages"></i>
                                     </span>
                                     <span className="hide-menu">View Product</span>
-                                </a>
+                                </NavLink>
+                            </li>
+                            <li className="nav-small-cap">
+                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span className="hide-menu">SUPPLIERS</span>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to="/addSupplier"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-user-plus"></i>
+                                    </span>
+                                    <span className="hide-menu">Add Supplier</span>
+                                </NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to="/viewSupplier"
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-users-group"></i>
+                                    </span>
+                                    <span className="hide-menu">View Suppliers</span>
+                                </NavLink>
                             </li>
                         </ul>
-
                     </nav>
                 </div>
             </aside>
+            {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)} />}
         </>
     );
 }

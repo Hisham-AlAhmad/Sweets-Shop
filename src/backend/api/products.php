@@ -81,7 +81,7 @@ elseif ($method === 'PUT') {
             $conn->query("INSERT INTO product_sizes (product_id, sizes_id, price) VALUES ({$data['id']}, $sizes_id, $price)");
         }
     }
-    
+
     echo json_encode(["message" => "Product updated successfully"]);
 }
 

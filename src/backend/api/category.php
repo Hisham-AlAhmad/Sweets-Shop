@@ -37,7 +37,7 @@ elseif ($method === 'POST') {
 
 elseif ($method === 'PUT') {
     // Update category
-    parse_str(file_get_contents("php://input"), $data);
+    $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['id'], $data['name'])) {
         echo json_encode(["error" => "ID and name are required"]);
         exit;
@@ -56,7 +56,7 @@ elseif ($method === 'PUT') {
 
 elseif ($method === 'DELETE') {
     // Delete category
-    parse_str(file_get_contents("php://input"), $data);
+    $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['id'])) {
         echo json_encode(["error" => "ID is required"]);
         exit;
