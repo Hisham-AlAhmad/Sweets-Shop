@@ -10,8 +10,9 @@ import Contact from "../components/Contact";
 import AdminLayout from "../admin/AdminLayout";
 import Dashboard from "../admin/Dashboard";
 import AddCategory from "../admin/Category/AddCategory";
-import AddSupplier from "../admin/AddSupplier";
+import AddSupplier from "../admin/Suppliers/AddSupplier";
 import ViewCategory from "../admin/Category/ViewCategory";
+import ViewSuppliers from "../admin/Suppliers/ViewSuppliers";
 
 function AppRoutes() {
   return (
@@ -31,6 +32,7 @@ function AppRoutes() {
         <Route path="/addCategory" element={<AddCategory /> }/>
         <Route path="/viewCategory" element={<ViewCategory /> }/>
         <Route path="/addSupplier" element={<AddSupplier /> }/>
+        <Route path="/ViewSuppliers" element={<ViewSuppliers /> }/>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

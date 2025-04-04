@@ -16,17 +16,20 @@ if ($method === 'GET') {
 
 elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data['name']) || !isset($data['phoneNumb']) || !isset($data['address'])) {
-        echo json_encode(["error" => "Name, phoneNum, and address are required"]);
+    if (!isset($data['name']) || !isset($data['phoneNum']) || !isset($data['address'])) {
+        echo json_encode(["error" => "Name, phone Number, and address are required"]);
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO suppliers (name, phoneNum, address, products_supplied) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $data['name'], $data['phoneNum'], $data['address'], $data['products_supplied']);
-    $stmt->execute();
+    $name = $conn->real_escape_string($data['name']);
+    $phoneNum = $conn->real_escape_string($data['phoneNum']);
+    $address = $conn->real_escape_string($data['address']);
+    $products_supplied = $conn->real_escape_string($data['products_supplied']);
+
+    $query = "INSERT INTO suppliers (name, phoneNum, address, products_supplied) VALUES ('$name', '$phoneNum', '$address', '$products_supplied')";
 
     if ($conn->query($query)) {
-        echo json_encode(["message" => "suppliers added"]);
+        echo json_encode(["message" => "supplier added"]);
     } else {
         echo json_encode(["error" => "Failed to add suppliers"]);
     }
@@ -39,11 +42,11 @@ elseif ($method === 'PUT') {
         exit;
     }
 
-    $stmt = $conn->prepare("UPDATE suppliers SET name = ?, phoneNum = ?, address = ? WHERE id = ?");
-    $stmt->bind_param("ssii", $data['name'], $data['phoneNum'], $data['address'], $data['id']);
+    $stmt = $conn->prepare("UPDATE suppliers SET name = ?, phoneNum = ?, address = ?, products_supplied = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $data['name'], $data['phoneNum'], $data['address'], $data['products_supplied'], $data['id']);
     $stmt->execute();
 
-    echo json_encode(["message" => "suppliers updated successfully"]);
+    echo json_encode(["message" => "supplier updated successfully"]);
 }
 
 elseif ($method === 'DELETE') {

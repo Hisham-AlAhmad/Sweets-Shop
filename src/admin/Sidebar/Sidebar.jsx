@@ -96,7 +96,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 </NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to="/viewSupplier"
+                                <NavLink to="/viewSuppliers"
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
