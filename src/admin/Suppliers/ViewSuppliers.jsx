@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ViewSuppliers = () => {
     const [suppliers, setSuppliers] = useState([]);
@@ -47,20 +48,38 @@ const ViewSuppliers = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this supplier?")) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        });
+
+        if (result.isConfirmed) {
             try {
                 const response = await fetch(`http://localhost:8000/src/backend/api/suppliers.php`, {
-                    method: "DELETE",
+                    method: 'DELETE',
                     body: JSON.stringify({ id: id }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                setRefreshTrigger((prev) => prev + 1);
+                setRefreshTrigger(prev => prev + 1);
+
+                Swal.fire('Deleted!', 'The supplier has been deleted.', 'success');
             } catch (err) {
-                console.error("Error deleting supplier:", err);
+                setError(`Failed to delete supplier: ${err.message}`);
+                console.error('Error deleting supplier:', err);
+
+                Swal.fire('Error!', 'Something went wrong while deleting.', 'error');
             }
         }
     };

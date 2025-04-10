@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ViewCategory = () => {
     const [categories, setCategories] = useState([]);
@@ -45,11 +46,24 @@ const ViewCategory = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this category?')) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        });
+
+        if (result.isConfirmed) {
             try {
                 const response = await fetch(`http://localhost:8000/src/backend/api/category.php`, {
                     method: 'DELETE',
                     body: JSON.stringify({ id: id }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
 
                 if (!response.ok) {
@@ -57,9 +71,13 @@ const ViewCategory = () => {
                 }
 
                 setRefreshTrigger(prev => prev + 1);
+
+                Swal.fire('Deleted!', 'The category has been deleted.', 'success');
             } catch (err) {
                 setError(`Failed to delete category: ${err.message}`);
                 console.error('Error deleting category:', err);
+
+                Swal.fire('Error!', 'Something went wrong while deleting.', 'error');
             }
         }
     };

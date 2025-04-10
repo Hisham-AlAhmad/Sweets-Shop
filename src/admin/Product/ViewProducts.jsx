@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ViewProducts = () => {
     const [products, setProducts] = useState([]);
@@ -64,16 +65,25 @@ const ViewProducts = () => {
         });
     };
 
-    // Chnage the delete function and use the sweetalert library
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        });
+
+        if (result.isConfirmed) {
             try {
                 const response = await fetch(`http://localhost:8000/src/backend/api/products.php`, {
                     method: 'DELETE',
                     body: JSON.stringify({ id: id }),
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
 
                 if (!response.ok) {
@@ -81,9 +91,13 @@ const ViewProducts = () => {
                 }
 
                 setRefreshTrigger(prev => prev + 1);
+
+                Swal.fire('Deleted!', 'The product has been deleted.', 'success');
             } catch (err) {
                 setError(`Failed to delete product: ${err.message}`);
                 console.error('Error deleting product:', err);
+
+                Swal.fire('Error!', 'Something went wrong while deleting.', 'error');
             }
         }
     };
