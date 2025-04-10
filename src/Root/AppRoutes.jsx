@@ -13,6 +13,8 @@ import AddCategory from "../admin/Category/AddCategory";
 import AddSupplier from "../admin/Suppliers/AddSupplier";
 import ViewCategory from "../admin/Category/ViewCategory";
 import ViewSuppliers from "../admin/Suppliers/ViewSuppliers";
+import AddProduct from "../admin/Product/AddProduct";
+import ViewProducts from "../admin/Product/ViewProducts";
 
 function AppRoutes() {
   return (
@@ -28,11 +30,13 @@ function AppRoutes() {
       </Route>
       {/* Admin side routes */}
       <Route element={<AdminLayout />} >
-        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/addCategory" element={<AddCategory /> }/>
         <Route path="/viewCategory" element={<ViewCategory /> }/>
         <Route path="/addSupplier" element={<AddSupplier /> }/>
         <Route path="/ViewSuppliers" element={<ViewSuppliers /> }/>
+        <Route path="/addProduct" element={<AddProduct /> }/>
+        <Route path="/viewProducts" element={<ViewProducts /> }/>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

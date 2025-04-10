@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 <span className="hide-menu">Home</span>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to="/admin"
+                                <NavLink to="/dashboard"
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -70,7 +70,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 </NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to="/viewProduct"
+                                <NavLink to="/viewProducts"
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
