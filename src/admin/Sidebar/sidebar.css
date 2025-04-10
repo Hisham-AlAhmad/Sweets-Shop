@@ -12,7 +12,7 @@
 .left-sidebar .scroll-sidebar {
     overflow-y: auto;
     padding: 0 24px;
-    height: calc(100vh - 80px);
+    height: 135vh;
     border-radius: 7px;
 }
 
@@ -55,12 +55,12 @@
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link:hover {
-    background-color: rgba(93, 135, 255, 0.1);
-    color: #5D87FF;
+    background-color: #F9F6FF;
+    color: #FEA116;
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link:hover.has-arrow:after {
-    border-color: #5D87FF;
+    border-color: #FEA116;
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link.active:hover.has-arrow:after {
@@ -74,7 +74,7 @@
 .sidebar-nav ul .sidebar-item.selected>.sidebar-link,
 .sidebar-nav ul .sidebar-item.selected>.sidebar-link.active,
 .sidebar-nav ul .sidebar-item>.sidebar-link.active {
-    background-color: #5D87FF;
+    background-color: #FEA116;
     color: #fff;
 }
 
@@ -108,11 +108,19 @@
         left: -270px;
         top: 0;
         height: 100vh;
+        z-index: 110; /* Increased z-index to be above header */
     }
     
     .left-sidebar.open {
         left: 0;
         box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Fixed scroll issue */
+    .left-sidebar .scroll-sidebar {
+        height: calc(100vh - 70px);
+        padding-bottom: 100px; /* Extra padding to ensure visibility of bottom items */
+        overflow-y: auto;
     }
     
     .sidebar-overlay {
@@ -122,7 +130,7 @@
         right: 0;
         bottom: 0;
         background: rgba(0,0,0,0.3);
-        z-index: 10;
+        z-index: 100; /* High enough to cover content but below sidebar */
         display: none;
     }
     
@@ -133,6 +141,7 @@
     .app-header {
         left: 0;
         width: 100%;
+        z-index: 90; /* Lower than sidebar but still high */
     }
     
     .body-wrapper {

@@ -7,7 +7,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <aside className={`left-sidebar ${isOpen ? 'open' : ''}`}>
                 <div>
                     <div className="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="/admin" className="text-nowrap logo-img">
+                        <a href="/dashboard" className="text-nowrap logo-img">
                             <img src="/img/freshTime_noBg.png" width="180" alt="Logo" />
                         </a>
                     </div>
@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/dashboard"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -34,6 +35,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addCategory"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -45,6 +47,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewCategory"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -60,6 +63,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addProduct"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -71,6 +75,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewProducts"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -82,10 +87,59 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span className="hide-menu">CUSTOMERS</span>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to="/viewCustomers"
+                                    onClick={() => (setIsOpen(false))}
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-users-group"></i>
+                                    </span>
+                                    <span className="hide-menu">View Customers</span>
+                                </NavLink>
+                            </li>
+                            <li className="nav-small-cap">
+                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span className="hide-menu">FEEDBACK</span>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to="/viewFeedback"
+                                    onClick={() => (setIsOpen(false))}
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-message-circle"></i>
+                                    </span>
+                                    <span className="hide-menu">View Feedback</span>
+                                </NavLink>
+                            </li>
+                            <li className="nav-small-cap">
+                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span className="hide-menu">ORDERS</span>
+                            </li>
+                            <li className="sidebar-item">
+                            <NavLink to="/viewOrders"
+                                    onClick={() => (setIsOpen(false))}
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-shopping-cart"></i>
+                                    </span>
+                                    <span className="hide-menu">View Orders</span>
+                                </NavLink>
+                            </li>
+                            <li className="nav-small-cap">
+                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">SUPPLIERS</span>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addSupplier"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -97,6 +151,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewSuppliers"
+                                    onClick={() => (setIsOpen(false))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -110,7 +165,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     </nav>
                 </div>
             </aside>
-            {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)} />}
+            {isOpen && <div className="sidebar-overlay" onClick={() => (setIsOpen(false))} />}
         </>
     );
 }
