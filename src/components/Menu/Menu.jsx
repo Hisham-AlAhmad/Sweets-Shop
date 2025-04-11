@@ -19,24 +19,19 @@ const Menu = () => {
                 const categoriesData = await categoriesResponse.json();
                 console.log("Categories API Response:", categoriesData);
 
-                // Handle categories response & Add 'All' category
-                const categoriesArray = Array.isArray(categoriesData)
-                    ? ['All', ...categoriesData]
-                    : ["All", ...(categoriesData.categories || [])];
+                // Process categories - now they are objects with id and name properties
+                // Add 'All' category
+                const allCategory = { id: 'all', name: 'All' };
+                const categoriesArray = [allCategory, ...categoriesData]
                 setCategories(categoriesArray);
 
                 // Fetch products
-                const productsResponse = await fetch('https://fakestoreapi.com/products');
+                const productsResponse = await fetch('http://localhost:8000/src/backend/api/products.php');
                 if (!productsResponse.ok) throw new Error('Failed to fetch products');
                 const productsData = await productsResponse.json();
                 console.log("Products API Response:", productsData);
 
-                // Handle products response
-                const productsArray = Array.isArray(productsData)
-                    ? productsData
-                    : productsData.products || [];
-                setProducts(productsArray);
-
+                setProducts(productsData);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -47,10 +42,77 @@ const Menu = () => {
         fetchData();
     }, []);
 
-    // Filter products
+    // Filter products based on category
     const filteredProducts = activeCategory === 'All'
         ? products // Show all products
-        : products.filter((product) => product.category === activeCategory); // Filter by category
+        : products.filter((product) => {
+            // Check if product has category object with matching name
+            if (product.category && Array.isArray(product.category)) {
+                return product.category.some(cat => cat.category_name === activeCategory);
+            }
+            return false;
+        });
+
+    // Function to format price with commas 1000000 => 100,000
+    const commaInPrice = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
+    };
+
+    // Product card component that handles whether it's clickable based on availability
+    const ProductCard = ({ product }) => {
+        const available = product.availability === "1";
+
+        // Base product card content
+        const productContent = (
+            <div className={`product-item ${!available ? 'unavailable' : ''}`}>
+                <div className="d-flex align-items-center">
+                    <img
+                        className="flex-shrink-0 img-fluid rounded"
+                        src={`http://localhost:8000/public/img/products/${product.image}`}
+                        alt={product.name}
+                    />
+                    <div className="w-100 d-flex flex-column text-start ps-4">
+                        <h5 className="d-flex justify-content-between border-bottom pb-2">
+                            <span>{product.name}</span>
+                            {product.sizes && product.sizes.length > 0 ? (
+                                <span className={`${!available ? 'text-unavailable' : 'text-primary'}`}>
+                                    {product.sizes.length} size{product.sizes.length > 1 ? 's' : ''}
+                                </span>
+                            ) : (
+                                <span className={`${!available ? 'text-unavailable' : 'text-primary'}`}>
+                                    {commaInPrice(product.weight_price)}
+                                </span>
+                            )}
+                        </h5>
+                        {!available && <span className="unavailable-badge text-primary">Unavailable</span>}
+                        {product.description && (
+                            <small className={`fst-italic ${!available ? 'text-unavailable' : ''}`}>
+                                {product.description}
+                            </small>
+                        )}
+                        {product.sizes && product.sizes.length > 1 && (
+                            <small className={`mt-1 ${!available ? 'text-unavailable' : ''}`}>
+                                Multiple sizes available
+                            </small>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+
+        // Wrap in Link if available, otherwise just return the content
+        return (
+            <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
+                {available ? (
+                    <Link to={`/menu/${product.id}`}>
+                        {productContent}
+                    </Link>
+                ) : (
+                    productContent
+                )}
+            </div>
+        );
+    };
 
     if (error) return <div>Error: {error}</div>;
 
@@ -66,12 +128,12 @@ const Menu = () => {
                         {/* Category Navigation */}
                         <ul className="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                             {categories.map((category) => (
-                                <li className="nav-item" key={category}>
+                                <li className="nav-item" key={category.id}>
                                     <button
-                                        className={`nav-link ${activeCategory === category ? 'active' : ''}`}
-                                        onClick={() => setActiveCategory(category)}
+                                        className={`nav-link ${activeCategory === category.name ? 'active' : ''}`}
+                                        onClick={() => setActiveCategory(category.name)}
                                     >
-                                        {category}
+                                        {category.name}
                                     </button>
                                 </li>
                             ))}
@@ -80,28 +142,15 @@ const Menu = () => {
                         <div className="tab-content">
                             <div id="tab-1" className="tab-pane fade show p-0 active">
                                 <div className="row g-4">
-                                    {filteredProducts.map((product) => (
-                                        <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
-                                            <Link to={`/menu/${product.id}`}>
-                                                <div className="product-item">
-                                                    <div className="d-flex align-items-center">
-                                                        <img
-                                                            className="flex-shrink-0 img-fluid rounded"
-                                                            src={product.image}
-                                                            alt={product.title}
-                                                        />
-                                                        <div className="w-100 d-flex flex-column text-start ps-4">
-                                                            <h5 className="d-flex justify-content-between border-bottom pb-2">
-                                                                <span>{product.title}</span>
-                                                                <span className="text-primary">${product.price}</span>
-                                                            </h5>
-                                                            {/* <small className="fst-italic">{product.description}</small> */}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Link>
+                                    {filteredProducts.length > 0 ? (
+                                        filteredProducts.map((product) => (
+                                            <ProductCard product={product} key={product.id} />
+                                        ))
+                                    ) : (
+                                        <div className="col-12 text-center">
+                                            <p>No products found in this category.</p>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
                             </div>
                         </div>
