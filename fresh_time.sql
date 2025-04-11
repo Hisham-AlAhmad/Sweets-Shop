@@ -7,6 +7,8 @@
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
+-- Run this command to start the server : php -S loacalhost:8000
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -190,7 +192,6 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `feedback`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `orders`
@@ -293,12 +294,6 @@ ALTER TABLE `suppliers`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `feedback`
---
-ALTER TABLE `feedback`
-  ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`

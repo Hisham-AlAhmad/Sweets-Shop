@@ -14,6 +14,19 @@ const Contact = () => {
         }
     }, [name]);
 
+    const sendFeedback = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:8000/src/backend/api/feedback.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name, comment: message, approved: 0 }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+    };
+
     return (
         <>
             <div className="container-xxl py-5">
@@ -33,7 +46,7 @@ const Contact = () => {
                         </div>
                         <div className="col-md-6">
                             <div className="wow fadeInUp" data-wow-delay="0.2s">
-                                <form className="contact-form">
+                                <form className="contact-form" onSubmit={sendFeedback}>
                                     <div className="row g-3">
                                         <div className="col-lg-6 col-md-8 ">
                                             <div className="form-floating">
@@ -53,7 +66,7 @@ const Contact = () => {
                                             </div>
                                         </div>
                                         <div className="col-12">
-                                            <button className="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                            <button className={`btn btn-primary w-100 py-3 ${name && message ? '' : 'disabled'}`} type="submit">Send Message</button>
                                         </div>
                                     </div>
                                 </form>

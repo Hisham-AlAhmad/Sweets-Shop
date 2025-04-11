@@ -43,7 +43,7 @@ body {
 }
 
 .form-control:focus {
-  border-color: #5791ff;
+  border-color: #FEA116;
   box-shadow: 0 0 0 0.25rem rgba(87, 145, 255, 0.25);
 }
 
@@ -53,7 +53,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 500;
-  background-color: #5791ff;
+  background-color: #FEA116;
   border: none;
   color: white;
   margin-top: 20px;
@@ -61,7 +61,7 @@ body {
 }
 
 .create-btn:hover {
-  background-color: #4678d4;
+  background-color: #FEA116;
   color: white;
 }
 
@@ -72,14 +72,14 @@ body {
   font-size: 16px;
   font-weight: 500;
   background-color: transparent;
-  border: 2px solid #5791ff;
-  color: #5791ff;
+  border: 2px solid #FEA116;
+  color: #FEA116;
   margin-top: 20px;
   transition: all 0.3s ease;
 }
 
 .create-btn-outline:hover {
-  background-color: #5791ff;
+  background-color:#FEA116;
   color: white;
 }
 
