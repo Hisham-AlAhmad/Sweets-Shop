@@ -22,9 +22,9 @@ elseif ($method === 'POST') {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        echo json_encode(["message" => "Feedback added"]);
+        echo json_encode(["message" => "Comment added to be reviewed"]);
     } else {
-        echo json_encode(["error" => "Failed to add feedback"]);
+        echo json_encode(["error" => "Failed to add Comment"]);
     }
 }
 
@@ -37,12 +37,18 @@ elseif ($method === 'PUT') {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    
     if (!isset($data['comment'])) {
         $data['comment'] = $result->fetch_assoc()['comment'];
     }
-
-    $stmt = $conn->prepare("UPDATE feedback SET comment = ?, approved = ? WHERE id = ?");
-    $stmt->bind_param("sii", $data['comment'], $data['approved'], $data['id']);
+    
+    if (!isset($data['name']) ) {
+        $stmt = $conn->prepare("UPDATE feedback SET comment = ?, approved = ? WHERE id = ?");
+        $stmt->bind_param("sii", $data['comment'], $data['approved'], $data['id']);
+    }else{
+        $stmt = $conn->prepare("UPDATE feedback SET name = ?, comment = ?, approved = ? WHERE id = ?");
+        $stmt->bind_param("ssii", $data['name'], $data['comment'], $data['approved'], $data['id']);
+    }
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {

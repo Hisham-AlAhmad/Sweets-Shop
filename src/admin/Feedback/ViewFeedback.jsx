@@ -170,7 +170,7 @@ const ViewFeedback = () => {
                 </h6>
                 <p className="card-text">{feedback.comment}</p>
                 <div className="d-flex justify-content-between align-items-center">
-                    <span className={`badge ${feedback.approved == 1 ? 'bg-primary' : 'bg-danger'}`}>
+                    <span className={`badge ${feedback.approved == 1 ? 'bg-success' : 'bg-danger'}`}>
                         {feedback.approved == 1 ? 'Approved' : 'Pending'}
                     </span>
                     <button
@@ -245,7 +245,7 @@ const ViewFeedback = () => {
                                             <td>{feedback.id}</td>
                                             <td>{feedback.name}</td>
                                             <td>{feedback.comment}</td>
-                                            <td>{<span className={`badge ${feedback.approved == 1 ? 'bg-primary' : 'bg-danger'}`}>
+                                            <td>{<span className={`badge ${feedback.approved == 1 ? 'bg-success' : 'bg-danger'}`}>
                                                 {feedback.approved == 1 ? 'Approved' : 'Pending'}</span>}
                                             </td>
                                             <td>{formatDate(feedback.created_at)}</td>
