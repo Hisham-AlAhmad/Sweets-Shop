@@ -23,14 +23,14 @@ if ($method === 'GET') {
 elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['customer_id']) || !isset($data['total_amount']) || !isset($data['products'])) {
-        echo json_encode(["error" => "customer_id, total_amount, and products are required"]);
+    if (!isset($data['customer_id']) || !isset($data['total_price']) || !isset($data['products'])) {
+        echo json_encode(["error" => "customer_id, total_price, and products are required"]);
         exit;
     }
 
     // Insert order
-    $stmt = $conn->prepare("INSERT INTO orders (customer_id, total_amount, order_date) VALUES (?, ?, NOW())");
-    $stmt->bind_param("ii", $data['customer_id'], $data['total_amount']);
+    $stmt = $conn->prepare("INSERT INTO orders (customer_id, total_price, order_date) VALUES (?, ?, NOW())");
+    $stmt->bind_param("ii", $data['customer_id'], $data['total_price']);
     $stmt->execute();
     $order_id = $stmt->insert_id;
 
@@ -47,14 +47,14 @@ elseif ($method === 'POST') {
 elseif ($method === 'PUT') {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['id']) || !isset($data['total_amount'])) {
-        echo json_encode(["error" => "ID and total_amount are required"]);
+    if (!isset($data['id']) || !isset($data['total_price'])) {
+        echo json_encode(["error" => "ID and total price are required"]);
         exit;
     }
 
     // Update order total
-    $stmt = $conn->prepare("UPDATE orders SET total_amount = ? WHERE id = ?");
-    $stmt->bind_param("ii", $data['total_amount'], $data['id']);
+    $stmt = $conn->prepare("UPDATE orders SET total_price = ? WHERE id = ?");
+    $stmt->bind_param("ii", $data['total_price'], $data['id']);
     $stmt->execute();
 
     // Update product_orders if products are provided

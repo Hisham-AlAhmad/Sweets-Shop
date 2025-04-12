@@ -83,7 +83,7 @@ CREATE TABLE `feedback` (
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `total_amount` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL,
   `order_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

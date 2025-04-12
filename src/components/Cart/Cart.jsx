@@ -4,7 +4,7 @@ import './cart.css';
 
 const Cart = () => {
     const location = useLocation();
-    const { product, size, quantity } = location.state || {};
+    const { product } = location.state || {};
     const [cartItems, setCartItems] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -17,7 +17,7 @@ const Cart = () => {
     });
 
     const [deliveryCost, setDeliveryCost] = useState(() => {
-        return delivery ? 20 : 0;
+        return delivery ? 20000 : 0;
     });
 
     const [name, setName] = useState(() => {
@@ -31,7 +31,6 @@ const Cart = () => {
     const [phoneNum, setPhoneNum] = useState(() => {
         return localStorage.getItem("phoneNum") ? JSON.parse(localStorage.getItem("phoneNum")) : "";
     });
-
 
     // Save the data to local storage whenever it changes
     useEffect(() => {
@@ -60,22 +59,24 @@ const Cart = () => {
 
     // Add the new product to the cart when the component mounts
     useEffect(() => {
-        if (product && size && quantity) {
+        if (product) {
             setCartItems(prevCartItems => {
-                if (prevCartItems.some(item => item.id === product.id && item.size === size)) {
+                if (prevCartItems.some(item => item.id === product.id && item.size === product.size)) {
                     return prevCartItems;
                 }
                 return [...prevCartItems, {
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    quantity: quantity,
-                    size: size,
+                    quantity: product.quantity,
+                    size: product.size,
                     image: product.image,
+                    isWeightBased: product.isWeightBased,
                 }];
             });
         }
     }, []); // Runs only once to prevent refresh issue
+    console.log("Cart Items:", cartItems);
 
     // Calculate total price
     var totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -84,7 +85,7 @@ const Cart = () => {
     const handleQuantityChange = (id, newQuantity) => {
         setCartItems((prevItems) =>
             prevItems.map((item) =>
-                item.id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
+                item.id === id ? { ...item, quantity: item.isWeightBased ? Math.max(0.5, newQuantity) : Math.max(1, newQuantity) } : item
             )
         );
     };
@@ -94,21 +95,9 @@ const Cart = () => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
-    // Function to add commas in thousands
-    const commaInThousands = (num) => {
-        num = Math.round(num);
-        let noThousands = num % 1000;
-        let thousands = Math.floor(num / 1000);
-        if (thousands === 0) {
-            return noThousands;
-        }
-        // handling the thousands part
-        if (noThousands < 10) {
-            noThousands = '00' + noThousands;
-        } else if (noThousands < 100) {
-            noThousands = '0' + noThousands;
-        }
-        return thousands + ',' + noThousands;
+    // Function to format price with commas 1000000 => 100,000
+    const commaInPrice = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
     };
 
     // Redirect to WhatsApp
@@ -121,21 +110,20 @@ const Cart = () => {
             message += `-  ${item.name}:\n`;
             message += `        Size: ${item.size}\n`;
             message += `        Quantity: ${item.quantity}\n`;
-            // don't forget to remove the Math.round() when you're done testing
-            message += `        Price: ${Math.round(item.price)},000 x ${item.quantity} = ${Math.round(item.price) * item.quantity},000\n\n`;
+            message += `        Price: ${commaInPrice(item.price)} x ${item.isWeightBased ? `${item.quantity} kg` : item.quantity} = ${commaInPrice(item.price * item.quantity)}\n\n`;
         });
         message += '\nDelivery: ' + (delivery ? '*Yes*' : '*No*');
         if (delivery) {
-            message += `\nDelivery Cost: ${deliveryCost},000 L.L`;
+            message += `\nDelivery Cost: ${commaInPrice(deliveryCost)}`;
         }
-        totalPrice = commaInThousands(totalPrice);
-        message += `\nTotal Amount: *${totalPrice},000* L.L`;
+        totalPrice = commaInPrice(totalPrice);
+        message += `\nTotal Amount: *${totalPrice}*`;
         const encodedMessage = encodeURIComponent(message);
         const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
         window.open(waLink, '_blank');
     }
 
-    const addCustomer = async (e) => {
+    const addCustomer_order = async (e) => {
         e.preventDefault();
 
         const response = await fetch("http://localhost:8000/src/backend/api/customer.php", {
@@ -144,7 +132,24 @@ const Cart = () => {
             body: JSON.stringify({ name: name, phoneNum: phoneNum, address: address }),
         });
 
-        const result = await response.json();
+        const customerData = await fetch(`http://localhost:8000/src/backend/api/customer.php/${phoneNum}`);
+        var customer_id = await customerData.json();
+        customer_id = customer_id[0].id;
+        const orderedItems = cartItems.map(item => ({
+            product_id: item.id,
+            quantity: item.quantity,
+            price: item.price
+        }));
+
+        let totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0) + deliveryCost;
+        const orderResponse = await fetch("http://localhost:8000/src/backend/api/orders.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ customer_id: customer_id, total_price: totalPrice, products: orderedItems }),
+        });
+
+        const orderData = await orderResponse.json();
+        console.log("Order Data:", orderData);
     };
 
     if (cartItems.length === 0) return (
@@ -180,22 +185,29 @@ const Cart = () => {
                                     {/* Product Image */}
                                     <div className="col-3 text-center">
                                         <img
-                                            src={item.image}
+                                            src={`http://localhost:8000/public/img/products/${item.image}`}
                                             alt={item.name}
                                             className="img-fluid rounded-start cart-item-image p-2"
                                         />
                                     </div>
                                     {/* Product Details */}
                                     <div className="col-9 text-start">
-                                        <div className="card-body p-2 ps-4">
+                                        <div className="card-body p-2 ms-4">
                                             <h6 className="card-title mb-1">{item.name}</h6>
                                             <p className="card-text mb-1">
-                                                <strong>Price:</strong> ${item.price}
+                                                <strong>Price:</strong> {commaInPrice(item.price)}
                                             </p>
-                                            {item.quantity > 1 &&
-                                                <p className="card-text mb-1">
-                                                    <strong>Subtotal:</strong> ${item.price * item.quantity}
-                                                </p>
+                                            {item.isWeightBased ?
+                                                (item.quantity >= 0.5 &&
+                                                    <p className="card-text mb-1">
+                                                        <strong>Subtotal:</strong> {commaInPrice(item.price * item.quantity)}
+                                                    </p>
+                                                ) : (
+                                                    item.quantity > 1 &&
+                                                    <p className="card-text mb-1">
+                                                        <strong>Subtotal:</strong> {commaInPrice(item.price * item.quantity)}
+                                                    </p>
+                                                )
                                             }
                                             <p className="card-text mb-2">
                                                 <strong>Size:</strong> {item.size}
@@ -205,16 +217,16 @@ const Cart = () => {
                                                 <button
                                                     className="btn btn-outline-primary btn-sm"
                                                     onClick={() =>
-                                                        handleQuantityChange(item.id, item.quantity - 1)
+                                                        handleQuantityChange(item.id, item.isWeightBased ? item.quantity - 0.5 : item.quantity - 1)
                                                     }
                                                 >
                                                     -
                                                 </button>
-                                                <span>{item.quantity}</span>
+                                                <span>{item.isWeightBased ? `${item.quantity} kg` : item.quantity}</span>
                                                 <button
                                                     className="btn btn-outline-primary btn-sm"
                                                     onClick={() =>
-                                                        handleQuantityChange(item.id, item.quantity + 1)
+                                                        handleQuantityChange(item.id, item.isWeightBased ? item.quantity + 0.5 : item.quantity + 1)
                                                     }
                                                 >
                                                     +
@@ -238,7 +250,7 @@ const Cart = () => {
                         <div className="d-flex gap-3 align-items-center mb-3">
                             <h5 className="mb-0">Delivery?</h5>
                             <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
-                                onClick={() => (setDelivery(true), setDeliveryCost(20))}
+                                onClick={() => (setDelivery(true), setDeliveryCost(20000))}
                                 style={{ borderRadius: '5px' }}>
                                 Yes
                             </button>
@@ -282,19 +294,19 @@ const Cart = () => {
                                 <hr />
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Subtotal</span>
-                                    <span>{commaInThousands(totalPrice) + ",000 L.L"}</span>
+                                    <span>{commaInPrice(totalPrice)}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Delivery</span>
-                                    <span>{delivery ? deliveryCost + ",000" : 0} L.L</span>
+                                    <span>{delivery ? commaInPrice(deliveryCost) : 0}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <strong>Total</strong>
-                                    <strong>{commaInThousands(totalPrice += deliveryCost) + ",000 L.L"}</strong>
+                                    <strong>{commaInPrice(totalPrice + deliveryCost)}</strong>
                                 </div>
                                 <hr />
                                 {/* Checkout Button */} {/* Disable the btn if there's no details */}
-                                <form onSubmit={addCustomer}>
+                                <form onSubmit={addCustomer_order}>
                                     <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}
                                         onClick={() => redirectToWhatsApp(cartItems)} >
                                         Proceed to Checkout

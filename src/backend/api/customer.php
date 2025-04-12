@@ -8,8 +8,19 @@ header("Content-Type: application/json");
 require '../database.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
+
 if ($method === 'GET') {
-    $result = $conn->query("SELECT * FROM customer");
+    // Extract ID from URL path if present
+    $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    $phoneNum = null;
+    
+    if (!empty($path_info)) {
+        // Remove leading slash
+        $phoneNum = ltrim($path_info, '/');
+        $result = $conn->query("SELECT id from customer WHERE phoneNum = '$phoneNum'");
+    }else {
+        $result = $conn->query("SELECT * FROM customer");
+    }
     $customers = $result->fetch_all(MYSQLI_ASSOC);
     echo json_encode($customers);
 }
