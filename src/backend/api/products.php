@@ -9,6 +9,15 @@ require '../database.php';
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
+    // Extract ID from URL path if present
+    $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    $id = null;
+    
+    if (!empty($path_info)) {
+        // Remove leading slash and convert to integer
+        $id = intval(ltrim($path_info, '/'));
+    }
+
     $query = "SELECT 
                 products.*, 
                 GROUP_CONCAT(DISTINCT CONCAT(category.id, '|', category.name)) AS category,
@@ -17,9 +26,14 @@ if ($method === 'GET') {
               LEFT JOIN product_category ON products.id = product_category.product_id
               LEFT JOIN category ON product_category.category_id = category.id
               LEFT JOIN product_sizes ON products.id = product_sizes.product_id
-              LEFT JOIN sizes ON product_sizes.sizes_id = sizes.id
-              GROUP BY products.id";
-    
+              LEFT JOIN sizes ON product_sizes.sizes_id = sizes.id";
+
+    if ($id) {
+        $condition = ' WHERE products.id = ' . $id;
+        $query = $query . $condition;
+    }
+
+    $query = $query . " GROUP BY products.id";
     $result = $conn->query($query);
     
     $products = [];
