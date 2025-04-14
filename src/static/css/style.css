@@ -257,6 +257,10 @@
     }
 }
 
+.lines {
+    background-color: var(--dark);
+}
+
 /* removed the number up / down from the number input */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
