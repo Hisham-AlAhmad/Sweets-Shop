@@ -9,14 +9,32 @@ require '../database.php';
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    if (isset($_GET['customer_id'])) {
-        $customer_id = $conn->real_escape_string($_GET['customer_id']);
-        $result = $conn->query("SELECT * FROM orders WHERE customer_id = $customer_id");
-    } else {
-        $result = $conn->query("SELECT * FROM orders");
+
+    $query = "SELECT 
+                orders.*,
+                customer.name AS customer_name,
+                GROUP_CONCAT(DISTINCT CONCAT(products.name, '|', products.image, '|', product_orders.quantity, '|', product_orders.price )) AS products
+              FROM orders
+              LEFT JOIN customer ON orders.customer_id = customer.id
+              LEFT JOIN product_orders ON orders.id = product_orders.order_id
+              LEFT JOIN products ON product_orders.product_id = products.id
+              GROUP BY orders.id";
+
+    $result = $conn->query($query);
+
+    while ($row = $result->fetch_assoc()) {
+        if(!empty($row['products'])) {
+            $productEnteries = explode(',', $row['products']);
+            $product_details = [];
+            foreach ($productEnteries as $entry) {
+                list($name, $image, $quantity, $price) = explode('|', $entry, 4);
+                $product_details[] = ['name' => $name, 'image' => $image, 'quantity' => $quantity, 'price' => $price];
+            }
+            $row['products'] = $product_details;
+        }
+        $orders[] = $row;
     }
-    
-    $orders = $result->fetch_all(MYSQLI_ASSOC);
+
     echo json_encode($orders);
 }
 
@@ -37,7 +55,7 @@ elseif ($method === 'POST') {
     // Insert products into product_orders
     foreach ($data['products'] as $product) {
         $stmt = $conn->prepare("INSERT INTO product_orders (product_id, order_id, quantity, price) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiii", $product['product_id'], $order_id, $product['quantity'], $product['price']);
+        $stmt->bind_param("iidi", $product['product_id'], $order_id, $product['quantity'], $product['price']);
         $stmt->execute();
     }
 
@@ -63,7 +81,7 @@ elseif ($method === 'PUT') {
 
         foreach ($data['products'] as $product) {
             $stmt = $conn->prepare("INSERT INTO product_orders (product_id, order_id, quantity, price) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("iiii", $product['product_id'], $data['id'], $product['quantity'], $product['price']);
+            $stmt->bind_param("iidi", $product['product_id'], $data['id'], $product['quantity'], $product['price']);
             $stmt->execute();
         }
     }

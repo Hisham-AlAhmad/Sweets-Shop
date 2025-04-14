@@ -124,7 +124,7 @@ CREATE TABLE `product_category` (
 CREATE TABLE `product_orders` (
   `product_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` decimal(10,0) NOT NULL,
   `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

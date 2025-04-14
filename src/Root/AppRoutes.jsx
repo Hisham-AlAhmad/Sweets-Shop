@@ -18,6 +18,8 @@ import ViewProducts from "../admin/Product/ViewProducts";
 import ViewCustomers from "../admin/Customer/ViewCustomers";
 import ViewFeedback from "../admin/Feedback/ViewFeedback";
 import EditFeedback from "../admin/Feedback/EditFeedback";
+import ViewOrders from "../admin/Orders/ViewOrders";
+import OrderedProducts from "../admin/Orders/OrderedProducts";
 
 function AppRoutes() {
   return (
@@ -43,6 +45,8 @@ function AppRoutes() {
         <Route path="/viewCustomers" element={<ViewCustomers /> }/>
         <Route path="/viewFeedback" element={<ViewFeedback /> }/>
         <Route path="/editFeedback" element={<EditFeedback /> }/>
+        <Route path="/viewOrders" element={<ViewOrders /> }/>
+        <Route path="/orderedProducts" element={<OrderedProducts /> }/>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
