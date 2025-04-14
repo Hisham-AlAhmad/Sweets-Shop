@@ -44,7 +44,7 @@ CREATE TABLE `admin` (
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -191,7 +191,7 @@ ALTER TABLE `customer`
 -- Indexes for table `feedback`
 --
 ALTER TABLE `feedback`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `orders`
