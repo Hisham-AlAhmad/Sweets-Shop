@@ -223,6 +223,7 @@ const ViewProducts = () => {
                     </button>
                 </div>
             </div>
+            <hr />
         </div>
     );
 

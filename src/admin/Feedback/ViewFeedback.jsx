@@ -201,6 +201,7 @@ const ViewFeedback = () => {
                     </button>
                 </div>
             </div>
+            <hr />
         </div>
     );
 

@@ -124,6 +124,7 @@ const ViewCustomers = () => {
                     </button>
                 </div>
             </div>
+            <hr />
         </div>
     );
 

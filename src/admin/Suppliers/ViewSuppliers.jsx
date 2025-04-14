@@ -156,6 +156,7 @@ const ViewSuppliers = () => {
                     </button>
                 </div>
             </div>
+            <hr />
         </div>
     );
 

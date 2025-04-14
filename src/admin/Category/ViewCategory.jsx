@@ -151,6 +151,7 @@ const ViewCategory = () => {
                     </button>
                 </div>
             </div>
+            <hr />
         </div>
     );
 
