@@ -108,15 +108,17 @@ const Cart = () => {
         message += 'Order Details:\n';
         cartItems.forEach(item => {
             message += `-  ${item.name}:\n`;
-            message += `        Size: ${item.size}\n`;
-            message += `        Quantity: ${item.quantity}\n`;
+            if (!item.isWeightBased) {
+                message += `        Size: ${item.size}\n`;
+            }
+            message += `        Quantity: ${item.isWeightBased ? `${item.quantity} kg` : item.quantity}\n`;
             message += `        Price: ${commaInPrice(item.price)} x ${item.isWeightBased ? `${item.quantity} kg` : item.quantity} = ${commaInPrice(item.price * item.quantity)}\n\n`;
         });
         message += '\nDelivery: ' + (delivery ? '*Yes*' : '*No*');
         if (delivery) {
             message += `\nDelivery Cost: ${commaInPrice(deliveryCost)}`;
         }
-        totalPrice = commaInPrice(totalPrice);
+        totalPrice = commaInPrice(totalPrice + deliveryCost);
         message += `\nTotal Amount: *${totalPrice}*`;
         const encodedMessage = encodeURIComponent(message);
         const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
