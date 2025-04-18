@@ -20,36 +20,45 @@ import ViewFeedback from "../admin/Feedback/ViewFeedback";
 import EditFeedback from "../admin/Feedback/EditFeedback";
 import ViewOrders from "../admin/Orders/ViewOrders";
 import OrderedProducts from "../admin/Orders/OrderedProducts";
+import LoginPage from "../auth/LoginPage";
+import { AuthProvider } from "../auth/AuthContext";
+import ProtectedRoute from "../auth/ProtectedRoute";
 
 function AppRoutes() {
   return (
-    <Routes>
-      {/* User side routes */}
-      <Route element={<Layout />} >
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/menu/:id" element={<ProductDetail />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="/contact" element={<Contact />} />
-      </Route>
-      {/* Admin side routes */}
-      <Route element={<AdminLayout />} >
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/addCategory" element={<AddCategory /> }/>
-        <Route path="/viewCategory" element={<ViewCategory /> }/>
-        <Route path="/addSupplier" element={<AddSupplier /> }/>
-        <Route path="/ViewSuppliers" element={<ViewSuppliers /> }/>
-        <Route path="/addProduct" element={<AddProduct /> }/>
-        <Route path="/viewProducts" element={<ViewProducts /> }/>
-        <Route path="/viewCustomers" element={<ViewCustomers /> }/>
-        <Route path="/viewFeedback" element={<ViewFeedback /> }/>
-        <Route path="/editFeedback" element={<EditFeedback /> }/>
-        <Route path="/viewOrders" element={<ViewOrders /> }/>
-        <Route path="/orderedProducts" element={<OrderedProducts /> }/>
-      </Route>
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        {/* User side routes */}
+        <Route element={<Layout />} >
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/menu/:id" element={<ProductDetail />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="/contact" element={<Contact />} />
+        </Route>
+        {/* Admin side routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AdminLayout />} >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/addCategory" element={<AddCategory />} />
+            <Route path="/viewCategory" element={<ViewCategory />} />
+            <Route path="/addSupplier" element={<AddSupplier />} />
+            <Route path="/ViewSuppliers" element={<ViewSuppliers />} />
+            <Route path="/addProduct" element={<AddProduct />} />
+            <Route path="/viewProducts" element={<ViewProducts />} />
+            <Route path="/viewCustomers" element={<ViewCustomers />} />
+            <Route path="/viewFeedback" element={<ViewFeedback />} />
+            <Route path="/editFeedback" element={<EditFeedback />} />
+            <Route path="/viewOrders" element={<ViewOrders />} />
+            <Route path="/orderedProducts" element={<OrderedProducts />} />
+          </Route>
+        </Route>
+        {/* Nameless routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
