@@ -49,7 +49,17 @@ const EditFeedback = () => {
                 method: method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
             });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             const result = await response.json();
 
@@ -98,7 +108,7 @@ const EditFeedback = () => {
                                             type="text"
                                             value={name}
                                             className="form-control"
-                                            placeholder="Enter Category"
+                                            placeholder="Enter feedback"
                                             onChange={(e) => setName(e.target.value)}
                                             required
                                         />
@@ -113,7 +123,7 @@ const EditFeedback = () => {
                                             type="text"
                                             value={comment}
                                             className="form-control"
-                                            placeholder="Enter Category"
+                                            placeholder="Enter feedback"
                                             onChange={(e) => setComment(e.target.value)}
                                             required
                                         />
@@ -154,7 +164,7 @@ const EditFeedback = () => {
                                         ) : (
                                             <>
                                                 <i className={`bi ${isEditing ? 'bi-pencil-fill' : 'bi-plus-circle'} me-2`}></i>
-                                                {isEditing ? "Update Category" : "Create Category"}
+                                                {isEditing ? "Update Feedback" : "Create Feedback"}
                                             </>
                                         )}
                                     </button>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../auth/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
@@ -31,6 +32,7 @@ const AddProduct = () => {
     const [createdDate, setCreatedDate] = useState(new Date());
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const { logout } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -80,7 +82,19 @@ const AddProduct = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch("http://localhost:8000/src/backend/api/category.php");
+            const response = await fetch("http://localhost:8000/src/backend/api/category.php", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -95,7 +109,19 @@ const AddProduct = () => {
 
     const fetchSizes = async () => {
         try {
-            const response = await fetch("http://localhost:8000/src/backend/api/sizes.php");
+            const response = await fetch("http://localhost:8000/src/backend/api/sizes.php", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -216,7 +242,17 @@ const AddProduct = () => {
             const response = await fetch(url, {
                 method: method,
                 body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
             });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             const result = await response.json();
 
@@ -275,7 +311,7 @@ const AddProduct = () => {
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
-                                { productId && <div className="mb-2">ID: {productId}</div>}
+                                {productId && <div className="mb-2">ID: {productId}</div>}
                                 {/* Product Name */}
                                 <div className="mb-3">
                                     <div className="form-floating">
@@ -562,7 +598,7 @@ const AddProduct = () => {
                                         type="submit"
                                         className="btn btn-primary flex-grow-1"
                                         disabled={isSubmitting || (pricingMethod === "sizes" && productSizes.length === 0)
-                                            || selectedCategories.length === 0 || !productName || !productImage }
+                                            || selectedCategories.length === 0 || !productName || !productImage}
                                     >
                                         {isSubmitting ? (
                                             <>

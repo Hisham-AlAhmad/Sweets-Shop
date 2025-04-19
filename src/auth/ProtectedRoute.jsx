@@ -3,7 +3,7 @@ import { useAuth } from './AuthContext';
 import Spinner from '../components/Spinner';
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading,  logout } = useAuth();
+  const { isAuthenticated, isLoading, logout } = useAuth();
 
   const checkAuth = () => {
     const expiresAt = localStorage.getItem('expiresAt');
@@ -21,11 +21,11 @@ const ProtectedRoute = () => {
 
   // If loading, return a loading spinner
   if (isLoading) {
-    return <Spinner loading={isLoading}/>;
+    return <Spinner loading={isLoading} />;
   }
 
   // If not authenticated, redirect to login page
-  if (!checkAuth()) {
+  if (!isAuthenticated || !checkAuth()) {
     return <Navigate to="/login" replace />;
   }
 

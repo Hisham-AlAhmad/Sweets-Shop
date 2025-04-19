@@ -6,6 +6,7 @@ const AddSupplier = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [address, setAddress] = useState("");
     const [products_supplied, setProducts_supplied] = useState("");
+    
     const [message, setMessage] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const [supplierId, setSupplierId] = useState(null);
@@ -49,7 +50,17 @@ const AddSupplier = () => {
                 method: method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
             });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             const result = await response.json();
 

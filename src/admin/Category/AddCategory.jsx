@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../auth/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
@@ -9,6 +10,7 @@ const AddCategory = () => {
     const [createdDate, setCreatedDate] = useState(new Date());
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const { logout } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -43,9 +45,18 @@ const AddCategory = () => {
 
             const response = await fetch(url, {
                 method: method,
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
             });
+
+            if (response.status === 401) {
+                logout(); // Logout if token is expired
+                setError('Session expired. Please log in again.');
+                navigate('/login', { replace: true });
+            }
 
             const result = await response.json();
 
@@ -119,7 +130,7 @@ const AddCategory = () => {
                                     <button
                                         type="submit"
                                         className="btn btn-primary flex-grow-1"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting  || categoryName === ""}
                                     >
                                         {isSubmitting ? (
                                             <>

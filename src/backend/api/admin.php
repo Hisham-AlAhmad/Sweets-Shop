@@ -75,7 +75,7 @@ function handleLogin($conn) {
             $payload = [
                 'user_id' => $admin['id'],
                 'username' => $admin['username'],
-                'exp' => (time() + 5) // Token expires in 1 hour
+                'exp' => (time() + 3600) // Token expires in 1 hour
             ];
             $jwt = JWT::encode($payload, $key, 'HS256');
 

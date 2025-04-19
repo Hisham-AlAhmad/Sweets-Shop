@@ -1,7 +1,31 @@
+import { useAuth } from "../../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+    const navigate = useNavigate();
+    const { logout } = useAuth();
+
+    const checkAuth_IsOpened = () => {
+        e.preventDefault();
+
+        setIsOpen(false);
+        const expiresAt = localStorage.getItem('expiresAt');
+        if (!expiresAt) return false;
+
+        const now = Date.now();
+        const expiry = parseInt(expiresAt);
+
+        if (now > expiry) {
+            logout(); // Logout if token is expired
+            navigate('/login', { replace: true });
+            setIsOpen(false);
+            return false;
+        }
+        return true;
+    };
+
     return (
         <>
             <aside className={`left-sidebar ${isOpen ? 'open' : ''}`}>
@@ -19,7 +43,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/dashboard"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -35,7 +59,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addCategory"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -47,7 +71,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewCategory"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -63,7 +87,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addProduct"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -75,7 +99,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewProducts"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -91,7 +115,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewCustomers"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -107,7 +131,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewFeedback"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -122,8 +146,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 <span className="hide-menu">ORDERS</span>
                             </li>
                             <li className="sidebar-item">
-                            <NavLink to="/viewOrders"
-                                    onClick={() => (setIsOpen(false))}
+                                <NavLink to="/viewOrders"
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -139,7 +163,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/addSupplier"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
@@ -151,7 +175,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to="/viewSuppliers"
-                                    onClick={() => (setIsOpen(false))}
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
                                     className={({ isActive }) =>
                                         `sidebar-link ${isActive ? 'active' : ''}`
                                     }>
