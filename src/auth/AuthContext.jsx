@@ -10,20 +10,23 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const expiresAt = localStorage.getItem('expiresAt');
+    let timeout;
 
     if (token && expiresAt && Date.now() < parseInt(expiresAt)) {
       setIsAuthenticated(true);
 
-      // Auto-logout after expiry
-      const timeout = setTimeout(() => {
+      timeout = setTimeout(() => {
         logout();
-      }, expiresAt - Date.now());
-
-      return () => clearTimeout(timeout);
+      }, parseInt(expiresAt) - Date.now());
     }
 
     setIsLoading(false);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
   }, []);
+
 
   const login = async (username, password) => {
     try {

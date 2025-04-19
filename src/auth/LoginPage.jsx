@@ -16,7 +16,7 @@ const LoginPage = () => {
         setIsLoading(true);
         console.log('expiresAt:', Date(expiresAt));
         console.log('isAuthenticated:', isAuthenticated);
-        
+
         try {
             const success = await login(username, password);
             if (success) {
@@ -75,7 +75,7 @@ const LoginPage = () => {
                                             <span className="input-group-text bg-light border-end-0">
                                                 <i className="bi bi-person-fill text-muted"></i>
                                             </span>
-                                            <input 
+                                            <input
                                                 type="text"
                                                 className="form-control bg-light border-start-0"
                                                 id="username"
@@ -83,11 +83,11 @@ const LoginPage = () => {
                                                 placeholder="Enter your username"
                                                 onChange={(e) => setUsername(e.target.value)}
                                                 value={username}
-                                                required 
+                                                required
                                             />
                                         </div>
                                     </div>
-                                    
+
                                     <div className="mb-4">
                                         <div className="d-flex justify-content-between align-items-center">
                                             <label htmlFor="password" className="form-label text-muted small fw-semibold">PASSWORD</label>
@@ -96,7 +96,7 @@ const LoginPage = () => {
                                             <span className="input-group-text bg-light border-end-0">
                                                 <i className="bi bi-lock-fill text-muted"></i>
                                             </span>
-                                            <input 
+                                            <input
                                                 type="password"
                                                 className="form-control bg-light border-start-0"
                                                 id="password"
@@ -104,13 +104,13 @@ const LoginPage = () => {
                                                 placeholder="Enter your password"
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 value={password}
-                                                required 
+                                                required
                                             />
                                         </div>
                                     </div>
 
                                     <div className="d-grid gap-2">
-                                        <button 
+                                        <button
                                             type="submit"
                                             className="btn btn-primary py-3 fw-semibold"
                                             disabled={isLoading}

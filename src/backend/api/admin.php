@@ -13,10 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require '../database.php';
 require '../auth_utils.php';
-//  Fresh-time/src/backend/api/admin.php
-// require '../../../../vendor/autoload.php';
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 // Get the HTTP method and path
 $method = $_SERVER['REQUEST_METHOD'];
@@ -36,7 +33,7 @@ switch ($method) {
 
     case 'GET':
         if ($action === 'verify') {
-            // verifyToken($conn);
+            verifyToken($token);
             sendResponse(200, ['message' => 'Token is valid']);
         } else {
             sendResponse(404, ['error' => 'Resource not found']);
@@ -78,7 +75,7 @@ function handleLogin($conn) {
             $payload = [
                 'user_id' => $admin['id'],
                 'username' => $admin['username'],
-                'exp' => (time() + 3600) // Token expires in 1 hour
+                'exp' => (time() + 5) // Token expires in 1 hour
             ];
             $jwt = JWT::encode($payload, $key, 'HS256');
 
