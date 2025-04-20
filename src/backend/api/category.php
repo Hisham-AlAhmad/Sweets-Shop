@@ -14,7 +14,10 @@ if ($method === 'OPTIONS') {
     exit;
 }
 
-$user = requireAuth();
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    // Only check token for POST, PUT, DELETE requests
+    $user = requireAuth();
+}
 
 if ($method === 'GET') {
     // Fetch all categories
