@@ -17,6 +17,8 @@
     min-height: 70px;
     padding: 0;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .app-header .navbar-nav {
@@ -48,6 +50,117 @@
     box-shadow: 0 0 0 3px rgba(93, 135, 255, 0.15);
 }
 
+/* User Profile Styles */
+.user-profile-container {
+    position: relative;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.user-profile:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #5D87FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.avatar-initials {
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.user-name {
+    font-weight: 500;
+    margin-right: 8px;
+    font-size: 14px;
+    color: #2A3547;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 65px;
+    right: 0;
+    width: 250px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 16px;
+    z-index: 100;
+}
+
+.user-info {
+    padding-bottom: 8px;
+}
+
+.user-role {
+    font-size: 12px;
+    padding: 4px 8px;
+    background-color: #ecf2ff;
+    color: #5D87FF;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: rgba(0,0,0,0.08);
+    margin: 12px 0;
+}
+
+.dropdown-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-options li {
+    margin-bottom: 4px;
+}
+
+.dropdown-options button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2A3547;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-options button:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.logout-btn {
+    color: #f9716c !important;
+}
+
+.logout-btn:hover {
+    background-color: rgba(249, 113, 108, 0.05) !important;
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 1199px) {
     .app-header {
@@ -77,5 +190,15 @@
 
     .app-header .ti-menu-2 {
         font-size: 24px;
+    }
+    
+    .user-profile {
+        padding: 6px;
+    }
+    
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        margin-right: 5px;
     }
 }

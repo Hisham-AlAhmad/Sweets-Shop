@@ -1,12 +1,68 @@
+import { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../../auth/AuthContext';
+import Swal from 'sweetalert2';
+import React from 'react';
 import './header.css';
 
 const Header = ({ onToggleSidebar }) => {
+  const [username, setUsername] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { logout } = useAuth();
+  const dropdownRef = useRef(null);
+
+  const getUsername = () => {
+    const username = localStorage.getItem('username');
+    if (username) {
+      setUsername(username.charAt(0).toUpperCase() + username.slice(1));
+    } else {
+      setUsername('Guest');
+    }
+  }
+
+  useEffect(() => {
+    getUsername();
+  }, []);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, logout !',
+    });
+
+    if (result.isConfirmed) {
+      logout();
+    }
+  };
+
   return (
     <header className="app-header">
       <nav className="navbar navbar-expand-lg navbar-light">
         <ul className="navbar-nav">
           <li className="nav-item d-block d-xl-none">
-            <button 
+            <button
               onClick={onToggleSidebar}
               className="btn btn-link nav-link sidebartoggler nav-icon-hover"
               aria-label="Toggle sidebar"
@@ -16,6 +72,49 @@ const Header = ({ onToggleSidebar }) => {
             </button>
           </li>
         </ul>
+
+        {/* User Profile Area */}
+        <div className="ms-auto user-profile-container" ref={dropdownRef}>
+          <div className="user-profile" onClick={toggleDropdown}>
+            <div className="user-avatar">
+              <span className="avatar-initials">
+                {username.split(' ').map(n => n[0]).join('')}
+              </span>
+            </div>
+            <span className="user-name">{username}</span>
+            <i className={`ti ti-chevron-${showDropdown ? 'up' : 'down'} ms-1`}></i>
+          </div>
+
+          {showDropdown && (
+            <div className="user-dropdown">
+              <div className="user-info">
+                <h5 className="mb-1">{username}</h5>
+                <p className="user-role">Admin</p>
+              </div>
+              <div className="dropdown-divider"></div>
+              <ul className="dropdown-options">
+                {/* <li>
+                  <button onClick={() => console.log('Profile clicked')}>
+                    <i className="ti ti-user me-2"></i>
+                    My Profile
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => console.log('Settings clicked')}>
+                    <i className="ti ti-settings me-2"></i>
+                    Settings
+                  </button>
+                </li> */}
+                <li>
+                  <button className="logout-btn" onClick={handleLogout}>
+                    <i className="ti ti-logout me-2"></i>
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );
