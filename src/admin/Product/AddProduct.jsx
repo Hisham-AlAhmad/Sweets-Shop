@@ -92,7 +92,6 @@ const AddProduct = () => {
 
             if (response.status === 401) {
                 logout(); // Logout if token is expired
-                setError('Session expired. Please log in again.');
                 navigate('/login', { replace: true });
             }
 
@@ -119,7 +118,6 @@ const AddProduct = () => {
 
             if (response.status === 401) {
                 logout(); // Logout if token is expired
-                setError('Session expired. Please log in again.');
                 navigate('/login', { replace: true });
             }
 
@@ -250,7 +248,6 @@ const AddProduct = () => {
 
             if (response.status === 401) {
                 logout(); // Logout if token is expired
-                setError('Session expired. Please log in again.');
                 navigate('/login', { replace: true });
             }
 

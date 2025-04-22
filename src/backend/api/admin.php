@@ -71,7 +71,8 @@ function handleLogin($conn) {
     if ($result->num_rows === 1) {
         $admin = $result->fetch_assoc();
         if (password_verify($password, $admin['password'])) {
-            $key = 'secret_key';
+            
+            $key = $_ENV['JWT_SECRET_KEY'];
             $payload = [
                 'user_id' => $admin['id'],
                 'username' => $admin['username'],
@@ -87,11 +88,11 @@ function handleLogin($conn) {
             ]);
         } else {
             http_response_code(401); // Unauthorized
-            echo json_encode(['error' => 'Invalid credentials']);
+            echo json_encode(['error' => 'Error: Invalid Username or Password']);
         }
     } else {
         http_response_code(401);
-        echo json_encode(['error' => 'Invalid credentials']);
+        echo json_encode(['error' => 'Error: Invalid credentials']);
     }
 
     $stmt->close();
@@ -99,21 +100,19 @@ function handleLogin($conn) {
 
 // Function to register an admin account (for initial setup)
 function registerAdmin($conn){
-    // Only allow this function to be called in specific scenarios
-    // e.g., initial setup or by a super admin
-
     $data = json_decode(file_get_contents('php://input'), true);
 
     if (!isset($data['username']) || !isset($data['password']) || !isset($data['setup_key'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing required fields']);
+        echo json_encode(['error' => 'Error: Missing required fields']);
         return;
     }
 
     // Verify setup key (use a strong, random key in production)
-    if ($data['setup_key'] !== 'secure_setup_key') {
+    $setupKey = $_ENV['SETUP_KEY'];
+    if ($data['setup_key'] !== $setupKey) {
         http_response_code(403); // Forbidden
-        echo json_encode(['error' => 'Unauthorized']);
+        echo json_encode(['error' => 'Error: Unauthorized']);
         return;
     }
 
@@ -130,7 +129,7 @@ function registerAdmin($conn){
 
     if ($result->num_rows > 0) {
         http_response_code(409); // Conflict
-        echo json_encode(['error' => 'Username already exists']);
+        echo json_encode(['error' => 'Error: Username already exists']);
         $stmt->close();
         return;
     }
@@ -147,7 +146,7 @@ function registerAdmin($conn){
         ]);
     } else {
         http_response_code(500);
-        echo json_encode(['error' => 'Failed to create admin account']);
+        echo json_encode(['error' => 'Error: Failed to create admin account']);
     }
 
     $stmt->close();

@@ -21,7 +21,8 @@ if ($method === 'GET') {
     $query = "SELECT 
                 orders.*,
                 customer.name AS customer_name,
-                GROUP_CONCAT(DISTINCT CONCAT(products.name, '|', products.image, '|', product_orders.quantity, '|', product_orders.price )) AS products
+                GROUP_CONCAT(DISTINCT CONCAT(products.id, '|', products.name, '|',
+                 products.image, '|', product_orders.quantity, '|', product_orders.price )) AS products
               FROM orders
               LEFT JOIN customer ON orders.customer_id = customer.id
               LEFT JOIN product_orders ON orders.id = product_orders.order_id
@@ -35,8 +36,8 @@ if ($method === 'GET') {
             $productEnteries = explode(',', $row['products']);
             $product_details = [];
             foreach ($productEnteries as $entry) {
-                list($name, $image, $quantity, $price) = explode('|', $entry, 4);
-                $product_details[] = ['name' => $name, 'image' => $image, 'quantity' => $quantity, 'price' => $price];
+                list($id, $name, $image, $quantity, $price) = explode('|', $entry, 5);
+                $product_details[] = ['id' => $id,'name' => $name, 'image' => $image, 'quantity' => $quantity, 'price' => $price];
             }
             $row['products'] = $product_details;
         }

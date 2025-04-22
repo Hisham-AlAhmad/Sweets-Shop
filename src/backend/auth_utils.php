@@ -1,11 +1,12 @@
 <?php
 //   Fresh-time/src/backend/auth_utils.php
 require '../../../vendor/autoload.php';
+require 'database.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 function verifyToken($token) {
-    $key = 'secret_key';
+    $key = $_ENV['JWT_SECRET_KEY'];
     try {
         return JWT::decode($token, new Key($key, 'HS256'));
     } catch (Exception $e) {
