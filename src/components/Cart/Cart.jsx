@@ -152,6 +152,9 @@ const Cart = () => {
 
         const orderData = await orderResponse.json();
         console.log("Order Data:", orderData);
+
+        // Clear the cart after placing the order
+        localStorage.removeItem("cart");
     };
 
     if (cartItems.length === 0) return (
