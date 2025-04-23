@@ -241,7 +241,6 @@ const AddProduct = () => {
                 method: method,
                 body: formData,
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             });

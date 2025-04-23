@@ -116,6 +116,69 @@ const ViewProducts = () => {
         }
     };
 
+    const handleToggleAvailability = async (product) => {
+        // Determine new status (flip the current one)
+        const newStatus = Number(product.availability) === 1 ? 0 : 1;
+        const actionText = newStatus === 1 ? 'make available' : 'make unavailable';
+        const resultText = newStatus === 1 ? 'available' : 'unavailable';
+
+        const result = await Swal.fire({
+            title: `Do you want to ${actionText} this product?`,
+            text: `Users ${newStatus === 1 ? 'will' : 'will not'} be able to see and order this product.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${actionText}!`,
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // Create FormData for multipart/form-data request
+                const formData = new FormData();
+                formData.append('_method', 'PUT'); // Indicate this is a PUT request
+                formData.append('id', product.id);
+                formData.append('name', product.name);
+                formData.append('availability', newStatus); // Use newStatus directly
+
+                // Add other required fields that should be preserved
+                formData.append('description', product.description || '');
+                formData.append('weight_price', product.weight_price || 0);
+
+                // Send with existing image
+                if (product.image) {
+                    formData.append('image', product.image);
+                }
+
+                const response = await fetch(`http://localhost:8000/src/backend/api/products.php`, {
+                    method: 'POST', // Use POST but with _method=PUT
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    // Don't set Content-Type header when using FormData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                setRefreshTrigger(prev => prev + 1);
+
+                Swal.fire(
+                    newStatus === 1 ? 'Available!' : 'Unavailable!',
+                    `The product is now ${resultText}.`,
+                    'success'
+                );
+            } catch (err) {
+                setError(`Failed to update product: ${err.message}`);
+                console.error('Error updating product:', err);
+
+                Swal.fire('Error!', 'Something went wrong while updating the product.', 'error');
+            }
+        }
+    };
+
     const refreshData = () => {
         setRefreshTrigger(prev => prev + 1);
     };
@@ -224,6 +287,13 @@ const ViewProducts = () => {
 
                 <div className="d-flex gap-2 mt-3">
                     <button
+                        className={`btn btn-sm ${Number(product.availability) === 1 ? 'btn-warning' : 'btn-success'} flex-grow-1`}
+                        onClick={() => handleToggleAvailability(product)}
+                    >
+                        <i className={`bi ${Number(product.availability) === 1 ? 'bi-x-circle' : 'bi-check-circle'} me-1`}></i>
+                        {Number(product.availability) === 1 ? 'Disable' : 'Enable'}
+                    </button>
+                    <button
                         className="btn btn-sm btn-primary flex-grow-1"
                         onClick={() => handleEdit(product)}
                     >
@@ -327,6 +397,16 @@ const ViewProducts = () => {
                                             <td>{formatDate(product.created_at)}</td>
                                             <td className="text-end">
                                                 <div className="btn-group" role="group">
+                                                    <button
+                                                        onClick={() => handleToggleAvailability(product)}
+                                                        className={`btn btn-sm ${Number(product.availability) === 1 ? 'btn-warning' : 'btn-success'}`}
+                                                        title={Number(product.availability) === 1 ? 'Make Unavailable' : 'Make Available'}
+                                                    >
+                                                        <i className={`bi ${Number(product.availability) === 1 ? 'bi-x-circle' : 'bi-check-circle'}`}></i>
+                                                        <span className="d-none d-lg-inline ms-1">
+                                                            {Number(product.availability) === 1 ? 'Disable' : 'Enable'}
+                                                        </span>
+                                                    </button>
                                                     <button
                                                         onClick={() => handleEdit(product)}
                                                         className="btn btn-sm btn-primary"
