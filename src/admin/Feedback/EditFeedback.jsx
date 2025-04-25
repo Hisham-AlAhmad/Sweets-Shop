@@ -5,7 +5,7 @@ const EditFeedback = () => {
     const [name, setName] = useState("");
     const [comment, setComment] = useState("");
     const [message, setMessage] = useState("");
-    const [approved, setApproved] = useState(0);
+    const [approved, setApproved] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [feedbackId, setFeedbackId] = useState(null);
     const [createdAt, setCreatedAt] = useState(new Date());
@@ -24,11 +24,11 @@ const EditFeedback = () => {
                 setFeedbackId(feedbackId);
                 setName(name);
                 setComment(comment);
-                setApproved(approved);
+                setApproved(approved == 1);
                 setCreatedAt(new Date(createdAt));
             }
         }
-    }, [location]); 
+    }, [location]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -131,15 +131,29 @@ const EditFeedback = () => {
                                     </div>
                                 </div>
 
-                                <div className="mb-3 form-check">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id="approved"
-                                        checked={approved}
-                                        onChange={(e) => setApproved(e.target.checked)}
-                                    />
-                                    <label className="form-check-label" htmlFor="approved">Approved</label>
+                                <div className="card mb-4">
+                                    <div className="card-header bg-light">
+                                        <h6 className="mb-0">Approved?</h6>
+                                    </div>
+                                    <div className="card-body">
+                                        <label className="mb-1 switch">
+                                            <input
+                                                id="availability"
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={approved}
+                                                onChange={(e) => setApproved(e.target.checked)}
+                                            />
+                                            <div className="slider"></div>
+                                            <div className="slider-card">
+                                                <div className="slider-card-face slider-card-front"></div>
+                                                <div className="slider-card-face slider-card-back"></div>
+                                            </div>
+                                        </label>
+                                        <label htmlFor="availability" className="form-label ms-2">
+                                            {approved ? "Approved" : "Not Approved"}
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div className="mb-4">

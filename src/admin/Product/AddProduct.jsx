@@ -55,7 +55,7 @@ const AddProduct = () => {
                 setProductName(productName);
                 setProductImage(image);
                 setDescription(description || "");
-                setAvailability(availability === 1);
+                setAvailability(availability == 1);
                 setCreatedDate(new Date(createdAt));
 
                 // Set image preview if there's an existing image
@@ -568,17 +568,29 @@ const AddProduct = () => {
                                 </div>
 
                                 {/* Availability Toggle */}
-                                <div className="mb-4 form-check form-switch">
-                                    <input
-                                        id="availability"
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        checked={availability}
-                                        onChange={(e) => setAvailability(e.target.checked)}
-                                    />
-                                    <label className="form-check-label" htmlFor="availability">
-                                        Product Available
-                                    </label>
+                                <div className="card mb-4">
+                                    <div className="card-header bg-light">
+                                        <h6 className="mb-0">Product Available?</h6>
+                                    </div>
+                                    <div className="card-body">
+                                        <label className="mb-1 switch">
+                                            <input
+                                                id="availability"
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={availability}
+                                                onChange={(e) => setAvailability(e.target.checked)}
+                                            />
+                                            <div className="slider"></div>
+                                            <div className="slider-card">
+                                                <div className="slider-card-face slider-card-front"></div>
+                                                <div className="slider-card-face slider-card-back"></div>
+                                            </div>
+                                        </label>
+                                        <label htmlFor="availability" className="form-label ms-2">
+                                            {availability ? "Available" : "Not Available"}
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
