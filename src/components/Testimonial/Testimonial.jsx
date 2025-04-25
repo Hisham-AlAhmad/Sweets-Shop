@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import './testimonial.css';
@@ -6,7 +6,20 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const Testimonial = () => {
-    const [feedbacks, setFeedbacks] = React.useState([]);   
+    const [feedbacks, setFeedbacks] = useState([]);
+
+    function getRandomFeedbacks(feedbacks, count = 4) {
+        const shuffled = [...feedbacks];
+
+        // Fisher-Yates shuffle (modern version)
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap
+        }
+
+        // Return first 'count' feedbacks
+        return shuffled.slice(0, count);
+    }
 
     useEffect(() => {
         const fetchFeedback = async () => {
@@ -18,10 +31,10 @@ const Testimonial = () => {
                 }
 
                 const data = await response.json();
-                setFeedbacks(data);
+                setFeedbacks(getRandomFeedbacks(data, 4)); // Get 4 random feedbacks 
             } catch (err) {
                 console.error('Error fetching feedback:', err);
-            } 
+            }
         };
 
         fetchFeedback();
@@ -54,7 +67,6 @@ const Testimonial = () => {
                             }}
                         >
                             {feedbacks.map((feedback) => (
-                                feedback.approved == 1 && (
                                 <SwiperSlide key={feedback.id}>
                                     <div className="testimonial-item bg-transparent border rounded p-4">
                                         <i className="fa fa-quote-left fa-2x text-primary mb-3"></i>
@@ -66,7 +78,7 @@ const Testimonial = () => {
                                         </div>
                                     </div>
                                 </SwiperSlide>
-                            )))}
+                            ))}
                         </Swiper>
                     ) : (
                         <p>Loading testimonials...</p>

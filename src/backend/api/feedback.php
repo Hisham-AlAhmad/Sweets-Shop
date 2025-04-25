@@ -20,8 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 if ($method === 'GET') {
-    $result = $conn->query("SELECT * FROM feedback");    
-    $feedback = $result->fetch_all(MYSQLI_ASSOC);
+    $result = $conn->query("SELECT * FROM feedback"); 
+    
+    $feedback = [];
+    while ($row = $result->fetch_assoc()) {
+        if ($row['approved'] == 1) {
+            $feedback[] = $row;
+        }
+    }
     echo json_encode($feedback);
 }
 
