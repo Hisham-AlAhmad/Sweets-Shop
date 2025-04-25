@@ -287,11 +287,11 @@ const ViewProducts = () => {
 
                 <div className="d-flex gap-2 mt-3">
                     <button
-                        className={`btn btn-sm ${Number(product.availability) === 1 ? 'btn-warning' : 'btn-success'} flex-grow-1`}
+                        className={`btn btn-sm ${product.availability == 1 ? 'btn-warning' : 'btn-success'} flex-grow-1`}
                         onClick={() => handleToggleAvailability(product)}
                     >
-                        <i className={`bi ${Number(product.availability) === 1 ? 'bi-x-circle' : 'bi-check-circle'} me-1`}></i>
-                        {Number(product.availability) === 1 ? 'Disable' : 'Enable'}
+                        <i className={`bi ${product.availability == 1 ? 'bi-x-circle' : 'bi-check-circle'} me-1`}></i>
+                        {product.availability == 1 ? 'Disable' : 'Enable'}
                     </button>
                     <button
                         className="btn btn-sm btn-primary flex-grow-1"
@@ -399,12 +399,12 @@ const ViewProducts = () => {
                                                 <div className="btn-group" role="group">
                                                     <button
                                                         onClick={() => handleToggleAvailability(product)}
-                                                        className={`btn btn-sm ${Number(product.availability) === 1 ? 'btn-warning' : 'btn-success'}`}
-                                                        title={Number(product.availability) === 1 ? 'Make Unavailable' : 'Make Available'}
+                                                        className={`btn btn-sm ${product.availability == 1 ? 'btn-warning' : 'btn-success'}`}
+                                                        title={product.availability == 1 ? 'Make Unavailable' : 'Make Available'}
                                                     >
-                                                        <i className={`bi ${Number(product.availability) === 1 ? 'bi-x-circle' : 'bi-check-circle'}`}></i>
+                                                        <i className={`bi ${product.availability == 1 ? 'bi-x-circle' : 'bi-check-circle'}`}></i>
                                                         <span className="d-none d-lg-inline ms-1">
-                                                            {Number(product.availability) === 1 ? 'Disable' : 'Enable'}
+                                                            {product.availability == 1 ? 'Disable' : 'Enable'}
                                                         </span>
                                                     </button>
                                                     <button

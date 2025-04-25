@@ -20,15 +20,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 if ($method === 'GET') {
-    $result = $conn->query("SELECT * FROM feedback"); 
-    
-    $feedback = [];
-    while ($row = $result->fetch_assoc()) {
-        if ($row['approved'] == 1) {
-            $feedback[] = $row;
-        }
+    $result = $conn->query("SELECT * FROM feedback");
+    $headers = getallheaders();
+    $headers['Authorization'] = isset($headers['Authorization']) ? $headers['Authorization'] : null;
+
+    if ($headers['Authorization']) {
+        $all_feedback = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode($all_feedback);
+        exit;
     }
-    echo json_encode($feedback);
+    else {
+        $feedback = [];
+        while ($row = $result->fetch_assoc()) {
+            if ($row['approved'] == 1) {
+                $feedback[] = $row;
+            }
+        }
+        echo json_encode($feedback);
+    }
 }
 
 elseif ($method === 'POST') {

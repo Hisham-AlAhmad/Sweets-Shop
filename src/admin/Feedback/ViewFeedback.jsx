@@ -98,10 +98,14 @@ const ViewFeedback = () => {
         }
     };
 
-    const handleApprove = async (id) => {
+    const handleApprove = async (feedback) => {
+        const newStatus = feedback.approved == 1 ? 0 : 1;
+        const actionText = newStatus == 1 ? 'Approve' : 'Unapprove';
+
+        const resultText = newStatus == 1 ? 'Visible' : 'Invisible';
         const result = await Swal.fire({
-            title: 'Do you want to Approve this comment?',
-            text: "Approving will make it visible to all users.",
+            title: `Do you want to ${actionText} this comment?`,
+            text: `This will make the feedback ${resultText} to all users.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -112,9 +116,9 @@ const ViewFeedback = () => {
             try {
                 const response = await fetch(`http://localhost:8000/src/backend/api/feedback.php`, {
                     method: 'PUT',
-                    body: JSON.stringify({ id: id, approved: 1 }),
+                    body: JSON.stringify({ id: feedback.id, approved: newStatus }),
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                     },
                 });
 
@@ -124,7 +128,10 @@ const ViewFeedback = () => {
 
                 setRefreshTrigger(prev => prev + 1);
 
-                Swal.fire('Approved!', 'The feedback has been approved.', 'success');
+                Swal.fire(
+                    newStatus === 1 ? 'Approved!' : 'Unapproved!',
+                    `The feedback has been ${newStatus === 1 ? 'approved' : 'unapproved'}.`,
+                    'success');
             } catch (err) {
                 setError(`Failed to approve feedback: ${err.message}`);
                 console.error('Error approving feedback:', err);
@@ -188,10 +195,14 @@ const ViewFeedback = () => {
                         {feedback.approved == 1 ? 'Approved' : 'Pending'}
                     </span>
                     <button
-                        className="btn btn-sm btn-success"
-                        onClick={() => handleApprove(feedback.id)}
+                        onClick={() => handleApprove(feedback)}
+                        className={`btn btn-sm ${feedback.approved == 1 ? 'btn-warning' : 'btn-success'}`}
+                        title={feedback.approved == 1 ? 'Make Unavailable' : 'Make Available'}
                     >
-                        <i className="bi bi-check-circle-fill me-1"></i> Approve
+                        <i className={`bi ${feedback.approved == 1 ? 'bi-x-circle' : 'bi-check-circle'}`}></i>
+                        <span className="ms-1">
+                            {feedback.approved == 1 ? 'Disable' : 'Enable'}
+                        </span>
                     </button>
                 </div>
                 <div className="card-text">
@@ -267,6 +278,16 @@ const ViewFeedback = () => {
                                             <td className="text-end">
                                                 <div className='btn-group'>
                                                     <button
+                                                        onClick={() => handleApprove(feedback)}
+                                                        className={`btn btn-sm ${feedback.approved == 1 ? 'btn-warning' : 'btn-success'}`}
+                                                        title={feedback.approved == 1 ? 'Make Unavailable' : 'Make Available'}
+                                                    >
+                                                        <i className={`bi ${feedback.approved == 1 ? 'bi-x-circle' : 'bi-check-circle'}`}></i>
+                                                        <span className="d-none d-lg-inline ms-1">
+                                                            {feedback.approved == 1 ? 'Disable' : 'Enable'}
+                                                        </span>
+                                                    </button>
+                                                    <button
                                                         onClick={() => handleEdit(feedback)}
                                                         className="btn btn-sm btn-primary"
                                                     >
@@ -279,13 +300,6 @@ const ViewFeedback = () => {
                                                     >
                                                         <i className="bi bi-trash-fill"></i>
                                                         <span className='d-none d-lg-inline ms-1'>Delete</span>
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleApprove(feedback.id)}
-                                                        className="btn btn-sm btn-success"
-                                                    >
-                                                        <i className="bi bi-check-circle-fill me-1"></i>
-                                                        <span className='d-none d-lg-inline ms-1'>Approve</span>
                                                     </button>
                                                 </div>
                                             </td>
