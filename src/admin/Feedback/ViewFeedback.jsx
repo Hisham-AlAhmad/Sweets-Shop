@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../Hooks/useFetch';
 import Swal from 'sweetalert2';
 
 const ViewFeedback = () => {
@@ -11,43 +12,18 @@ const ViewFeedback = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
-    useEffect(() => {
-        const fetchFeedback = async () => {
-            setIsLoading(true);
-            setError(null);
+    const {data, isLoading: hookLoading, error: hookError} = useFetch('feedback', [refreshTrigger]);
+    // Update your state from the hook's returned values
+    useEffect(( ) => {
+        if (data) {
+            setFeedbacks(data);
+        }
+        setIsLoading(hookLoading);
+        if (hookError) {
+            setError(hookError);
+        }
+    }, [data, hookLoading, hookError]);
 
-            try {
-                const response = await fetch('http://localhost:8000/src/backend/api/feedback.php', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                if (response.status === 401) {
-                    logout(); // Logout if token is expired
-                    setError('Session expired. Please log in again.');
-                    navigate('/login', { replace: true });
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setFeedbacks(data);
-            } catch (err) {
-                setError(`Failed to fetch feedback: ${err.message}`);
-                console.error('Error fetching feedback:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchFeedback();
-    }, [refreshTrigger]);
-    console.log("feedbacks: ", feedbacks);
 
     const handleEdit = (feedback) => {
         navigate('/editFeedback', {

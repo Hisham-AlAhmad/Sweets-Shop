@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../Hooks/useFetch';
 import Swal from 'sweetalert2';
 
 const ViewProducts = () => {
@@ -9,45 +9,18 @@ const ViewProducts = () => {
     const [error, setError] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const navigate = useNavigate();
-    const { logout } = useAuth();
 
+    const { data, isLoading: hookLoading, error: hookError } = useFetch('products', [refreshTrigger]);
     useEffect(() => {
-        const fetchProducts = async () => {
-            setIsLoading(true);
-            setError(null);
-
-            try {
-                const response = await fetch('http://localhost:8000/src/backend/api/products.php', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                if (response.status === 401) {
-                    logout(); // Logout if token is expired
-                    setError('Session expired. Please log in again.');
-                    navigate('/login', { replace: true });
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setProducts(data);
-            } catch (err) {
-                setError(`Failed to fetch products: ${err.message}`);
-                console.error('Error fetching products:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, [refreshTrigger]);
-    console.log('Products fetched:', products);
+        if (data) {
+            setProducts(data);
+        }
+        setIsLoading(hookLoading);
+        if (hookError) {
+            setError(hookError);
+        }
+        console.log('Products fetched:', products);
+    }, [data, hookLoading, hookError]);
 
     const handleEdit = (product) => {
         // Ensure the product has the correct structure for categories and sizes

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import useFetch from "../Hooks/useFetch";
 
 const AddProduct = () => {
     // Basic product info
@@ -35,12 +36,6 @@ const AddProduct = () => {
     const { logout } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
-
-    // Load categories and sizes on mount
-    useEffect(() => {
-        fetchCategories();
-        fetchSizes();
-    }, []);
 
     // Check if we have data from the navigation state (Edit mode)
     useEffect(() => {
@@ -80,57 +75,24 @@ const AddProduct = () => {
         }
     }, [location]);
 
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch("http://localhost:8000/src/backend/api/category.php", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                }
-            });
-
-            if (response.status === 401) {
-                logout(); // Logout if token is expired
-                navigate('/login', { replace: true });
-            }
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setCategories(data);
-        } catch (error) {
-            console.error("Error fetching categories:", error);
+    // Fetch categories and sizes data
+    // Fetch categories data
+    const { data: categoryData } = useFetch('category', []);
+    // Update your state from the hook's returned values
+    useEffect(() => {
+        if (categoryData) {
+            setCategories(categoryData);
         }
-    };
+    }, [categoryData]);
 
-    const fetchSizes = async () => {
-        try {
-            const response = await fetch("http://localhost:8000/src/backend/api/sizes.php", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                }
-            });
-
-            if (response.status === 401) {
-                logout(); // Logout if token is expired
-                navigate('/login', { replace: true });
-            }
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setSizes(data);
-        } catch (error) {
-            console.error("Error fetching sizes:", error);
+    // Fetch sizes data
+    const { data: sizeData } = useFetch('sizes', []);
+    // Update your state from the hook's returned values
+    useEffect(() => {
+        if (sizeData) {
+            setSizes(sizeData);
         }
-    };
+    }, [sizeData]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];

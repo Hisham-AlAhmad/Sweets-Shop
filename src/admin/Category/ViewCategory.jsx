@@ -1,52 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../Hooks/useFetch';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../auth/AuthContext';
 
 const ViewCategory = () => {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
-    const { logout } = useAuth();
     const navigate = useNavigate();
 
+    const { data, isLoading: hookLoading, error: hookError } = useFetch('category', [refreshTrigger]);
+    // Update your state from the hook's returned values
     useEffect(() => {
-        const fetchCategories = async () => {
-            setIsLoading(true);
-            setError(null);
-
-            try {
-                const response = await fetch('http://localhost:8000/src/backend/api/category.php', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                if (response.status === 401) {
-                    logout(); // Logout if token is expired
-                    setError('Session expired. Please log in again.');
-                    navigate('/login', { replace: true });
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setCategories(data);
-            } catch (err) {
-                setError(`Failed to fetch categories: ${err.message}`);
-                console.error('Error fetching categories:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchCategories();
-    }, [refreshTrigger]);
+        if (data) {
+            setCategories(data);
+        }
+        setIsLoading(hookLoading);
+        if (hookError) {
+            setError(hookError);
+        }
+    }, [data, hookLoading, hookError]);
 
     const handleEdit = (category) => {
         navigate('/addCategory', {

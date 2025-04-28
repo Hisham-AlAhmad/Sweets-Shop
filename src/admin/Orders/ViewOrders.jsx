@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../Hooks/useFetch';
 import Swal from 'sweetalert2';
 
 const ViewOrders = () => {
@@ -9,45 +9,18 @@ const ViewOrders = () => {
     const [error, setError] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const navigate = useNavigate();
-    const { logout } = useAuth();
-
+    
+    const { data, isLoading: hookLoading, error: hookError } = useFetch('orders', [refreshTrigger]);
+    // Update your state from the hook's returned values
     useEffect(() => {
-        const fetchOrders = async () => {
-            setIsLoading(true);
-            setError(null);
-
-            try {
-                const response = await fetch('http://localhost:8000/src/backend/api/orders.php', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                if (response.status === 401) {
-                    logout(); // Logout if token is expired
-                    setError('Session expired. Please log in again.');
-                    navigate('/login', { replace: true });
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setOrders(data);
-                console.log('Fetched orders:', data);
-            } catch (err) {
-                setError(`Failed to fetch orders: ${err.message}`);
-                console.error('Error fetching orders:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchOrders();
-    }, [refreshTrigger]);
+        if (data) {
+            setOrders(data);
+        }
+        setIsLoading(hookLoading);
+        if (hookError) {
+            setError(hookError);
+        }
+    }, [data, hookLoading, hookError]);
 
     const handleDelete = async (id) => {
         const result = await Swal.fire({
