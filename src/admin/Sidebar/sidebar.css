@@ -1,19 +1,23 @@
 .left-sidebar {
     width: 270px;
     background-color: #fff;
-    position: absolute;
-    -webkit-transition: 0.3s ease-in-out;
-    transition: 0.3s ease-in-out;
-    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
     z-index: 11;
     border-right: 1px solid rgb(229, 234, 239);
+    -webkit-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
 .left-sidebar .scroll-sidebar {
-    overflow-y: auto;
     padding: 0 24px;
-    height: 135vh;
+    min-height: 100%;
     border-radius: 7px;
+    height: calc(100vh - 70px);
+    padding-bottom: 100px; 
+    overflow-y: auto;
 }
 
 .left-sidebar .scroll-sidebar .simplebar-track.simplebar-horizontal {
@@ -114,13 +118,6 @@
     .left-sidebar.open {
         left: 0;
         box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    }
-    
-    /* Fixed scroll issue */
-    .left-sidebar .scroll-sidebar {
-        height: calc(100vh - 70px);
-        padding-bottom: 100px; /* Extra padding to ensure visibility of bottom items */
-        overflow-y: auto;
     }
     
     .sidebar-overlay {
