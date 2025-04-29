@@ -12,9 +12,9 @@ const ViewFeedback = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
-    const {data, isLoading: hookLoading, error: hookError} = useFetch('feedback', [refreshTrigger]);
+    const { data, isLoading: hookLoading, error: hookError } = useFetch('feedback', [refreshTrigger]);
     // Update your state from the hook's returned values
-    useEffect(( ) => {
+    useEffect(() => {
         if (data) {
             setFeedbacks(data);
         }
@@ -55,8 +55,16 @@ const ViewFeedback = () => {
                     body: JSON.stringify({ id: id }),
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
                 });
+
+                if (response.status === 401) {
+                    logout(); // Logout if token is expired
+                    setError('Session expired. Please log in again.');
+                    navigate('/login', { replace: true });
+                    return;
+                }
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

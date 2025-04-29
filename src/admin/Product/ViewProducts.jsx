@@ -70,8 +70,16 @@ const ViewProducts = () => {
                     body: JSON.stringify({ id: id }),
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
                 });
+
+                if (response.status === 401) {
+                    logout(); // Logout if token is expired
+                    setError('Session expired. Please log in again.');
+                    navigate('/login', { replace: true });
+                    return;
+                }
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

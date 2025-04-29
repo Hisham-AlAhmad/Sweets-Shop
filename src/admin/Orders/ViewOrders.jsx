@@ -9,7 +9,7 @@ const ViewOrders = () => {
     const [error, setError] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const navigate = useNavigate();
-    
+
     const { data, isLoading: hookLoading, error: hookError } = useFetch('orders', [refreshTrigger]);
     // Update your state from the hook's returned values
     useEffect(() => {
@@ -40,8 +40,16 @@ const ViewOrders = () => {
                     body: JSON.stringify({ id: id }),
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
                 });
+
+                if (response.status === 401) {
+                    logout(); // Logout if token is expired
+                    setError('Session expired. Please log in again.');
+                    navigate('/login', { replace: true });
+                    return;
+                }
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -153,83 +161,83 @@ const ViewOrders = () => {
         </div>
     );
 
-return (
-    <div className="card shadow">
-        <div className="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h5 className="card-title mb-0">Orders</h5>
-            <div className="d-flex gap-2">
-                <button
-                    onClick={refreshData}
-                    className="btn btn-sm btn-outline-secondary"
-                >
-                    <i className="bi bi-arrow-clockwise me-1"></i> Refresh
-                </button>
+    return (
+        <div className="card shadow">
+            <div className="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h5 className="card-title mb-0">Orders</h5>
+                <div className="d-flex gap-2">
+                    <button
+                        onClick={refreshData}
+                        className="btn btn-sm btn-outline-secondary"
+                    >
+                        <i className="bi bi-arrow-clockwise me-1"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div className="card-body p-0">
+                {orders.length === 0 ? (
+                    <div className="text-center p-4 text-muted">
+                        <i className="bi bi-inbox-fill d-block mb-2" style={{ fontSize: '2rem' }}></i>
+                        No orders found.
+                    </div>
+                ) : (
+                    <>
+                        {/* Desktop table view - visible on md and larger screens */}
+                        <div className="d-none d-md-block table-responsive">
+                            <table className="table table-hover table-striped mb-0">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer Name</th>
+                                        <th>Total Price</th>
+                                        <th>Creation Date</th>
+                                        <th>Ordered Products</th>
+                                        <th className="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders.map((order) => (
+                                        <tr key={order.id}>
+                                            <td>{order.id}</td>
+                                            <td>{order.customer_name}</td>
+                                            <td>{commaInPrice(order.total_price)}</td>
+                                            <td>{formatDate(order.order_date)}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => seeProducts(order)}
+                                                    className="btn btn-sm btn-outline-primary"
+                                                >
+                                                    <i className="bi bi-eye-fill"></i>
+                                                    <span className="d-none d-lg-inline ms-1"> View</span>
+                                                </button>
+                                            </td>
+                                            <td className="text-end">
+                                                <div className="btn-group" role="group">
+                                                    <button
+                                                        onClick={() => handleDelete(order.id)}
+                                                        className="btn btn-sm btn-danger"
+                                                    >
+                                                        <i className="bi bi-trash-fill"></i>
+                                                        <span className="d-none d-lg-inline ms-1">Delete</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Mobile card view - visible only on small screens */}
+                        <div className="d-md-none p-2">
+                            {orders.map(renderMobileCard)}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
-
-        <div className="card-body p-0">
-            {orders.length === 0 ? (
-                <div className="text-center p-4 text-muted">
-                    <i className="bi bi-inbox-fill d-block mb-2" style={{ fontSize: '2rem' }}></i>
-                    No orders found.
-                </div>
-            ) : (
-                <>
-                    {/* Desktop table view - visible on md and larger screens */}
-                    <div className="d-none d-md-block table-responsive">
-                        <table className="table table-hover table-striped mb-0">
-                            <thead className="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Customer Name</th>
-                                    <th>Total Price</th>
-                                    <th>Creation Date</th>
-                                    <th>Ordered Products</th>
-                                    <th className="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
-                                        <td>{order.customer_name}</td>
-                                        <td>{commaInPrice(order.total_price)}</td>
-                                        <td>{formatDate(order.order_date)}</td>
-                                        <td>
-                                            <button
-                                                onClick={() => seeProducts(order)}
-                                                className="btn btn-sm btn-outline-primary"
-                                            >
-                                                <i className="bi bi-eye-fill"></i>
-                                                <span className="d-none d-lg-inline ms-1"> View</span>
-                                            </button>
-                                        </td>
-                                        <td className="text-end">
-                                            <div className="btn-group" role="group">
-                                                <button
-                                                    onClick={() => handleDelete(order.id)}
-                                                    className="btn btn-sm btn-danger"
-                                                >
-                                                    <i className="bi bi-trash-fill"></i>
-                                                    <span className="d-none d-lg-inline ms-1">Delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Mobile card view - visible only on small screens */}
-                    <div className="d-md-none p-2">
-                        {orders.map(renderMobileCard)}
-                    </div>
-                </>
-            )}
-        </div>
-    </div>
-);
+    );
 }
 
 export default ViewOrders;

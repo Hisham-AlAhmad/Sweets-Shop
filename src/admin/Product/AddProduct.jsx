@@ -77,7 +77,7 @@ const AddProduct = () => {
 
     // Fetch categories and sizes data
     // Fetch categories data
-    const { data: categoryData } = useFetch('category', []);
+    const { data: categoryData } = useFetch('category');
     // Update your state from the hook's returned values
     useEffect(() => {
         if (categoryData) {
@@ -86,7 +86,7 @@ const AddProduct = () => {
     }, [categoryData]);
 
     // Fetch sizes data
-    const { data: sizeData } = useFetch('sizes', []);
+    const { data: sizeData } = useFetch('sizes');
     // Update your state from the hook's returned values
     useEffect(() => {
         if (sizeData) {
