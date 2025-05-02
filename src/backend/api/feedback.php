@@ -14,8 +14,8 @@ if ($method === 'OPTIONS') {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    // Only check token for POST, PUT, DELETE requests
+if ($method !== 'GET' && $method !== 'POST') {
+    // Only check token for PUT, DELETE requests
     $user = requireAuth();
 }
 

@@ -118,7 +118,7 @@ const Cart = () => {
         if (delivery) {
             message += `\nDelivery Cost: ${commaInPrice(deliveryCost)}`;
         }
-        totalPrice = commaInPrice(totalPrice + deliveryCost);
+        totalPrice = commaInPrice((totalPrice + deliveryCost));
         message += `\nTotal Amount: *${totalPrice}*`;
         const encodedMessage = encodeURIComponent(message);
         const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;

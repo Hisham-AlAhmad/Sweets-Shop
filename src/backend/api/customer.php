@@ -14,7 +14,11 @@ if ($method === 'OPTIONS') {
     exit;
 }
 
-$user = requireAuth();
+// Add the GET so that u can get the customer data when adding a new order.
+if ($method !== 'POST' && $method !== 'GET') {
+    // Only check token for PUT, DELETE requests
+    $user = requireAuth();
+}
 
 if ($method === 'GET') {
     // Extract ID from URL path if present
