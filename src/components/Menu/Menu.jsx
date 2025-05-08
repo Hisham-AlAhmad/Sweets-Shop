@@ -114,7 +114,17 @@ const Menu = () => {
         );
     };
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) {
+        return (
+            <div className="alert alert-danger d-flex align-items-center m-2" role="alert">
+                <div>
+                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Error Loading Products</strong>
+                    <p className="mb-2 mt-1">{error}</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>

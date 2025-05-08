@@ -23,6 +23,11 @@ const ProductDetail = () => {
                 setProduct(productData);
                 console.log("Product API Response:", productData);
 
+                if (productData.availability == 0) {
+                    setError("Product not available");
+                    return;
+                }
+
                 // Set default selected size to the first one if sizes exist
                 if (productData.sizes && productData.sizes.length > 0) {
                     setSelectedSize(productData.sizes[0].size_id);
@@ -53,16 +58,23 @@ const ProductDetail = () => {
     // Handle error or not found state
     if (error || !product) {
         return (
-            <div className="text-center py-5">
-                <h1 className="product-not-found mb-4">{error || "Product Not Found..."}</h1>
-                <NavLink to="/menu" className="btn btn-primary py-3 px-5 me-3 animated slideInUp">Back to Menu</NavLink>
-            </div>
+            <>
+                <div className="alert alert-danger d-flex align-items-center m-2" role="alert">
+                    <div>
+                        <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>Error Loading Product</strong>
+                        <p className="mb-2 mt-1">{error}</p>
+                        <NavLink to="/menu" className="btn btn-secondary animated slideInUp">Back to Menu</NavLink>
+                    </div>
+                </div>
+            </>
         );
     }
 
     // Handle size selection
     const handleSizeChange = (sizeId) => {
         setSelectedSize(sizeId);
+        setQuantity(1); // Reset quantity to 1 when size changes
         if (product.sizes && product.sizes.length > 0) {
             const selectedSizeObj = product.sizes.find(size => size.size_id === sizeId);
             if (selectedSizeObj) {
