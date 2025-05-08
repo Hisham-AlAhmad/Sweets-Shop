@@ -8,7 +8,7 @@ import ProductDetail from "../components/ProductDetail/ProductDetails";
 import Cart from "../components/Cart/Cart";
 import Contact from "../components/Contact";
 import AdminLayout from "../admin/AdminLayout";
-import Dashboard from "../admin/Dashboard";
+import Dashboard from "../admin/Dashboard/Dashboard";
 import AddCategory from "../admin/Category/AddCategory";
 import AddSupplier from "../admin/Suppliers/AddSupplier";
 import ViewCategory from "../admin/Category/ViewCategory";
