@@ -166,6 +166,17 @@ CREATE TABLE `suppliers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `sizes`
+--
+
+INSERT INTO `sizes` (`id`, `name`) VALUES
+(1, 'S'),
+(2, 'M'),
+(3, 'L'),
+(4, 'Extra'),
+(5, 'Normal');
+
+--
 -- Indexes for dumped tables
 --
 
