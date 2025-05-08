@@ -104,6 +104,7 @@ const Cart = () => {
     function redirectToWhatsApp(cartItems) {
         const phoneNumber = '96181212862'; // Seller's WhatsApp number in international format
         let message = 'Name: ' + name + '\n';
+        message += 'Phone Number: ' + phoneNumber + '\n';
         message += 'Address: ' + address + '\n\n';
         message += 'Order Details:\n';
         cartItems.forEach(item => {
