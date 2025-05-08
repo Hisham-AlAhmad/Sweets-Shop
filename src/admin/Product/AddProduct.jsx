@@ -257,6 +257,11 @@ const AddProduct = () => {
         return date.toLocaleDateString();
     };
 
+    // Function to format price with commas 1000000 => 100,000
+    const commaInPrice = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
+    };
+
     return (
         <div className="container-fluid px-0">
             <div className="row justify-content-center mx-0">
@@ -440,7 +445,7 @@ const AddProduct = () => {
                                                                 {productSizes.map(item => (
                                                                     <tr key={item.size_id}>
                                                                         <td>{item.size_name}</td>
-                                                                        <td>{item.price}</td>
+                                                                        <td>{commaInPrice(item.price)}</td>
                                                                         <td>
                                                                             <button
                                                                                 type="button"

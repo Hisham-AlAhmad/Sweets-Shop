@@ -21,7 +21,8 @@ const ViewOrders = () => {
             setError(hookError);
         }
     }, [data, hookLoading, hookError]);
-
+    console.log('Orders:', orders);
+    
     const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: 'Are you sure?',
@@ -137,7 +138,7 @@ const ViewOrders = () => {
                     </div>
                 </div>
                 <div>
-                    <strong>Ordered Products:</strong> {order.products.length}
+                    <strong>Ordered Products:</strong> {Object.keys(order.products).length}
                 </div>
                 <div className="d-flex gap-2 mt-2">
                     <button
@@ -193,6 +194,7 @@ const ViewOrders = () => {
                                         <th>Total Price</th>
                                         <th>Creation Date</th>
                                         <th>Ordered Products</th>
+                                        <th>Total Products</th>
                                         <th className="text-end">Actions</th>
                                     </tr>
                                 </thead>
@@ -212,6 +214,7 @@ const ViewOrders = () => {
                                                     <span className="d-none d-lg-inline ms-1"> View</span>
                                                 </button>
                                             </td>
+                                            <td>{Object.keys(order.products).length}</td>
                                             <td className="text-end">
                                                 <div className="btn-group" role="group">
                                                     <button
