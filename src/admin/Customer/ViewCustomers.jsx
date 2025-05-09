@@ -106,9 +106,16 @@ const ViewCustomers = () => {
         <div className="card mb-3" key={customer.id}>
             <div className="card-body p-3">
                 <h6 className="card-title d-flex justify-content-between">
-                    <span>{customer.name}</span>
+                    <p className='mb-1'>
+                        <strong>Name:</strong>
+                        <span className="fw-bold"> {customer.name}</span>
+                    </p>
                     <small className="text-muted">ID: {customer.id}</small>
                 </h6>
+                <p className="card-text">
+                    <strong>Phone Number:</strong> {customer.phoneNum}<br />
+                    <strong>Address:</strong> {customer.address}
+                </p>
                 <div className="d-flex gap-2 mt-2">
                     <button
                         className="btn btn-sm btn-danger flex-grow-1"
