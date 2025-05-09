@@ -19,8 +19,7 @@ import {
 } from 'recharts';
 
 const Dashboard = () => {
-    const [timeRange, setTimeRange] = useState('month');
-    const [filteredYear, setFilteredYear] = useState([]);
+    const [timeRange, setTimeRange] = useState('3months');
 
     // Track loading and error states from all data sources
     const [isLoadingAll, setIsLoadingAll] = useState(true);
@@ -175,7 +174,6 @@ const Dashboard = () => {
                         onChange={(e) => setTimeRange(e.target.value)}
                         className="filter-select"
                     >
-                        <option value="month">This Month</option>
                         <option value="3months">Last 3 Months</option>
                         <option value="6months">Last 6 Months</option>
                         {years && Object.values(years).map((year) => (
