@@ -32,7 +32,8 @@ const ViewProducts = () => {
             ? product.sizes.map(size => ({
                 size_id: size.size_id,
                 size_name: size.size_name,
-                price: size.price
+                price: size.price,
+                cost: size.cost
             }))
             : [];
 

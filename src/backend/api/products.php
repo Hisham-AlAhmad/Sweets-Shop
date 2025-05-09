@@ -32,7 +32,7 @@ if ($method === 'GET') {
     $query = "SELECT 
                 products.*, 
                 GROUP_CONCAT(DISTINCT CONCAT(category.id, '|', category.name)) AS category,
-                GROUP_CONCAT(DISTINCT CONCAT(sizes.id, '|', sizes.name, '|', product_sizes.price)) AS sizes
+                GROUP_CONCAT(DISTINCT CONCAT(sizes.id, '|', sizes.name, '|', product_sizes.price, '|', product_sizes.cost)) AS sizes
               FROM products
               LEFT JOIN product_category ON products.id = product_category.product_id
               LEFT JOIN category ON product_category.category_id = category.id
@@ -64,8 +64,8 @@ if ($method === 'GET') {
                 $sizeEntries = explode(',', $row['sizes']);
                 $size_details = [];
                 foreach ($sizeEntries as $entry) {
-                    list($id, $name, $price) = explode('|', $entry, 3);
-                    $size_details[] = ['size_id' => $id,'size_name' => $name, 'price' => $price];
+                    list($id, $name, $price, $cost) = explode('|', $entry, 4);
+                    $size_details[] = ['size_id' => $id,'size_name' => $name, 'price' => $price, 'cost' => $cost];
                 }
                 $row['sizes'] = $size_details;
             }
@@ -125,12 +125,13 @@ elseif ($method === 'POST') {
         $name = $data['name'];
         $description = isset($data['description']) ? $data['description'] : '';
         $weight_price = isset($data['weight_price']) ? $data['weight_price'] : 0;
+        $weight_cost = isset($data['weight_cost']) ? $data['weight_cost'] : 0;
         $availability = isset($data['availability']) ? $data['availability'] : 1;
 
         // Update the product using prepared statement
-        $update_query = "UPDATE products SET name = ?, image = ?, description = ?, weight_price = ?, availability = ?, updated_at = NOW() WHERE id = ?";
+        $update_query = "UPDATE products SET name = ?, image = ?, description = ?, weight_price = ?, weight_cost = ?, availability = ?, updated_at = NOW() WHERE id = ?";
         $stmt = $conn->prepare($update_query);
-        $stmt->bind_param("sssiii", $name, $image_name, $description, $weight_price, $availability, $product_id);
+        $stmt->bind_param("sssiiii", $name, $image_name, $description, $weight_price, $weight_cost, $availability, $product_id);
 
         if (!$stmt->execute()) {
             echo json_encode(["error" => "Error updating product: " . $conn->error]);
@@ -172,8 +173,9 @@ elseif ($method === 'POST') {
                 foreach ($sizes as $size) {
                     $size_id = $size['size_id'];
                     $price = $size['price'];
-                    $size_stmt = $conn->prepare("INSERT INTO product_sizes (product_id, sizes_id, price) VALUES (?, ?, ?)");
-                    $size_stmt->bind_param("iii", $product_id, $size_id, $price);
+                    $cost = $size['cost'];
+                    $size_stmt = $conn->prepare("INSERT INTO product_sizes (product_id, sizes_id, price, cost) VALUES (?, ?, ?, ?)");
+                    $size_stmt->bind_param("iiii", $product_id, $size_id, $price, $cost);
                     $size_stmt->execute();
                     $size_stmt->close();
                 }
@@ -184,6 +186,7 @@ elseif ($method === 'POST') {
         
     } else {
         // This is a standard create operation (POST)
+
         $image_name = null;
         // Process image upload
         if ($image && $image['error'] == 0) {
@@ -197,8 +200,8 @@ elseif ($method === 'POST') {
         }
 
         // Insert product data using prepared statement
-        $stmt = $conn->prepare("INSERT INTO products (name, image, description, weight_price, availability, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
-        $stmt->bind_param("sssii", $data['name'], $image_name, $data['description'], $data['weight_price'], $data['availability']);
+        $stmt = $conn->prepare("INSERT INTO products (name, image, description, weight_price, weight_cost, availability, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("sssiii", $data['name'], $image_name, $data['description'], $data['weight_price'], $data['weight_cost'], $data['availability']);
         
         if ($stmt->execute()) {
             $product_id = $stmt->insert_id;
@@ -218,8 +221,8 @@ elseif ($method === 'POST') {
             if (isset($data['product_sizes'])) {
                 $sizes = json_decode($data['product_sizes'], true);
                 foreach ($sizes as $size) {
-                    $size_stmt = $conn->prepare("INSERT INTO product_sizes (product_id, sizes_id, price) VALUES (?, ?, ?)");
-                    $size_stmt->bind_param("iid", $product_id, $size['size_id'], $size['price']);
+                    $size_stmt = $conn->prepare("INSERT INTO product_sizes (product_id, sizes_id, price, cost) VALUES (?, ?, ?, ?)");
+                    $size_stmt->bind_param("iid", $product_id, $size['size_id'], $size['price'], $size['cost']);
                     $size_stmt->execute();
                     $size_stmt->close();
                 }

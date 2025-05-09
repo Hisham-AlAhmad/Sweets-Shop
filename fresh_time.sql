@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2025 at 02:10 PM
--- Server version: 10.4.28-MariaDB
+-- Generation Time: May 09, 2025 at 05:00 PM
+-- Server version: 8.0.41-0ubuntu0.22.04.1
 -- PHP Version: 8.2.4
 
 -- Run this command to start the server : php -S loacalhost:8000
@@ -30,10 +30,17 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`) VALUES
+(1, 'admin', '$2y$10$pm5Jq7L/wU.2lMA7FAAVhOoCIPh7tmoNeZXNXYPSGsw1fNxsnjuRG');
 
 -- --------------------------------------------------------
 
@@ -42,10 +49,21 @@ CREATE TABLE `admin` (
 --
 
 CREATE TABLE `category` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `name`, `created_at`) VALUES
+(1, 'Juice', '2025-03-24 16:29:04'),
+(2, 'Cocktail', '2025-03-24 16:29:04'),
+(3, 'Crepe', '2025-03-24 16:29:04'),
+(4, 'Kunafa', '2025-03-24 16:29:04'),
+(5, 'Arabic Sweets', '2025-03-24 16:29:04');
 
 -- --------------------------------------------------------
 
@@ -54,11 +72,18 @@ CREATE TABLE `category` (
 --
 
 CREATE TABLE `customer` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phoneNum` varchar(20) NOT NULL,
-  `address` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `phoneNum` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `phoneNum`, `address`) VALUES
+(1, 'Hisham Al Ahmad', '81212862', 'You know my home');
 
 -- --------------------------------------------------------
 
@@ -67,12 +92,24 @@ CREATE TABLE `customer` (
 --
 
 CREATE TABLE `feedback` (
-  `id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `comment` text NOT NULL,
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `comment` text COLLATE utf8mb4_general_ci NOT NULL,
   `approved` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`id`, `name`, `comment`, `approved`, `created_at`) VALUES
+(1, 'Hisham Al Ahmad', 'Best crepe in the world!!!', 1, '2025-04-10 18:44:08'),
+(2, 'Hisham Al Ahmad', 'muhahahahaha', 0, '2025-04-10 20:41:24'),
+(3, 'Othman Zamzam', 'Fresh Time is crêpe-tivating! Sweet treats that are un-frogettable and juices that are pure pulp perfection. A fresh hit every time!', 1, '2025-04-11 14:12:01'),
+(4, 'Mohamad Mousa', ' حلوياتك تفتح النفس ما شاء الله عليك', 1, '2025-04-11 14:13:32'),
+(5, 'Ahmad Al Sayed', 'الكوكتيل عندك تحفة فنية', 1, '2025-04-11 14:48:25'),
+(7, 'Hisham Al Ahmad', 'Testing for mousa to check', 0, '2025-05-08 23:22:13');
 
 -- --------------------------------------------------------
 
@@ -81,11 +118,19 @@ CREATE TABLE `feedback` (
 --
 
 CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
-  `order_date` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `total_price` int NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `customer_id`, `total_price`, `order_date`) VALUES
+(9, 1, 1420000, '2025-04-30 17:05:04'),
+(11, 1, 1520000, '2025-05-02 20:43:01');
 
 -- --------------------------------------------------------
 
@@ -94,15 +139,27 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `weight_price` int(11) DEFAULT NULL,
-  `availability` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `weight_price` int DEFAULT '0',
+  `weight_cost` int NOT NULL DEFAULT '0',
+  `availability` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `image`, `description`, `weight_price`, `weight_cost`, `availability`, `created_at`, `updated_at`) VALUES
+(1, 'عصير فريز', 'فريز.jpg', '', 0, 0, 1, '2025-04-07 13:38:42', '2025-05-09 17:50:41'),
+(2, 'عصير رمان', 'رمان.jpg', '', 0, 0, 1, '2025-04-08 16:31:35', '2025-05-09 17:55:42'),
+(3, 'عصير غوافة', 'غوافة.jpg', '', 0, 0, 0, '2025-04-09 15:45:27', '2025-05-09 17:59:28'),
+(6, 'مدلوقة', 'madloka.jpg', 'فرك مع قشطة عليهن بهار فسدق حلبي مع كاجو', 900000, 400000, 1, '2025-04-11 16:12:18', '2025-05-09 17:55:58'),
+(7, 'مد بالقشطة', 'مد القشطة.jpg', 'قشطة الي عنا بتوخد القلب والعقل, انت ذوقها ورح تصير تتعاطاها متل المخدرات.', 900000, 400000, 1, '2025-04-14 15:57:31', '2025-05-09 17:59:43');
 
 -- --------------------------------------------------------
 
@@ -111,9 +168,21 @@ CREATE TABLE `products` (
 --
 
 CREATE TABLE `product_category` (
-  `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `product_id` int NOT NULL,
+  `category_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_category`
+--
+
+INSERT INTO `product_category` (`product_id`, `category_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(7, 4),
+(6, 5),
+(7, 5);
 
 -- --------------------------------------------------------
 
@@ -122,11 +191,20 @@ CREATE TABLE `product_category` (
 --
 
 CREATE TABLE `product_orders` (
-  `product_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `product_id` int NOT NULL,
+  `order_id` int NOT NULL,
   `quantity` decimal(10,2) NOT NULL,
-  `price` int(11) NOT NULL
+  `price` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_orders`
+--
+
+INSERT INTO `product_orders` (`product_id`, `order_id`, `quantity`, `price`) VALUES
+(1, 9, 1.00, 500000),
+(1, 11, 3.00, 500000),
+(7, 9, 1.00, 900000);
 
 -- --------------------------------------------------------
 
@@ -135,10 +213,23 @@ CREATE TABLE `product_orders` (
 --
 
 CREATE TABLE `product_sizes` (
-  `product_id` int(11) NOT NULL,
-  `sizes_id` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `product_id` int NOT NULL,
+  `sizes_id` int NOT NULL,
+  `price` int NOT NULL DEFAULT '0',
+  `cost` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_sizes`
+--
+
+INSERT INTO `product_sizes` (`product_id`, `sizes_id`, `price`, `cost`) VALUES
+(1, 1, 150000, 75000),
+(1, 3, 500000, 250000),
+(2, 1, 200000, 100000),
+(2, 3, 800000, 400000),
+(3, 1, 150000, 75000),
+(3, 3, 500000, 250000);
 
 -- --------------------------------------------------------
 
@@ -147,22 +238,8 @@ CREATE TABLE `product_sizes` (
 --
 
 CREATE TABLE `sizes` (
-  `id` int(11) NOT NULL,
-  `name` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `suppliers`
---
-
-CREATE TABLE `suppliers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phoneNum` varchar(20) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `products_supplied` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `name` varchar(10) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -175,6 +252,28 @@ INSERT INTO `sizes` (`id`, `name`) VALUES
 (3, 'L'),
 (4, 'Extra'),
 (5, 'Normal');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliers`
+--
+
+CREATE TABLE `suppliers` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `phoneNum` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `products_supplied` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `name`, `phoneNum`, `address`, `products_supplied`) VALUES
+(1, 'سعد حلويات', '70409079', '---------', 'everything'),
+(2, 'testing ', '123456789', 'Earth', 'keep it a secret');
 
 --
 -- Indexes for dumped tables
@@ -258,49 +357,49 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

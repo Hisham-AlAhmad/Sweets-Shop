@@ -14,6 +14,7 @@ const AddProduct = () => {
     // Pricing method
     const [pricingMethod, setPricingMethod] = useState("weight"); // "weight" or "sizes"
     const [weightPrice, setWeightPrice] = useState("");
+    const [weightCost, setWeightCost] = useState("");
 
     // Categories handling
     const [categories, setCategories] = useState([]);
@@ -25,6 +26,7 @@ const AddProduct = () => {
     const [productSizes, setProductSizes] = useState([]);
     const [selectedSizeId, setSelectedSizeId] = useState("");
     const [sizePrice, setSizePrice] = useState("");
+    const [sizeCost, setSizeCost] = useState("");
 
     // Form states
     const [message, setMessage] = useState("");
@@ -41,7 +43,7 @@ const AddProduct = () => {
     useEffect(() => {
         if (location.state) {
             const { isEditing, productId, productName, image, description,
-                weightPrice, availability, createdAt,
+                weightPrice, weightCost, availability, createdAt,
                 productCategories, productSizes } = location.state;
 
             if (isEditing) {
@@ -70,6 +72,7 @@ const AddProduct = () => {
                 } else {
                     setPricingMethod("weight");
                     setWeightPrice(weightPrice || "");
+                    setWeightCost(weightCost || "");
                 }
             }
         }
@@ -136,7 +139,7 @@ const AddProduct = () => {
     };
 
     const handleAddSize = () => {
-        if (!selectedSizeId || !sizePrice || isNaN(sizePrice)) return;
+        if (!selectedSizeId || !sizePrice || !sizeCost || isNaN(sizePrice)) return;
 
         // Find the selected size from our sizes list
         const sizeToAdd = sizes.find(size => size.id === selectedSizeId);
@@ -148,13 +151,15 @@ const AddProduct = () => {
                 {
                     size_id: selectedSizeId,
                     size_name: sizeToAdd.name,
-                    price: sizePrice
+                    price: sizePrice,
+                    cost: sizeCost
                 }
             ]);
 
             // Reset inputs
             setSelectedSizeId("");
             setSizePrice("");
+            setSizeCost("");
         }
     };
 
@@ -177,6 +182,7 @@ const AddProduct = () => {
             // Add the appropriate pricing data based on the selected method
             if (pricingMethod === "weight") {
                 formData.append("weight_price", weightPrice);
+                formData.append("weight_cost", weightCost);
             } else {
                 formData.append("weight_price", 0); // Set to 0 or null for size-based pricing
                 formData.append("product_sizes", JSON.stringify(productSizes));
@@ -369,20 +375,32 @@ const AddProduct = () => {
 
                                         {/* Weight Price Input (shown only when weight pricing is selected) */}
                                         {pricingMethod === "weight" && (
-                                            <div className="mb-3">
-                                                <div className="form-floating">
+                                            <div className=" g-2 mb-3">
+                                                <div className=" form-floating">
                                                     <input
-                                                        id="weight_price"
                                                         type="number"
-                                                        className="form-control"
+                                                        id="weight_price"
                                                         value={weightPrice}
+                                                        className="form-control"
                                                         placeholder="Enter Weight Price"
                                                         onChange={(e) => setWeightPrice(e.target.value)}
                                                         min="0"
-                                                        step="0.01"
                                                         required={pricingMethod === "weight"}
                                                     />
-                                                    <label htmlFor="weight_price">Price per Unit Weight (Kg)</label>
+                                                    <label htmlFor="weight_price"><strong>Price</strong> per Weight (Kg)</label>
+                                                </div>
+                                                <div className=" form-floating">
+                                                    <input
+                                                        type="number"
+                                                        id="weight_cost"
+                                                        value={weightCost}
+                                                        className="form-control"
+                                                        placeholder="Enter Weight Cost"
+                                                        onChange={(e) => setWeightCost(e.target.value)}
+                                                        min="0"
+                                                        required={pricingMethod === "weight"}
+                                                    />
+                                                    <label htmlFor="weight_cost"><strong>Cost</strong> per Weight (Kg)</label>
                                                 </div>
                                             </div>
                                         )}
@@ -405,19 +423,6 @@ const AddProduct = () => {
                                                             ))}
                                                         </select>
                                                     </div>
-                                                    <div className="col">
-                                                        <div className="input-group">
-                                                            <input
-                                                                type="number"
-                                                                className="form-control"
-                                                                placeholder="Price (L.L)"
-                                                                value={sizePrice}
-                                                                onChange={(e) => setSizePrice(e.target.value)}
-                                                                min="0"
-                                                                step="0.01"
-                                                            />
-                                                        </div>
-                                                    </div>
                                                     <div className="col-auto">
                                                         <button
                                                             type="button"
@@ -427,6 +432,32 @@ const AddProduct = () => {
                                                             <i className="bi bi-plus-circle me-1"></i>
                                                             Add
                                                         </button>
+                                                    </div>
+                                                    <div className="row g-2">
+                                                        <div className="col form-floating">
+                                                            <input
+                                                                type="number"
+                                                                id="size_price"
+                                                                value={sizePrice}
+                                                                className="form-control"
+                                                                placeholder="Price (L.L)"
+                                                                onChange={(e) => setSizePrice(e.target.value)}
+                                                                min="0"
+                                                            />
+                                                            <label htmlFor="size_price">Price (L.L)</label>
+                                                        </div>
+                                                        <div className="col form-floating">
+                                                            <input
+                                                                type="number"
+                                                                id="cost"
+                                                                value={sizeCost}
+                                                                className="form-control"
+                                                                placeholder="Cost (L.L)"
+                                                                onChange={(e) => setSizeCost(e.target.value)}
+                                                                min="0"
+                                                            />
+                                                            <label htmlFor="cost">Cost (L.L)</label>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -438,6 +469,7 @@ const AddProduct = () => {
                                                                 <tr>
                                                                     <th>Size</th>
                                                                     <th>Price</th>
+                                                                    <th>Cost</th>
                                                                     <th width="80">Action</th>
                                                                 </tr>
                                                             </thead>
@@ -446,6 +478,7 @@ const AddProduct = () => {
                                                                     <tr key={item.size_id}>
                                                                         <td>{item.size_name}</td>
                                                                         <td>{commaInPrice(item.price)}</td>
+                                                                        <td>{commaInPrice(item.cost)}</td>
                                                                         <td>
                                                                             <button
                                                                                 type="button"
