@@ -136,6 +136,16 @@ const ViewSuppliers = () => {
                         {supplier.products_supplied}
                     </div>
                 </div>
+                <div className="d-flex gap-2">
+                    <a
+                        href={`https://wa.me/${supplier.phoneNum}`}
+                        target="_blank">
+                        <button className="btn btn-sm btn-success">
+                            <i className="bi bi-whatsapp me-1"></i>
+                            WhatsApp
+                        </button>
+                    </a>
+                </div>
                 <div className="d-flex gap-2 mt-2">
                     <button
                         className="btn btn-sm btn-primary flex-grow-1"
@@ -193,6 +203,7 @@ const ViewSuppliers = () => {
                                         <th>Phone Number</th>
                                         <th>Address</th>
                                         <th>Products Supplied</th>
+                                        <th>WhatsApp</th>
                                         <th className="text-end">Actions</th>
                                     </tr>
                                 </thead>
@@ -204,6 +215,16 @@ const ViewSuppliers = () => {
                                             <td>{supplier.phoneNum}</td>
                                             <td>{supplier.address}</td>
                                             <td>{supplier.products_supplied}</td>
+                                            <td>
+                                                <a
+                                                    href={`https://wa.me/${supplier.phoneNum}`}
+                                                    target="_blank">
+                                                    <button className="btn btn-sm btn-success">
+                                                        <i className="bi bi-whatsapp me-1"></i>
+                                                        WhatsApp
+                                                    </button>
+                                                </a>
+                                            </td>
                                             <td className="text-end">
                                                 <div className="btn-group" role="group">
                                                     <button
