@@ -68,6 +68,7 @@ const Cart = () => {
                     id: product.id,
                     name: product.name,
                     price: product.price,
+                    cost: product.cost,
                     quantity: product.quantity,
                     size: product.size,
                     image: product.image,
@@ -91,8 +92,12 @@ const Cart = () => {
     };
 
     // Handle item removal
-    const handleRemoveItem = (id) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    const handleRemoveItem = (prod) => {
+        if (!prod.isWeightBased) {
+            setCartItems((prevItems) => prevItems.filter((item) => !(item.id === prod.id && item.size === prod.size)));
+        } else {
+            setCartItems((prevItems) => prevItems.filter((item) => item.id !== prod.id));
+        }
     };
 
     // Function to format price with commas 1000000 => 100,000
@@ -141,14 +146,16 @@ const Cart = () => {
         const orderedItems = cartItems.map(item => ({
             product_id: item.id,
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
+            cost: item.cost
         }));
 
         let totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0) + deliveryCost;
+        let totalCost = cartItems.reduce((total, item) => total + item.cost * item.quantity, 0);
         const orderResponse = await fetch("http://localhost:8000/src/backend/api/orders.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ customer_id: customer_id, total_price: totalPrice, products: orderedItems }),
+            body: JSON.stringify({ customer_id: customer_id, total_price: totalPrice, total_cost: totalCost, products: orderedItems }),
         });
 
         const orderData = await orderResponse.json();
@@ -241,7 +248,7 @@ const Cart = () => {
                                             {/* Remove Button */}
                                             <button
                                                 className="btn btn-danger btn-sm"
-                                                onClick={() => handleRemoveItem(item.id)}
+                                                onClick={() => handleRemoveItem(item)}
                                             >
                                                 Remove
                                             </button>
@@ -250,23 +257,12 @@ const Cart = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    {/* Delivery Section */}
-                    <div className="col-lg-4">
-                        <div className="d-flex gap-3 align-items-center mb-3">
-                            <h5 className="mb-0">Delivery?</h5>
-                            <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
-                                onClick={() => (setDelivery(true), setDeliveryCost(20000))}
-                                style={{ borderRadius: '5px' }}>
-                                Yes
-                            </button>
-                            <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
-                                onClick={() => (setDelivery(false), setDeliveryCost(0))}
-                                style={{ borderRadius: '5px' }}>
-                                No
-                            </button>
+                        <div className="home-menu">
+                            <a href="/menu" className="btn btn-primary py-3 px-5 me-3 mt-5 animated slideInUp">Go to menu</a>
                         </div>
+                    </div>
 
+                    <div className="col-lg-4">
                         {/* Order Details */}
                         <div className="card order-summary-card">
                             <div className="card-body g-2 row">
@@ -293,6 +289,22 @@ const Cart = () => {
                             </div>
                         </div>
                         <br />
+
+                        {/* Delivery Section */}
+                        <div className="d-flex gap-3 align-items-center mb-3">
+                            <h5 className="mb-0">Delivery?</h5>
+                            <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
+                                onClick={() => (setDelivery(true), setDeliveryCost(20000))}
+                                style={{ borderRadius: '5px' }}>
+                                Yes
+                            </button>
+                            <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
+                                onClick={() => (setDelivery(false), setDeliveryCost(0))}
+                                style={{ borderRadius: '5px' }}>
+                                No
+                            </button>
+                        </div>
+
                         {/* Order Summary */}
                         <div className="card order-summary-card">
                             <div className="card-body">
@@ -322,9 +334,7 @@ const Cart = () => {
                         </div>
                     </div>
                 </div>
-                <div className="home-menu">
-                    <a href="/menu" className="btn btn-primary py-3 px-5 me-3 mt-5 animated slideInUp">Go to menu</a>
-                </div>
+
             </div>
         </div>
     );

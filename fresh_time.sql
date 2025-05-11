@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2025 at 05:00 PM
--- Server version: 8.0.41-0ubuntu0.22.04.1
+-- Generation Time: May 11, 2025 at 12:47 PM
+-- Server version: 8.0.42-0ubuntu0.22.04.1
 -- PHP Version: 8.2.4
 
 -- Run this command to start the server : php -S loacalhost:8000
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-(1, 'admin', '$2y$10$pm5Jq7L/wU.2lMA7FAAVhOoCIPh7tmoNeZXNXYPSGsw1fNxsnjuRG');
+(1, 'yato', '$2y$10$sVIyQlAczsJCIQAcN4WrqeJJcVrEooxztzdkNbnoAjCvI9ob.rlKy');
 
 -- --------------------------------------------------------
 
@@ -121,6 +121,7 @@ CREATE TABLE `orders` (
   `id` int NOT NULL,
   `customer_id` int NOT NULL,
   `total_price` int NOT NULL,
+  `total_cost` int NOT NULL,
   `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,9 +129,10 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `total_price`, `order_date`) VALUES
-(9, 1, 1420000, '2025-04-30 17:05:04'),
-(11, 1, 1520000, '2025-05-02 20:43:01');
+INSERT INTO `orders` (`id`, `customer_id`, `total_price`, `total_cost`, `order_date`) VALUES
+(9, 1, 1420000, 650000, '2024-04-30 17:05:04'),
+(11, 1, 1520000, 750000, '2025-04-16 20:43:01'),
+(12, 1, 1820000, 800000, '2025-05-11 12:41:53');
 
 -- --------------------------------------------------------
 
@@ -194,17 +196,19 @@ CREATE TABLE `product_orders` (
   `product_id` int NOT NULL,
   `order_id` int NOT NULL,
   `quantity` decimal(10,2) NOT NULL,
-  `price` int NOT NULL
+  `price` int NOT NULL,
+  `cost` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product_orders`
 --
 
-INSERT INTO `product_orders` (`product_id`, `order_id`, `quantity`, `price`) VALUES
-(1, 9, 1.00, 500000),
-(1, 11, 3.00, 500000),
-(7, 9, 1.00, 900000);
+INSERT INTO `product_orders` (`product_id`, `order_id`, `quantity`, `price`, `cost`) VALUES
+(1, 9, 1.00, 500000, 250000),
+(1, 11, 3.00, 500000, 250000),
+(6, 12, 2.00, 900000, 400000),
+(7, 9, 1.00, 900000, 400000);
 
 -- --------------------------------------------------------
 
@@ -272,8 +276,8 @@ CREATE TABLE `suppliers` (
 --
 
 INSERT INTO `suppliers` (`id`, `name`, `phoneNum`, `address`, `products_supplied`) VALUES
-(1, 'سعد حلويات', '70409079', '---------', 'everything'),
-(2, 'testing ', '123456789', 'Earth', 'keep it a secret');
+(1, 'سعد حلويات', '96170409079', '---------', 'everything'),
+(4, 'testing ', '123456789', 'Earth', 'keep it a secret');
 
 --
 -- Indexes for dumped tables
@@ -381,7 +385,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `products`

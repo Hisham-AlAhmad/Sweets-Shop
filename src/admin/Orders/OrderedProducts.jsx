@@ -13,6 +13,7 @@ const OrderedProducts = () => {
             setProducts(products);
         }
     }, [location]);
+    console.log("products: ", products);
 
     const commaInPrice = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
@@ -39,6 +40,7 @@ const OrderedProducts = () => {
 
                 <div className="mb-2">
                     <div><strong>Price:</strong> {commaInPrice(product.price)}</div>
+                    <div><strong>Cost:</strong> {commaInPrice(product.cost)}</div>
                     <div><strong>Quantity:</strong> {product.quantity}</div>
                 </div>
                 <div>
@@ -74,6 +76,7 @@ const OrderedProducts = () => {
                                     <th className='text-center'>Image</th>
                                     <th>Product Name</th>
                                     <th>Price</th>
+                                    <th>Cost</th>
                                     <th>Quantity</th>
                                     <th>Subtotal</th>
                                 </tr>
@@ -93,6 +96,7 @@ const OrderedProducts = () => {
                                         )}
                                         <td>{product.name}</td>
                                         <td>{commaInPrice(product.price)}</td>
+                                        <td>{commaInPrice(product.cost)}</td>
                                         <td>{product.quantity}</td>
                                         <td>{commaInPrice(product.price * product.quantity)}</td>
                                     </tr>

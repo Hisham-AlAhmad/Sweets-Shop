@@ -8,6 +8,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [price, setPrice] = useState(0);
+    const [cost, setCost] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,10 +33,12 @@ const ProductDetail = () => {
                 if (productData.sizes && productData.sizes.length > 0) {
                     setSelectedSize(productData.sizes[0].size_id);
                     setPrice(productData.sizes[0].price);
+                    setCost(productData.sizes[0].cost);
                     setQuantity(1);
                 }
                 else {
                     setPrice(productData.weight_price);
+                    setCost(productData.weight_cost);
                     setQuantity(0.5);
                     setIsWeightBased(true);
                 }
@@ -49,6 +52,7 @@ const ProductDetail = () => {
 
         fetchProduct();
     }, [id]);
+    console.log("Product:", product);
 
     // Handle loading state
     if (loading) {
@@ -79,6 +83,8 @@ const ProductDetail = () => {
             const selectedSizeObj = product.sizes.find(size => size.size_id === sizeId);
             if (selectedSizeObj) {
                 setPrice(selectedSizeObj.price);
+                setCost(selectedSizeObj.cost);
+                setIsWeightBased(false);
             }
         }
     };
@@ -208,10 +214,11 @@ const ProductDetail = () => {
                                     id: product.id,
                                     name: product.name,
                                     price: price,
+                                    cost: cost,
+                                    quantity: quantity,
                                     image: product.image,
                                     isWeightBased: isWeightBased,
-                                    size: getSelectedSizeName(),
-                                    quantity: quantity
+                                    size: getSelectedSizeName()
                                 },
                             }}
                             className="text-decoration-none"

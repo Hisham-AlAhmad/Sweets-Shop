@@ -51,7 +51,7 @@ function getTotalProducts($conn){
 }
 
 function getTotalRevenue($conn){
-    $query = "SELECT SUM(total_price) as revenue FROM orders";
+    $query = "SELECT SUM((total_price - total_cost)) as revenue FROM orders";
     $result = $conn->query($query);
     $total_revenue = $result->fetch_assoc();
     echo json_encode($total_revenue['revenue']);
@@ -119,7 +119,7 @@ function getProfitData($conn){
 
     $query = "SELECT YEAR(order_date) AS year, 
             MONTH(order_date) AS month,
-            SUM(total_price) AS profit
+            SUM(total_price - total_cost) AS profit
             FROM orders
             WHERE $where
             GROUP BY YEAR(order_date), MONTH(order_date)
