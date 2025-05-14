@@ -45,6 +45,7 @@ const ViewProducts = () => {
                 image: product.image,
                 description: product.description,
                 weightPrice: product.weight_price,
+                weightCost: product.weight_cost,
                 availability: product.availability,
                 createdAt: product.created_at,
                 productCategories: productCategories,

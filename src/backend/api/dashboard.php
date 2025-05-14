@@ -29,6 +29,10 @@ if ($method === 'GET'){
         getTotalCustomers($conn);  
     } elseif ($action === 'categoryRevenue'){
         getCategoryRevenue($conn);
+    } else if ($action === "topCustomers") {
+        getTopCustomers($conn);
+    } elseif ($action === 'topProducts') {
+        getTopProducts($conn);
     } elseif ($action === 'filteredYears') {
         getFilteredYears($conn);
     } elseif ($action === 'profitData') {
@@ -75,6 +79,32 @@ function getCategoryRevenue($conn){
     $result = $conn->query($query);
     $category_revenue = $result->fetch_all(MYSQLI_ASSOC);
     echo json_encode($category_revenue);
+}
+
+function getTopCustomers($conn){
+    $query = "SELECT customer.name, COUNT(customer.name) as total_orders, SUM(orders.total_price) as total_spent
+              FROM customer
+              INNER JOIN orders ON customer.id = orders.customer_id
+              GROUP BY customer.name
+              ORDER BY total_spent DESC
+              LIMIT 5";
+    $result = $conn->query($query);
+    $top_customers = $result->fetch_all(MYSQLI_ASSOC);
+    echo json_encode($top_customers);
+}
+
+function getTopProducts($conn){
+    $query = "SELECT products.name, COUNT(products.name) as total_sold,
+              CAST(SUM(product_orders.price * product_orders.quantity) AS SIGNED) AS total_revenue
+              FROM products
+              INNER JOIN product_orders ON products.id = product_orders.product_id
+              INNER JOIN orders ON product_orders.order_id = orders.id
+              GROUP BY products.name
+              ORDER BY total_revenue DESC
+              LIMIT 5;";
+    $result = $conn->query($query);
+    $top_products = $result->fetch_all(MYSQLI_ASSOC);
+    echo json_encode($top_products);
 }
 
 function getFilteredYears($conn){
