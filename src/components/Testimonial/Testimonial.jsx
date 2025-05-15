@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 
 const Testimonial = () => {
     const [feedbacks, setFeedbacks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     function getRandomFeedbacks(feedbacks, count = 4) {
         const shuffled = [...feedbacks];
@@ -32,8 +33,10 @@ const Testimonial = () => {
 
                 const data = await response.json();
                 setFeedbacks(getRandomFeedbacks(data, 4)); // Get 4 random feedbacks 
+                setLoading(false);
             } catch (err) {
                 console.error('Error fetching feedback:', err);
+                setLoading(false);
             }
         };
 
@@ -48,7 +51,7 @@ const Testimonial = () => {
                     <h1 className="mb-4">Our Clients Say!!</h1>
                 </div>
                 <div className="carousel-container">
-                    {feedbacks.length > 0 ? (
+                    {!loading ? (
                         <Swiper
                             modules={[Pagination, Autoplay]}
                             spaceBetween={24}
@@ -68,7 +71,7 @@ const Testimonial = () => {
                         >
                             {feedbacks.map((feedback) => (
                                 <SwiperSlide key={feedback.id}>
-                                    <div className="testimonial-item bg-transparent border rounded p-4">
+                                    <div className="testimonial-item border shadow ">
                                         <i className="fa fa-quote-left fa-2x text-primary mb-3"></i>
                                         <p>{feedback.comment}</p>
                                         <div className="d-flex align-items-center">
@@ -81,7 +84,44 @@ const Testimonial = () => {
                             ))}
                         </Swiper>
                     ) : (
-                        <p>Loading testimonials...</p>
+                        // loading skeleton
+                        <div className="testimonial-loading">
+                            <div className="testimonial-skeleton-container">
+                                <div className="testimonial-item testimonial-skeleton d-none d-lg-block">
+                                    <i className="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="d-flex align-items-center mt-3">
+                                        <div className="ps-3">
+                                            <div className="skeleton-name"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="testimonial-item testimonial-skeleton d-none d-sm-block">
+                                    <i className="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="d-flex align-items-center mt-3">
+                                        <div className="ps-3">
+                                            <div className="skeleton-name"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="testimonial-item testimonial-skeleton">
+                                    <i className="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="skeleton-text"></div>
+                                    <div className="d-flex align-items-center mt-3">
+                                        <div className="ps-3">
+                                            <div className="skeleton-name"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>

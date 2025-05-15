@@ -46,15 +46,14 @@ const Contact = () => {
                         <h1 className="mb-5">Tell us Anything!</h1>
                     </div>
                     <div className="row g-4">
-                        <div className="col-md-6 wow fadeIn" data-wow-delay="0.1s">
-                            <iframe className="position-relative rounded w-100 h-100"
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3337.0945308160135!2d35.21785578175353!3d33.23782680703575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!5f6.1!5e0!3m2!1sar!2sus!4v1739389997029!5m2!1sen!2sbd"
-                                style={{ border: 0, width: "600", height: "500" }} allowFullScreen="" loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade">
-                            </iframe>
-
+                        <div className="col-lg-6 text-center wow fadeIn" data-wow-delay="0.1s">
+                            <img
+                                src={`http://localhost:8000/public/img/about-4.jpg`}
+                                alt="section img"
+                                style={{ width: "60%", height: "auto", borderRadius: "10px" }}
+                            />
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-lg-6">
                             <div className="wow fadeInUp" data-wow-delay="0.2s">
                                 <form className="contact-form" onSubmit={sendFeedback}>
                                     <div className="row g-3">

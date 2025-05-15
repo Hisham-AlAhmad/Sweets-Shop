@@ -174,7 +174,7 @@ const Cart = () => {
                 </div>
                 <div className="text-center wow fadeInUp">
                     <p>Your cart is empty.</p>
-                    <a href="/menu" className="btn btn-primary">
+                    <a href="/menu" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated ">
                         See the menu
                     </a>
                 </div>

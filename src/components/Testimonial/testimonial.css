@@ -3,7 +3,6 @@
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
     transition: 0.5s;
     background: #fff;
-    border: 1px solid var(--primary);
     padding: 20px;
     border-radius: 8px;
 }
@@ -32,29 +31,62 @@
 .carousel-container {
     position: relative;
     overflow: hidden;
-    /* Ensure shadows don't overflow */
 }
 
-.carousel-container::before,
-.carousel-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100px;
-    /* Adjust the width of the shadow area */
-    z-index: 10;
-    /* Ensure shadows are above the carousel */
+/* Loading Animation Styles */
+.testimonial-loading {
+    width: 100%;
+}
+
+.testimonial-skeleton-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .testimonial-skeleton-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .testimonial-skeleton-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.testimonial-skeleton {
     pointer-events: none;
-    /* Allow clicks to pass through */
 }
 
-.carousel-container::before {
-    left: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent);
+.skeleton-text {
+    height: 14px;
+    margin: 8px 0;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
 }
 
-.carousel-container::after {
-    right: 0;
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.08), transparent);
+.skeleton-text:nth-child(3) {
+    width: 70%;
+}
+
+.skeleton-name {
+    height: 18px;
+    width: 120px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
