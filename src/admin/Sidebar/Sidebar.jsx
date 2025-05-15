@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <aside className={`left-sidebar ${isOpen ? 'open' : ''}`}>
                 <div>
                     <div className="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="/dashboard" className="text-nowrap logo-img">
+                        <a href="/" className="text-nowrap logo-img">
                             <img src="/img/freshTime_noBg.png" width="180" alt="Logo" />
                         </a>
                     </div>

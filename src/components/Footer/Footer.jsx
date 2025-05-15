@@ -2,7 +2,7 @@ import './footer.css';
 
 const Footer = () => {
     function whatsapp() {
-        const message = "Hi Fresh Time! I wanna order something.";
+        const message = "Hello! I’d like to inquire about your products and place an order. Looking forward to your assistance. – Fresh Time";
         const encodedMessage = encodeURIComponent(message);
         const phoneNumber = "96176763445";
         const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
