@@ -183,8 +183,12 @@ function updateAdmin($conn) {
     $data = $_POST;
 
     $username = $data['username'];
-    $password_hash = password_hash($data['password'], PASSWORD_DEFAULT); // Hash the password
     $image = isset($_FILES['image']) ? $_FILES['image'] : null; // Optional image field
+    $password = isset($data['password']) ? $data['password'] : null; // Optional password field
+    $password_hash = null;
+    if ($password) {
+        $password_hash = password_hash($data['password'], PASSWORD_DEFAULT); // Hash the password
+    }
 
     // Check if username is being updated
     if (isset($username)) {
@@ -214,13 +218,23 @@ function updateAdmin($conn) {
     }
 
     // Update the admin
-    if ($image_name) { // If an image was uploaded
+    if ($image_name && $password) { // If both image and password are being updated
         $stmt = $conn->prepare("UPDATE admin SET username = ?, password = ?, image = ? WHERE id = ?");
         $stmt->bind_param("sssi", $username, $password_hash, $image_name, $user_id);
     }
+    else if ($image_name) { // If an image was uploaded
+        $stmt = $conn->prepare("UPDATE admin SET username = ?, image = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $username, $image_name, $user_id);
+    }
     else { // If no image was uploaded
-        $stmt = $conn->prepare("UPDATE admin SET username = ?, password = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $username, $password_hash, $user_id);
+        if ($password_hash) { // If password is being updated
+            $stmt = $conn->prepare("UPDATE admin SET username = ?, password = ? WHERE id = ?");
+            $stmt->bind_param("ssi", $username, $password_hash, $user_id);
+        }
+        else { // If no changes to password or image
+            $stmt = $conn->prepare("UPDATE admin SET username = ? WHERE id = ?");
+            $stmt->bind_param("si", $username, $user_id);
+        }
     }
 
     

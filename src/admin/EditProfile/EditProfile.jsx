@@ -162,7 +162,6 @@ const EditProfile = () => {
                                             placeholder="Enter your password"
                                             onChange={(e) => setPassword(e.target.value)}
                                             value={password}
-                                            required
                                         />
                                     </div>
                                 </div>
