@@ -5,6 +5,8 @@ import { useAuth } from './AuthContext';
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [image, setImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
@@ -43,12 +45,15 @@ const LoginPage = () => {
         setIsLoading(true);
 
         try {
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            formData.append('setup_key', key);
+            formData.append('image', image);
+
             const response = await fetch('http://localhost:8000/src/backend/api/admin.php?action=register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password, setup_key: key }),
+                body: formData,
             });
 
             const result = await response.json();
@@ -60,7 +65,7 @@ const LoginPage = () => {
                 setMessage(result.message);
 
                 setTimeout(() => {
-                    navigate('/login');
+                    navigate('/dashboard');
                 }, 2000);
             }
         } catch (err) {
@@ -70,7 +75,7 @@ const LoginPage = () => {
         }
     }
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         console.log('expiresAt:', Date(expiresAt));
@@ -120,7 +125,8 @@ const LoginPage = () => {
                                     </div>
                                 )}
 
-                                <form onSubmit={isRegistering ? handleRegister : handleSubmit}>
+                                <form onSubmit={isRegistering ? handleRegister : handleLogin}>
+                                    {/* {USERNAME} */}
                                     <div className="mb-3">
                                         <label htmlFor="username" className="form-label text-muted small fw-semibold">USERNAME</label>
                                         <div className="input-group">
@@ -140,6 +146,7 @@ const LoginPage = () => {
                                         </div>
                                     </div>
 
+                                    {/* {PASSWORD} */}
                                     <div className="mb-4">
                                         <div className="d-flex justify-content-between align-items-center">
                                             <label htmlFor="password" className="form-label text-muted small fw-semibold">PASSWORD</label>
@@ -161,6 +168,7 @@ const LoginPage = () => {
                                         </div>
                                     </div>
 
+                                    {/* {KEY} */}
                                     {isRegistering && (
                                         <div className="mb-4">
                                             <div className="d-flex justify-content-between align-items-center">
@@ -184,6 +192,49 @@ const LoginPage = () => {
                                         </div>
                                     )}
 
+                                    {/* {Image} */}
+                                    {isRegistering && (
+                                        <div className="mb-4">
+                                            <div className="d-flex justify-content-between align-items-center">
+                                                <label htmlFor="image" className="form-label text-muted small fw-semibold">IMAGE</label>
+                                            </div>
+                                            <div className="input-group">
+                                                <span className="input-group-text bg-light border-end-0">
+                                                    <i className="bi bi-image text-muted"></i>
+                                                </span>
+                                                <input
+                                                    type="file"
+                                                    className="form-control bg-light border-start-0"
+                                                    id="image"
+                                                    name="image"
+                                                    onChange={(e) => {
+                                                        setImage(e.target.files[0]);
+                                                        setImagePreview(URL.createObjectURL(e.target.files[0]));
+                                                    }}
+                                                />
+                                            </div>
+                                            {/* Note  */}
+                                            <small className="text-muted mt-2">
+                                                <strong>Note: </strong>The image needs to be square
+                                            </small>
+                                            {imagePreview && (
+                                        <div className="mt-3 text-center">
+                                            <img
+                                                src={imagePreview}
+                                                alt="Preview"
+                                                style={{
+                                                    maxWidth: '250px',
+                                                    maxHeight: '250px',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '5px'
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                        </div>
+                                    )}
+
+                                    {/* {SUBMIT BUTTON} */}
                                     <div className="d-grid gap-2">
                                         <button
                                             type="submit"

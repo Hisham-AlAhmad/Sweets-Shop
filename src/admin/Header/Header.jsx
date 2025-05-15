@@ -1,14 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import React from 'react';
 import './header.css';
 
 const Header = ({ onToggleSidebar }) => {
   const [username, setUsername] = useState('');
+  const [image, setImage] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const { logout } = useAuth();
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const getUsername = () => {
     const username = localStorage.getItem('username');
@@ -19,8 +22,18 @@ const Header = ({ onToggleSidebar }) => {
     }
   }
 
+  const getImage = () => {
+    const image = localStorage.getItem('image');
+    if (image) {
+      setImage(image);
+    } else {
+      setImage(null);
+    }
+  }
+
   useEffect(() => {
     getUsername();
+    getImage();
   }, []);
 
   const toggleDropdown = () => {
@@ -78,7 +91,15 @@ const Header = ({ onToggleSidebar }) => {
           <div className="user-profile" onClick={toggleDropdown}>
             <div className="user-avatar">
               <span className="avatar-initials">
-                {username.split(' ').map(n => n[0]).join('')}
+                {image ? (
+                  <img
+                    src={`http://localhost:8000/public/img/user/${image}`}
+                    alt="User Avatar"
+                    className="avatar-img"
+                  />
+                ) : (
+                  <i className="ti ti-user"></i>
+                )}
               </span>
             </div>
             <span className="user-name">{username}</span>
@@ -93,18 +114,12 @@ const Header = ({ onToggleSidebar }) => {
               </div>
               <div className="dropdown-divider"></div>
               <ul className="dropdown-options">
-                {/* <li>
-                  <button onClick={() => console.log('Profile clicked')}>
+                <li>
+                  <button onClick={() => navigate('/editProfile')}>
                     <i className="ti ti-user me-2"></i>
-                    My Profile
+                    Edit Profile
                   </button>
                 </li>
-                <li>
-                  <button onClick={() => console.log('Settings clicked')}>
-                    <i className="ti ti-settings me-2"></i>
-                    Settings
-                  </button>
-                </li> */}
                 <li>
                   <button className="logout-btn" onClick={handleLogout}>
                     <i className="ti ti-logout me-2"></i>

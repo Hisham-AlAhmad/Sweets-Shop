@@ -69,7 +69,8 @@ function getTotalCustomers($conn){
 }
 
 function getCategoryRevenue($conn){
-    $query = "SELECT category.name, SUM(product_orders.price * product_orders.quantity) as revenue
+    $query = "SELECT category.name,
+              SUM((product_orders.price * product_orders.quantity) - (product_orders.cost * product_orders.quantity)) as revenue
               FROM category
               LEFT JOIN product_category ON category.id = product_category.category_id
               LEFT JOIN products ON product_category.product_id = products.id

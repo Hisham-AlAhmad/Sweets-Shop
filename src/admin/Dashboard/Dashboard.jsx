@@ -37,10 +37,10 @@ const Dashboard = () => {
     // Calculate monthly growth rate (new feature)
     const growthRate = useMemo(() => {
         if (profitData && profitData.length >= 2) {
-            const lastMonth = profitData[profitData.length - 1].profit;
+            const currMonth = profitData[profitData.length - 1].profit;
             const previousMonth = profitData[profitData.length - 2].profit;
             if (previousMonth !== 0) {
-                return ((lastMonth - previousMonth) / previousMonth) * 100;
+                return ((currMonth - previousMonth) / previousMonth) * 100;
             }
         }
         return 0;
@@ -102,8 +102,6 @@ const Dashboard = () => {
         yearsError,
         profitError
     ]);
-
-    console.log('categoryRevenue: ', categoryRevenue);
 
     const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'];
 
@@ -349,7 +347,7 @@ const Dashboard = () => {
                                     <XAxis
                                         dataKey="name"
                                         tick={{ fill: '#64748b' }}
-                                        angle={-40}
+                                        angle={-60}
                                         textAnchor="end"
                                         height={70}
                                     />

@@ -23,6 +23,7 @@ import OrderedProducts from "../admin/Orders/OrderedProducts";
 import LoginPage from "../auth/LoginPage";
 import { AuthProvider } from "../auth/AuthContext";
 import ProtectedRoute from "../auth/ProtectedRoute";
+import EditProfile from "../admin/EditProfile/EditProfile";
 
 function AppRoutes() {
   return (
@@ -52,6 +53,7 @@ function AppRoutes() {
             <Route path="/editFeedback" element={<EditFeedback />} />
             <Route path="/viewOrders" element={<ViewOrders />} />
             <Route path="/orderedProducts" element={<OrderedProducts />} />
+            <Route path="/editProfile" element={<EditProfile />} />
           </Route>
         </Route>
         {/* Nameless routes */}

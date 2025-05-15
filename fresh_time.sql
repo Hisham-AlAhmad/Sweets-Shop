@@ -32,15 +32,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `id` int NOT NULL,
   `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-(1, 'yato', '$2y$10$sVIyQlAczsJCIQAcN4WrqeJJcVrEooxztzdkNbnoAjCvI9ob.rlKy');
+INSERT INTO `admin` (`id`, `username`, `password`, `image`) VALUES
+(1, 'yato', '$2y$10$sVIyQlAczsJCIQAcN4WrqeJJcVrEooxztzdkNbnoAjCvI9ob.rlKy', 'changli.jpg'),
+(2, 'admin', '$2y$10$PyDW1TOPRhJ8TgJfA8Z3w.pp5hfcINr06.Dd8b4dA08z6k8G/cGuK', 'gojo.jpg');
 
 -- --------------------------------------------------------
 

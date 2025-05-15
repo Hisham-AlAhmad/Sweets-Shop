@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('expiresAt', data.expires * 1000); // Convert to milliseconds
         localStorage.setItem('username', data.username);
+        localStorage.setItem('image', data.image);
 
         console.log('Login successful:', data);
         setIsAuthenticated(true);
