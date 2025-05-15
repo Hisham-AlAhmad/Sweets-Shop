@@ -213,10 +213,6 @@ const LoginPage = () => {
                                                     }}
                                                 />
                                             </div>
-                                            {/* Note  */}
-                                            <small className="text-muted mt-2">
-                                                <strong>Note: </strong>The image needs to be square
-                                            </small>
                                             {imagePreview && (
                                         <div className="mt-3 text-center">
                                             <img
@@ -225,6 +221,7 @@ const LoginPage = () => {
                                                 style={{
                                                     maxWidth: '250px',
                                                     maxHeight: '250px',
+                                                    aspectRatio: '1/1',
                                                     objectFit: 'cover',
                                                     borderRadius: '5px'
                                                 }}
