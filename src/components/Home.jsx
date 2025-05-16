@@ -1,7 +1,8 @@
-import About from "./About";
 import Hero from "./Hero";
-import Services from "./Services";
 import Team from "./Team";
+import About from "./About";
+import Services from "./Services";
+import { Link } from "react-router-dom";
 import Testimonial from "./Testimonial/Testimonial";
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
             <Team />
             <Testimonial />
             <div className="home-menu">
-                <a href="/menu" className="btn btn-primary py-3 px-5 me-3 animated slideInUp">Go to menu</a>
+                <Link to="/menu" className="btn btn-primary py-3 px-5 animated slideInUp">Go to menu</Link>
             </div>
         </>
     );

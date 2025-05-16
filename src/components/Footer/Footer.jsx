@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './footer.css';
 
 const Footer = () => {
@@ -28,17 +29,17 @@ const Footer = () => {
                             <p className="mb-2"><i className="fa fa-map-marker-alt me-3"></i>Al Rachideia Camp, Fresh Time</p>
                             <p className="mb-2"><i className="fa fa-phone-alt me-3"></i>+961 76 763 445</p>
                             <div className="d-flex pt-2">
-                                <a className="btn btn-lg btn-primary me-2" onClick={() => whatsapp()}><i className="fab fa-whatsapp"></i></a>
-                                <a className="btn btn-lg btn-primary me-2" onClick={() => instagram()}><i className="fab fa-instagram"></i></a>
+                                <Link className="btn btn-lg btn-primary me-2" onClick={() => whatsapp()}><i className="fab fa-whatsapp"></i></Link>
+                                <Link className="btn btn-lg btn-primary me-2" onClick={() => instagram()}><i className="fab fa-instagram"></i></Link>
                                 {/* <a className="btn btn-lg btn-primary me-2" href="#"><i className="fab fa-facebook-f"></i></a> */}
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-6 mx-auto d-none d-md-block">
                             <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Quick Links</h4>
-                            <a className="btn btn-link" href="/">Home</a>
-                            <a className="btn btn-link" href="/menu">Menu</a>
-                            <a className="btn btn-link" href="/contact">Contact</a>
-                            <a className="btn btn-link" href="/cart">Cart</a>
+                            <Link className="btn btn-link" to="/">Home</Link>
+                            <Link className="btn btn-link" to="/menu">Menu</Link>
+                            <Link className="btn btn-link" to="/contact">Contact</Link>
+                            <Link className="btn btn-link" to="/cart">Cart</Link>
                         </div>
                     </div>
                 </div>

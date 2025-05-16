@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,13 +28,13 @@ const BackToTop = () => {
     }, []);
 
     return (
-        <a
-            href="#"
+        <Link
+            to="#"
             className={`btn btn-lg btn-primary back-to-top ${isVisible ? 'show' : ''}`}
             onClick={scrollToTop}
         >
             <i className="bi bi-arrow-up"></i>
-        </a>
+        </Link>
     );
 };
 

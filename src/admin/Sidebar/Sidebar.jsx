@@ -1,5 +1,5 @@
 import { useAuth } from "../../auth/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 
@@ -31,9 +31,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <aside className={`left-sidebar ${isOpen ? 'open' : ''}`}>
                 <div>
                     <div className="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="/" className="text-nowrap logo-img">
+                        <Link to="/" className="text-nowrap logo-img">
                             <img src="/img/freshTime_noBg.png" width="180" alt="Logo" />
-                        </a>
+                        </Link>
                     </div>
                     <nav className="sidebar-nav scroll-sidebar" data-simplebar="">
                         <ul id="sidebarnav">
