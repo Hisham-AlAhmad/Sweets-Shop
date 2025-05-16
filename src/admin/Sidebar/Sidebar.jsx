@@ -7,23 +7,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
-    const checkAuth_IsOpened = () => {
-        e.preventDefault();
-
-        setIsOpen(false);
+    const checkAuth_IsOpened = (e) => {
         const expiresAt = localStorage.getItem('expiresAt');
-        if (!expiresAt) return false;
+        if (!expiresAt) return;
 
         const now = Date.now();
         const expiry = parseInt(expiresAt);
 
         if (now > expiry) {
-            logout(); // Logout if token is expired
+            e.preventDefault();
+            logout();
             navigate('/login', { replace: true });
             setIsOpen(false);
-            return false;
+        } else {
+            setIsOpen(false);
         }
-        return true;
     };
 
     return (

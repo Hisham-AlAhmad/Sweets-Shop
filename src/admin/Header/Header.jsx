@@ -2,12 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import React from 'react';
 import './header.css';
 
 const Header = ({ onToggleSidebar }) => {
   const [username, setUsername] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const { logout } = useAuth();
   const dropdownRef = useRef(null);
@@ -15,7 +14,7 @@ const Header = ({ onToggleSidebar }) => {
 
   const getUsername = () => {
     const username = localStorage.getItem('username');
-    if (username) {
+    if (username && username !== 'null' && username !== 'undefined') {
       setUsername(username.charAt(0).toUpperCase() + username.slice(1));
     } else {
       setUsername('Guest');
@@ -24,7 +23,7 @@ const Header = ({ onToggleSidebar }) => {
 
   const getImage = () => {
     const image = localStorage.getItem('image');
-    if (image) {
+    if (image && image !== 'null' && image !== 'undefined') {
       setImage(image);
     } else {
       setImage(null);
@@ -133,6 +132,6 @@ const Header = ({ onToggleSidebar }) => {
       </nav>
     </header>
   );
-};
+}
 
 export default Header;

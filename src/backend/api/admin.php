@@ -237,11 +237,11 @@ function updateAdmin($conn) {
         }
     }
 
-    
     if ($stmt->execute()) {
         sendResponse(200, [
             'success' => true,
             'message' => 'Admin updated successfully, Logging out...',
+            'image' => $image_name
         ]);
     } else {
         sendResponse(500, ['error' => 'Failed to update admin information']);

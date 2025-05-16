@@ -128,7 +128,13 @@ const LoginPage = () => {
                                 <form onSubmit={isRegistering ? handleRegister : handleLogin}>
                                     {/* {USERNAME} */}
                                     <div className="mb-3">
-                                        <label htmlFor="username" className="form-label text-muted small fw-semibold">USERNAME</label>
+                                        <label htmlFor="username" className="form-label text-muted small fw-semibold">
+                                            USERNAME
+
+                                            {isRegistering && (
+                                                <span style={{ color: "red" }}> *</span>
+                                            )}
+                                        </label>
                                         <div className="input-group">
                                             <span className="input-group-text bg-light border-end-0">
                                                 <i className="bi bi-person-fill text-muted"></i>
@@ -149,7 +155,12 @@ const LoginPage = () => {
                                     {/* {PASSWORD} */}
                                     <div className="mb-4">
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <label htmlFor="password" className="form-label text-muted small fw-semibold">PASSWORD</label>
+                                            <label htmlFor="password" className="form-label text-muted small fw-semibold">
+                                                PASSWORD
+                                                {isRegistering && (
+                                                    <span style={{ color: "red" }}> *</span>
+                                                )}
+                                            </label>
                                         </div>
                                         <div className="input-group">
                                             <span className="input-group-text bg-light border-end-0">
@@ -172,7 +183,12 @@ const LoginPage = () => {
                                     {isRegistering && (
                                         <div className="mb-4">
                                             <div className="d-flex justify-content-between align-items-center">
-                                                <label htmlFor="key" className="form-label text-muted small fw-semibold">SETUP KEY</label>
+                                                <label htmlFor="key" className="form-label text-muted small fw-semibold">
+                                                    SETUP KEY
+                                                    {isRegistering && (
+                                                        <span style={{ color: "red" }}> *</span>
+                                                    )}
+                                                </label>
                                             </div>
                                             <div className="input-group">
                                                 <span className="input-group-text bg-light border-end-0">
@@ -214,20 +230,20 @@ const LoginPage = () => {
                                                 />
                                             </div>
                                             {imagePreview && (
-                                        <div className="mt-3 text-center">
-                                            <img
-                                                src={imagePreview}
-                                                alt="Preview"
-                                                style={{
-                                                    maxWidth: '250px',
-                                                    maxHeight: '250px',
-                                                    aspectRatio: '1/1',
-                                                    objectFit: 'cover',
-                                                    borderRadius: '5px'
-                                                }}
-                                            />
-                                        </div>
-                                    )}
+                                                <div className="mt-3 text-center">
+                                                    <img
+                                                        src={imagePreview}
+                                                        alt="Preview"
+                                                        style={{
+                                                            maxWidth: '250px',
+                                                            maxHeight: '250px',
+                                                            aspectRatio: '1/1',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '5px'
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     )}
 

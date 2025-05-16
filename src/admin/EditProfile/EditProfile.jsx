@@ -20,7 +20,7 @@ const EditProfile = () => {
 
     const getImage = () => {
         const image = localStorage.getItem('image');
-        if (image) {
+        if (image && image !== 'null' && image !== 'undefined') {
             setImagePreview(`http://localhost:8000/public/img/user/${image}`);
         } else {
             setImagePreview(null);
@@ -79,15 +79,24 @@ const EditProfile = () => {
 
                 const result = await response.json();
                 if (result.success) {
-                    setMessage(result.message);
-
                     Swal.fire('Updated!', 'Your profile has been updated.', 'success');
 
-                    setTimeout(() => {
-                        setMessage('Logging out...');
-                        logout();
-                        navigate('/login', { replace: true });
-                    }, 3000);
+                    if (result.image) {
+                        setMessage('Image updated successfully');
+                        localStorage.removeItem('image');
+                        localStorage.setItem('image', result.image);
+                        setImagePreview(`http://localhost:8000/public/img/user/${result.image}`);
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        setMessage(result.message);
+                        setTimeout(() => {
+                            logout();
+                            navigate('/login', { replace: true });
+                        }, 3000);
+                    }
                 } else {
                     setMessage(result.error || 'Failed to update profile');
                     Swal.fire('Error!', result.error || 'Failed to update profile', 'error');
@@ -127,7 +136,10 @@ const EditProfile = () => {
                             <form onSubmit={handleSubmit}>
                                 {/* Username */}
                                 <div className="mb-3">
-                                    <label htmlFor="username" className="form-label text-muted small fw-semibold">USERNAME</label>
+                                    <label htmlFor="username" className="form-label text-muted small fw-semibold">
+                                        USERNAME
+                                        <span style={{ color: "red" }}> *</span>
+                                    </label>
                                     <div className="input-group">
                                         <span className="input-group-text bg-light border-end-0">
                                             <i className="bi bi-person-fill text-muted"></i>
