@@ -1,6 +1,5 @@
 import { useParams, NavLink, Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Spinner from '../Spinner';
 import './productDetail.css';
 
 const ProductDetail = () => {
@@ -84,7 +83,16 @@ const ProductDetail = () => {
 
     // Handle loading state
     if (loading) {
-        return <Spinner loading={loading} />;
+        return (
+            <div className="d-flex justify-content-center align-items-center p-4">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3 text-muted">Loading Product Details...</p>
+                </div>
+            </div>
+        );
     }
 
     // Handle error or not found state
