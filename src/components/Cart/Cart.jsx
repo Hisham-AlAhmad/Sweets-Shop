@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './cart.css';
 
 const Cart = () => {
@@ -174,9 +174,9 @@ const Cart = () => {
                 </div>
                 <div className="text-center wow fadeInUp">
                     <p>Your cart is empty.</p>
-                    <a href="/menu" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated ">
+                    <Link to="/menu" className="btn btn-primary py-sm-3 px-sm-5 me-3 animated ">
                         See the menu
-                    </a>
+                    </Link>
                 </div>
             </div>
         </>
@@ -258,7 +258,9 @@ const Cart = () => {
                             </div>
                         ))}
                         <div className="home-menu">
-                            <a href="/menu" className="btn btn-primary py-3 px-5 me-3 mt-5 animated slideInUp">Go to menu</a>
+                            <Link to="/menu" className="btn btn-primary py-3 px-5 me-3 mt-5 animated slideInUp">
+                                Go to menu
+                            </Link>
                         </div>
                     </div>
 

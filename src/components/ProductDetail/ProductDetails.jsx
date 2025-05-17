@@ -1,5 +1,5 @@
+import { useParams, NavLink, Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { useParams, NavLink, Link } from 'react-router-dom';
 import Spinner from '../Spinner';
 import './productDetail.css';
 
@@ -13,46 +13,74 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isWeightBased, setIsWeightBased] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/src/backend/api/products.php/${id}`);
-                const data = await response.json();
-
-                const productData = data[0];
-                setProduct(productData);
-                console.log("Product API Response:", productData);
-
-                if (productData.availability == 0) {
-                    setError("Product not available");
-                    return;
-                }
-
-                // Set default selected size to the first one if sizes exist
-                if (productData.sizes && productData.sizes.length > 0) {
-                    setSelectedSize(productData.sizes[0].size_id);
-                    setPrice(productData.sizes[0].price);
-                    setCost(productData.sizes[0].cost);
-                    setQuantity(1);
-                }
-                else {
-                    setPrice(productData.weight_price);
-                    setCost(productData.weight_cost);
-                    setQuantity(0.5);
-                    setIsWeightBased(true);
-                }
-            } catch (error) {
-                console.error('Error fetching product:', error);
-                setError("Failed to fetch product details");
-            } finally {
+        // Get product from location state instead of fetching
+        if (location.state && location.state.product) {
+            const productData = location.state.product;
+            setProduct(productData);
+            
+            if (productData.availability == 0) {
+                setError("Product not available");
                 setLoading(false);
+                return;
             }
-        };
 
-        fetchProduct();
-    }, [id]);
-    console.log("Product:", product);
+            // Set default selected size to the first one if sizes exist
+            if (productData.sizes && productData.sizes.length > 0) {
+                setSelectedSize(productData.sizes[0].size_id);
+                setPrice(productData.sizes[0].price);
+                setCost(productData.sizes[0].cost);
+                setQuantity(1);
+            }
+            else {
+                setPrice(productData.weight_price);
+                setCost(productData.weight_cost);
+                setQuantity(0.5);
+                setIsWeightBased(true);
+            }
+            setLoading(false);
+        } else {
+            // Fallback to API fetch if state is not available
+            const fetchProduct = async () => {
+                try {
+                    const response = await fetch(`http://localhost:8000/src/backend/api/products.php/${id}`);
+                    const data = await response.json();
+    
+                    const productData = data[0];
+                    setProduct(productData);
+                    console.log("Product API Response:", productData);
+    
+                    if (productData.availability == 0) {
+                        setError("Product not available");
+                        return;
+                    }
+    
+                    // Set default selected size to the first one if sizes exist
+                    if (productData.sizes && productData.sizes.length > 0) {
+                        setSelectedSize(productData.sizes[0].size_id);
+                        setPrice(productData.sizes[0].price);
+                        setCost(productData.sizes[0].cost);
+                        setQuantity(1);
+                    }
+                    else {
+                        setPrice(productData.weight_price);
+                        setCost(productData.weight_cost);
+                        setQuantity(0.5);
+                        setIsWeightBased(true);
+                    }
+                } catch (error) {
+                    console.error('Error fetching product:', error);
+                    setError("Failed to fetch product details");
+                } finally {
+                    setLoading(false);
+                }
+            };
+    
+            fetchProduct();
+        }
+    }, [id, location.state]);
 
     // Handle loading state
     if (loading) {

@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Spinner from '../Spinner';
 import './menu.css';
+
+// Create a cache for API responses outside the component
+const apiCache = {
+  categories: null,
+  products: null
+};
 
 const Menu = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [activeCategory, setActiveCategory] = useState('All');
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Check if data is already cached
+                if (apiCache.categories && apiCache.products) {
+                    console.log("Using cached data");
+                    setCategories(apiCache.categories);
+                    setProducts(apiCache.products);
+                    setIsLoading(false);
+                    return;
+                }
+
                 // Fetch categories
                 const categoriesResponse = await fetch('http://localhost:8000/src/backend/api/category.php');
                 if (!categoriesResponse.ok) throw new Error('Failed to fetch categories');
@@ -22,7 +36,10 @@ const Menu = () => {
                 // Process categories - now they are objects with id and name properties
                 // Add 'All' category
                 const allCategory = { id: 'all', name: 'All' };
-                const categoriesArray = [allCategory, ...categoriesData]
+                const categoriesArray = [allCategory, ...categoriesData];
+                
+                // Cache and set categories
+                apiCache.categories = categoriesArray;
                 setCategories(categoriesArray);
 
                 // Fetch products
@@ -30,12 +47,14 @@ const Menu = () => {
                 if (!productsResponse.ok) throw new Error('Failed to fetch products');
                 const productsData = await productsResponse.json();
                 console.log("Products API Response:", productsData);
-
+                
+                // Cache and set products
+                apiCache.products = productsData;
                 setProducts(productsData);
             } catch (error) {
                 setError(error.message);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
 
@@ -104,7 +123,10 @@ const Menu = () => {
         return (
             <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
                 {available ? (
-                    <Link to={`/menu/${product.id}`}>
+                    <Link
+                        to={`/menu/${product.id}`}
+                        state={{ product }}
+                    >
                         {productContent}
                     </Link>
                 ) : (
@@ -126,9 +148,21 @@ const Menu = () => {
         );
     }
 
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center p-4">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3 text-muted">Loading Menu...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
-            <Spinner loading={loading} />
             <div className="container-xxl py-5">
                 <div className="container">
                     <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
