@@ -587,7 +587,7 @@ const AddProduct = () => {
                                                 <div className="slider-card-face slider-card-back"></div>
                                             </div>
                                         </label>
-                                        <label htmlFor="availability" className="form-label ms-2">
+                                        <label htmlFor="availability" className={`form-label ms-2 fw-bold ${availability ? "text-success" : "text-danger"}`}>
                                             {availability ? "Available" : "Not Available"}
                                         </label>
                                     </div>
