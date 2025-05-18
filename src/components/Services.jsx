@@ -9,7 +9,17 @@ const Services = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center p-4">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container-xxl py-3">
@@ -20,7 +30,7 @@ const Services = () => {
                         <div className="service-item rounded pt-2">
                             <div className="p-3 text-center">
                                 <i className={`fa fa-2x fa-headset text-primary mb-3`}></i>
-                                <h6>Available {days_open}</h6>
+                                <h6>Available {days_open.slice(0, -1)}</h6>
                                 <p>From {opening_time} to {closing_time}</p>
                             </div>
                         </div>

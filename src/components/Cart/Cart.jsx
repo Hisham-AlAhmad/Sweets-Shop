@@ -215,7 +215,18 @@ const Cart = () => {
         }
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center p-4">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3 text-muted">Loading Cart...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (cartItems.length === 0) return (
         <>

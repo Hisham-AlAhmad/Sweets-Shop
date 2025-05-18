@@ -127,10 +127,9 @@ const Settings = () => {
         }
     };
 
-    // Handle isOpen as a select dropdown for better user interface
-    const handleIsOpenChange = (e) => {
-        setIsOpen(e.target.value === "true");
-    };
+    useEffect(() => {
+        console.log("daysOpen:", daysOpen);
+    }, [daysOpen]);
 
     if (isLoading) {
         return (
@@ -276,24 +275,32 @@ const Settings = () => {
 
                                         {/* Days Open */}
                                         <div className="mb-3">
+                                            {/* radio days then add them to days variable */}
                                             <div className="form-floating">
-                                                <input
-                                                    id="daysOpen"
-                                                    type="text"
-                                                    value={daysOpen}
-                                                    className="form-control"
-                                                    placeholder="Enter days open"
-                                                    onChange={(e) => setDaysOpen(e.target.value)}
-                                                    required
-                                                />
-                                                <label htmlFor="daysOpen">Days Open</label>
-                                                <small className="text-muted">
-                                                    <strong>Format: </strong>Monday - Saturday <strong>OR</strong> Everyday
-                                                </small>
-                                                <br />
-                                                <small className="text-muted">
-                                                    <strong>Week Days: </strong>Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
-                                                </small>
+                                                <h6>Days Open: </h6>
+                                                <div className="d-flex flex-wrap gap-2">
+                                                    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, index) => (
+                                                        <div key={index} className="form-check form-check-inline">
+                                                            <input
+                                                                className="form-check-input"
+                                                                type="checkbox"
+                                                                id={`day-${index}`}
+                                                                value={day}
+                                                                checked={daysOpen.includes(day)}
+                                                                onChange={(e) => {
+                                                                    if (e.target.checked) {
+                                                                        setDaysOpen((prev) => prev + day + ",");
+                                                                    } else {
+                                                                        setDaysOpen((prev) => prev.replace(day + ",", ""));
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <label className="form-check-label" htmlFor={`day-${index}`}>
+                                                                {day}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
