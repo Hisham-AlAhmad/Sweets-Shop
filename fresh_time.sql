@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2025 at 12:47 PM
+-- Generation Time: May 18, 2025 at 04:25 PM
 -- Server version: 8.0.42-0ubuntu0.22.04.1
 -- PHP Version: 8.2.4
 
@@ -41,8 +41,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `image`) VALUES
-(1, 'yato', '$2y$10$sVIyQlAczsJCIQAcN4WrqeJJcVrEooxztzdkNbnoAjCvI9ob.rlKy', 'changli.jpg'),
-(2, 'admin', '$2y$10$PyDW1TOPRhJ8TgJfA8Z3w.pp5hfcINr06.Dd8b4dA08z6k8G/cGuK', 'gojo.jpg');
+(2, 'admin', '$2y$10$mf1rrY0U6hp.ccvZDw8YZOKIa5vvCv2jSDy4Dkz7F.JBo6s.cAL.O', 'gojo.jpg');
 
 -- --------------------------------------------------------
 
@@ -134,7 +133,8 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `customer_id`, `total_price`, `total_cost`, `order_date`) VALUES
 (9, 1, 1420000, 650000, '2024-04-30 17:05:04'),
 (11, 1, 1520000, 750000, '2025-04-16 20:43:01'),
-(12, 1, 1820000, 800000, '2025-05-11 12:41:53');
+(13, 1, 920000, 400000, '2025-05-12 10:23:27'),
+(15, 1, 520000, 250000, '2025-05-17 21:59:24');
 
 -- --------------------------------------------------------
 
@@ -159,11 +159,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `description`, `weight_price`, `weight_cost`, `availability`, `created_at`, `updated_at`) VALUES
-(1, 'عصير فريز', 'فريز.jpg', '', 0, 0, 1, '2025-04-07 13:38:42', '2025-05-09 17:50:41'),
-(2, 'عصير رمان', 'رمان.jpg', '', 0, 0, 1, '2025-04-08 16:31:35', '2025-05-09 17:55:42'),
-(3, 'عصير غوافة', 'غوافة.jpg', '', 0, 0, 0, '2025-04-09 15:45:27', '2025-05-09 17:59:28'),
-(6, 'مدلوقة', 'madloka.jpg', 'فرك مع قشطة عليهن بهار فسدق حلبي مع كاجو', 900000, 400000, 1, '2025-04-11 16:12:18', '2025-05-09 17:55:58'),
-(7, 'مد بالقشطة', 'مد القشطة.jpg', 'قشطة الي عنا بتوخد القلب والعقل, انت ذوقها ورح تصير تتعاطاها متل المخدرات.', 900000, 400000, 1, '2025-04-14 15:57:31', '2025-05-09 17:59:43');
+(1, 'عصير فريز', 'فريز.jpg', '', 0, 0, 1, '2025-04-07 13:38:42', '2025-05-13 11:31:09'),
+(2, 'عصير رمان', 'رمان.jpg', '', 0, 0, 0, '2025-04-08 16:31:35', '2025-05-15 17:30:29'),
+(3, 'عصير غوافة', 'غوافة.jpg', '', 0, 0, 1, '2025-04-09 15:45:27', '2025-05-11 18:56:46'),
+(6, 'مدلوقة', 'madloka.jpg', '', 900000, 400000, 1, '2025-04-11 16:12:18', '2025-05-11 18:57:04'),
+(7, 'مد بالقشطة', 'مد القشطة.jpg', '', 900000, 400000, 1, '2025-04-14 15:57:31', '2025-05-11 18:56:30');
 
 -- --------------------------------------------------------
 
@@ -184,6 +184,8 @@ INSERT INTO `product_category` (`product_id`, `category_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
+(1, 2),
+(1, 3),
 (7, 4),
 (6, 5),
 (7, 5);
@@ -209,7 +211,8 @@ CREATE TABLE `product_orders` (
 INSERT INTO `product_orders` (`product_id`, `order_id`, `quantity`, `price`, `cost`) VALUES
 (1, 9, 1.00, 500000, 250000),
 (1, 11, 3.00, 500000, 250000),
-(6, 12, 2.00, 900000, 400000),
+(3, 15, 1.00, 500000, 250000),
+(6, 13, 1.00, 900000, 400000),
 (7, 9, 1.00, 900000, 400000);
 
 -- --------------------------------------------------------
@@ -236,6 +239,30 @@ INSERT INTO `product_sizes` (`product_id`, `sizes_id`, `price`, `cost`) VALUES
 (2, 3, 800000, 400000),
 (3, 1, 150000, 75000),
 (3, 3, 500000, 250000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` int NOT NULL,
+  `opening_time` varchar(10) NOT NULL,
+  `closing_time` varchar(10) NOT NULL,
+  `days_open` varchar(50) NOT NULL,
+  `is_open` tinyint(1) NOT NULL,
+  `delivery_cost` int NOT NULL,
+  `store_address` varchar(255) NOT NULL,
+  `phoneNum` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `opening_time`, `closing_time`, `days_open`, `is_open`, `delivery_cost`, `store_address`, `phoneNum`) VALUES
+(1, '4:00 PM', '11:00 PM', 'Monday - Thursday', 1, 20000, 'Al Rachideia Camp, Fresh Time', '96176763445');
 
 -- --------------------------------------------------------
 
@@ -344,6 +371,12 @@ ALTER TABLE `product_sizes`
   ADD KEY `sizes_id` (`sizes_id`);
 
 --
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sizes`
 --
 ALTER TABLE `sizes`
@@ -363,7 +396,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -387,13 +420,19 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sizes`
