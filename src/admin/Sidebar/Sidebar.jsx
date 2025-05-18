@@ -35,6 +35,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     </div>
                     <nav className="sidebar-nav scroll-sidebar" data-simplebar="">
                         <ul id="sidebarnav">
+
+                            {/* Home */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">Home</span>
@@ -51,6 +53,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">Dashboard</span>
                                 </NavLink>
                             </li>
+
+                            {/* Category */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">CATEGORY</span>
@@ -79,6 +83,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">View Category</span>
                                 </NavLink>
                             </li>
+
+                            {/* Product */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">PRODUCT</span>
@@ -107,6 +113,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">View Product</span>
                                 </NavLink>
                             </li>
+
+                            {/* Customers */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">CUSTOMERS</span>
@@ -123,6 +131,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">View Customers</span>
                                 </NavLink>
                             </li>
+
+                            {/* Feedback */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">FEEDBACK</span>
@@ -139,6 +149,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">View Feedback</span>
                                 </NavLink>
                             </li>
+
+                            {/* Orders */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">ORDERS</span>
@@ -155,6 +167,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     <span className="hide-menu">View Orders</span>
                                 </NavLink>
                             </li>
+
+                            {/* Suppliers */}
                             <li className="nav-small-cap">
                                 <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span className="hide-menu">SUPPLIERS</span>
@@ -181,6 +195,24 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                         <i className="ti ti-users-group"></i>
                                     </span>
                                     <span className="hide-menu">View Suppliers</span>
+                                </NavLink>
+                            </li>
+
+                            {/* Store Settings */}
+                            <li className="nav-small-cap">
+                                <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span className="hide-menu">STORE SETTINGS</span>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to="/settings"
+                                    onClick={(e) => (checkAuth_IsOpened(e))}
+                                    className={({ isActive }) =>
+                                        `sidebar-link ${isActive ? 'active' : ''}`
+                                    }>
+                                    <span>
+                                        <i className="ti ti-settings"></i>
+                                    </span>
+                                    <span className="hide-menu">Settings</span>
                                 </NavLink>
                             </li>
                         </ul>

@@ -39,6 +39,7 @@ A React + PHP project with secure JWT authentication, and RESTful APIs.
 - **Customers View** – Access customer information
 - **Feedback View** – Manage user testimonials
 - **Orders View** – Monitor and track orders
+- **Store Settings** – Configure store details & hours
 
 ---
 
@@ -77,6 +78,10 @@ DB_PASS=your_password
 JWT_SECRET=your_jwt_secret_here
 SETUP_KEY=secure_setup_key #For the admin registration
 ```
+
+### 5. Create a Database called `fresh_time`.
+
+Then import the 'fresh_time.sql' in it.
 
 ---
 

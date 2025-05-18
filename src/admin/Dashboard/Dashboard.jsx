@@ -112,7 +112,7 @@ const Dashboard = () => {
     // Show loading indicator if any data is still loading
     if (isLoadingAll) {
         return (
-            <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="d-flex justify-content-center align-items-center p-4">
                 <div className="text-center">
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
@@ -271,7 +271,7 @@ const Dashboard = () => {
                             <i className="fas fa-chart-pie"></i>
                             Top Selling Products
                         </h2>
-                        <ResponsiveContainer width="100%" height={300}>
+                        <ResponsiveContainer width="105%" height={300}>
                             <PieChart>
                                 <Pie
                                     data={topProducts.map(product => ({

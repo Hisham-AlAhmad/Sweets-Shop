@@ -1,37 +1,56 @@
+import { useSettings } from "../admin/Settings/SettingsProvider";
+
 const Services = () => {
-    return ( 
+    const { settings, isLoading } = useSettings();
+    const { opening_time, closing_time, days_open, delivery_cost } = settings || {};
+
+    // Function to format price with commas 1000000 => 100,000
+    const commaInPrice = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' L.L';
+    };
+
+    if (isLoading) return <p>Loading...</p>;
+
+    return (
         <div className="container-xxl py-3">
             <div className="container">
                 <div className="row g-4 justify-content-center">
                     {/* First Service */}
                     <div className="col-lg-3 col-sm-4 mx-auto wow fadeInUp" data-wow-delay="0.1s">
-                        <ServiceItem icon="fa-headset" title="Available Everyday" text="From 5:00 PM to 11:00 PM" />
+                        <div className="service-item rounded pt-2">
+                            <div className="p-3 text-center">
+                                <i className={`fa fa-2x fa-headset text-primary mb-3`}></i>
+                                <h6>Available {days_open}</h6>
+                                <p>From {opening_time} to {closing_time}</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Middle Service (Hidden on Phones) */}
                     <div className="col-lg-3 col-sm-4 mx-auto d-none d-sm-block wow fadeInUp" data-wow-delay="0.3s">
-                        <ServiceItem icon="fa-utensils" title="Quality Food" text="Try it & you won't regret" />
+                        <div className="service-item rounded pt-2">
+                            <div className="p-3 text-center">
+                                <i className={`fa fa-2x fa-utensils text-primary mb-3`}></i>
+                                <h6>Quality Food</h6>
+                                <p>Try it & you won't regret</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Third Service */}
                     <div className="col-lg-3 col-sm-4 mx-auto wow fadeInUp" data-wow-delay="0.5s">
-                        <ServiceItem icon="fa-cart-plus" title="Delivery Order" text="Only for 20,000 L.L" />
+                        <div className="service-item rounded pt-2">
+                            <div className="p-3 text-center">
+                                <i className={`fa fa-2x fa-cart-plus text-primary mb-3`}></i>
+                                <h6>Delivery Order</h6>
+                                <p>Only for {commaInPrice(delivery_cost)}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
-
-/* Reusable Service Item Component */
-const ServiceItem = ({ icon, title, text }) => (
-    <div className="service-item rounded pt-2">
-        <div className="p-3 text-center">
-            <i className={`fa fa-2x ${icon} text-primary mb-3`}></i>
-            <h6>{title}</h6>
-            <p>{text}</p>
-        </div>
-    </div>
-);
 
 export default Services;

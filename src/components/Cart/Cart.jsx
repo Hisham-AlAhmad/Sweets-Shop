@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import './cart.css';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useSettings } from '../../admin/Settings/SettingsProvider';
 
 const Cart = () => {
     const location = useLocation();
     const { product } = location.state || {};
+    const { settings, isLoading } = useSettings();
+    const { phoneNum: ownerNum, delivery_cost } = settings || { phoneNum: '', delivery_cost: 0 };
+
     const [cartItems, setCartItems] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -16,9 +20,17 @@ const Cart = () => {
         return savedDelivery ? JSON.parse(savedDelivery) : false;
     });
 
-    const [deliveryCost, setDeliveryCost] = useState(() => {
-        return delivery ? 20000 : 0;
-    });
+    const [deliveryCost, setDeliveryCost] = useState(0);
+
+    // Update deliveryCost when settings load or delivery state changes
+    useEffect(() => {
+        if (settings && delivery) {
+            // Ensure delivery_cost is treated as a number
+            setDeliveryCost(Number(delivery_cost));
+        } else {
+            setDeliveryCost(0);
+        }
+    }, [settings, delivery, delivery_cost]);
 
     const [name, setName] = useState(() => {
         return localStorage.getItem("name") ? JSON.parse(localStorage.getItem("name")) : "";
@@ -28,8 +40,8 @@ const Cart = () => {
         return localStorage.getItem("address") ? JSON.parse(localStorage.getItem("address")) : "";
     });
 
-    const [phoneNum, setPhoneNum] = useState(() => {
-        return localStorage.getItem("phoneNum") ? JSON.parse(localStorage.getItem("phoneNum")) : "";
+    const [phoneNumber, setphoneNumber] = useState(() => {
+        return localStorage.getItem("phoneNumber") ? JSON.parse(localStorage.getItem("phoneNumber")) : "";
     });
 
     // Save the data to local storage whenever it changes
@@ -54,8 +66,10 @@ const Cart = () => {
     }, [delivery]);
 
     useEffect(() => {
-        localStorage.setItem("phoneNum", JSON.stringify(phoneNum));
-    }, [phoneNum]);
+        if (phoneNumber) {
+            localStorage.setItem("phoneNumber", JSON.stringify(phoneNumber));
+        }
+    }, [phoneNumber]);
 
     // Add the new product to the cart when the component mounts
     useEffect(() => {
@@ -80,7 +94,7 @@ const Cart = () => {
     console.log("Cart Items:", cartItems);
 
     // Calculate total price
-    var totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     // Handle quantity change
     const handleQuantityChange = (id, newQuantity) => {
@@ -107,7 +121,11 @@ const Cart = () => {
 
     // Redirect to WhatsApp
     function redirectToWhatsApp(cartItems) {
-        const phoneNumber = '96181212862'; // Seller's WhatsApp number in international format
+        if (!ownerNum) {
+            console.error("Owner phone number is missing");
+            return;
+        }
+
         let message = 'Name: ' + name + '\n';
         message += 'Phone Number: ' + phoneNumber + '\n';
         message += 'Address: ' + address + '\n\n';
@@ -124,46 +142,80 @@ const Cart = () => {
         if (delivery) {
             message += `\nDelivery Cost: ${commaInPrice(deliveryCost)}`;
         }
-        totalPrice = commaInPrice((totalPrice + deliveryCost));
-        message += `\nTotal Amount: *${totalPrice}*`;
+        const finalTotal = totalPrice + deliveryCost;
+        message += `\nTotal Amount: *${commaInPrice(finalTotal)}*`;
         const encodedMessage = encodeURIComponent(message);
-        const waLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        const waLink = `https://wa.me/${ownerNum}?text=${encodedMessage}`;
         window.open(waLink, '_blank');
     }
 
     const addCustomer_order = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:8000/src/backend/api/customer.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: name, phoneNum: phoneNum, address: address }),
-        });
+        if (!name || !phoneNumber || !address) {
+            console.error("Missing customer details");
+            return;
+        }
 
-        const customerData = await fetch(`http://localhost:8000/src/backend/api/customer.php/${phoneNum}`);
-        var customer_id = await customerData.json();
-        customer_id = customer_id[0].id;
-        const orderedItems = cartItems.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity,
-            price: item.price,
-            cost: item.cost
-        }));
+        try {
+            const response = await fetch("http://localhost:8000/src/backend/api/customer.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: name, phoneNum: phoneNumber, address: address }),
+            });
 
-        let totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0) + deliveryCost;
-        let totalCost = cartItems.reduce((total, item) => total + item.cost * item.quantity, 0);
-        const orderResponse = await fetch("http://localhost:8000/src/backend/api/orders.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ customer_id: customer_id, total_price: totalPrice, total_cost: totalCost, products: orderedItems }),
-        });
+            if (!response.ok) {
+                throw new Error("Failed to add customer");
+            }
 
-        const orderData = await orderResponse.json();
-        console.log("Order Data:", orderData);
+            const customerData = await fetch(`http://localhost:8000/src/backend/api/customer.php/${phoneNumber}`);
+            if (!customerData.ok) {
+                throw new Error("Failed to get customer data");
+            }
 
-        // Clear the cart after placing the order
-        localStorage.removeItem("cart");
+            const customerJson = await customerData.json();
+            if (!customerJson || !customerJson[0]) {
+                throw new Error("Invalid customer data");
+            }
+
+            const customer_id = customerJson[0].id;
+            const orderedItems = cartItems.map(item => ({
+                product_id: item.id,
+                quantity: item.quantity,
+                price: item.price,
+                cost: item.cost
+            }));
+
+            const finalTotal = totalPrice + deliveryCost;
+            const totalCost = cartItems.reduce((total, item) => total + item.cost * item.quantity, 0);
+
+            const orderResponse = await fetch("http://localhost:8000/src/backend/api/orders.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    customer_id: customer_id,
+                    total_price: finalTotal,
+                    total_cost: totalCost,
+                    products: orderedItems
+                }),
+            });
+
+            if (!orderResponse.ok) {
+                throw new Error("Failed to place order");
+            }
+
+            const orderData = await orderResponse.json();
+            console.log("Order Data:", orderData);
+
+            // Clear the cart after placing the order
+            localStorage.removeItem("cart");
+            // Optional: Redirect to a confirmation page or clear form fields
+        } catch (error) {
+            console.error("Error processing order:", error);
+        }
     };
+
+    if (isLoading) return <p>Loading...</p>;
 
     if (cartItems.length === 0) return (
         <>
@@ -222,9 +274,11 @@ const Cart = () => {
                                                     </p>
                                                 )
                                             }
-                                            <p className="card-text mb-2">
-                                                <strong>Size:</strong> {item.size}
-                                            </p>
+                                            {!item.isWeightBased && (
+                                                <p className="card-text mb-2">
+                                                    <strong>Size:</strong> {item.size}
+                                                </p>
+                                            )}
                                             {/* Quantity Selector */}
                                             <div className="d-flex align-items-center gap-2 mb-2">
                                                 <button
@@ -283,10 +337,10 @@ const Cart = () => {
                                     <label htmlFor="address">Address</label>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="number" className="form-control" placeholder="Enter your Number" id="phoneNum"
-                                        value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)}
+                                    <input type="number" className="form-control" placeholder="Enter your Number" id="phoneNumber"
+                                        value={phoneNumber} onChange={(e) => setphoneNumber(e.target.value)}
                                     />
-                                    <label htmlFor="phoneNum">Phone Number</label>
+                                    <label htmlFor="phoneNumber">Phone Number</label>
                                 </div>
                             </div>
                         </div>
@@ -295,13 +349,17 @@ const Cart = () => {
                         {/* Delivery Section */}
                         <div className="d-flex gap-3 align-items-center mb-3">
                             <h5 className="mb-0">Delivery?</h5>
-                            <button className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
-                                onClick={() => (setDelivery(true), setDeliveryCost(20000))}
+                            <button
+                                type="button"
+                                className={`btn ${delivery ? 'btn-success' : 'btn-outline-success'}`}
+                                onClick={() => setDelivery(true)}
                                 style={{ borderRadius: '5px' }}>
                                 Yes
                             </button>
-                            <button className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
-                                onClick={() => (setDelivery(false), setDeliveryCost(0))}
+                            <button
+                                type="button"
+                                className={`btn ${!delivery ? 'btn-danger' : 'btn-outline-danger'}`}
+                                onClick={() => setDelivery(false)}
                                 style={{ borderRadius: '5px' }}>
                                 No
                             </button>
@@ -318,17 +376,26 @@ const Cart = () => {
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <span>Delivery</span>
-                                    <span>{delivery ? commaInPrice(deliveryCost) : 0}</span>
+                                    <span>{delivery ? commaInPrice(deliveryCost) : commaInPrice(0)}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-3">
                                     <strong>Total</strong>
                                     <strong>{commaInPrice(totalPrice + deliveryCost)}</strong>
                                 </div>
                                 <hr />
-                                {/* Checkout Button */} {/* Disable the btn if there's no details */}
+                                {/* Checkout Button */}
                                 <form onSubmit={addCustomer_order}>
-                                    <button className={`btn btn-primary w-100 ${name && address && phoneNum ? '' : 'disabled'}`}
-                                        onClick={() => redirectToWhatsApp(cartItems)} >
+                                    <button
+                                        type="submit"
+                                        className={`btn btn-primary w-100 ${name && address && phoneNumber ? '' : 'disabled'}`}
+                                        onClick={(e) => {
+                                            if (name && address && phoneNumber) {
+                                                redirectToWhatsApp(cartItems);
+                                            } else {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    >
                                         Proceed to Checkout
                                     </button>
                                 </form>
@@ -336,7 +403,6 @@ const Cart = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
