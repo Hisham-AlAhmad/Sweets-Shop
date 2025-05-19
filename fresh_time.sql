@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 04:25 PM
+-- Generation Time: May 19, 2025 at 09:09 AM
 -- Server version: 8.0.42-0ubuntu0.22.04.1
 -- PHP Version: 8.2.4
 
@@ -41,6 +41,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `image`) VALUES
+(1, 'yato', '$2y$10$odfxEwWggnpgwCW7aFTlGOpLVxjaDe0B4eEnRdHxASDnDMvfgt50O', 'changli.jpg'),
 (2, 'admin', '$2y$10$mf1rrY0U6hp.ccvZDw8YZOKIa5vvCv2jSDy4Dkz7F.JBo6s.cAL.O', 'gojo.jpg');
 
 -- --------------------------------------------------------
@@ -250,7 +251,7 @@ CREATE TABLE `settings` (
   `id` int NOT NULL,
   `opening_time` varchar(10) NOT NULL,
   `closing_time` varchar(10) NOT NULL,
-  `days_open` varchar(50) NOT NULL,
+  `days_open` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `is_open` tinyint(1) NOT NULL,
   `delivery_cost` int NOT NULL,
   `store_address` varchar(255) NOT NULL,
@@ -262,7 +263,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `opening_time`, `closing_time`, `days_open`, `is_open`, `delivery_cost`, `store_address`, `phoneNum`) VALUES
-(1, '4:00 PM', '11:00 PM', 'Monday - Thursday', 1, 20000, 'Al Rachideia Camp, Fresh Time', '96176763445');
+(1, '4:00 PM', '11:00 PM', 'Monday,Thursday,Tuesday,Wednesday,Friday,', 1, 20000, 'Al Rachideia Camp, Fresh Time', '96176763445');
 
 -- --------------------------------------------------------
 

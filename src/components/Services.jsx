@@ -1,4 +1,5 @@
 import { useSettings } from "../admin/Settings/SettingsProvider";
+import DayFomatter from "../admin/Hooks/DayFomatter";
 
 const Services = () => {
     const { settings, isLoading } = useSettings();
@@ -30,7 +31,7 @@ const Services = () => {
                         <div className="service-item rounded pt-2">
                             <div className="p-3 text-center">
                                 <i className={`fa fa-2x fa-headset text-primary mb-3`}></i>
-                                <h6>Available {days_open.slice(0, -1)}</h6>
+                                <h6>Available {DayFomatter(days_open.slice(0, -1))}</h6>
                                 <p>From {opening_time} to {closing_time}</p>
                             </div>
                         </div>

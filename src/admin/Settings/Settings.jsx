@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../auth/AuthContext";
+import DayFomatter from "../Hooks/DayFomatter";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
 const Settings = () => {
     // State variables for form fields - ensure they always have string/boolean values
@@ -20,6 +21,8 @@ const Settings = () => {
 
     const { logout } = useAuth();
     const navigate = useNavigate();
+
+    const formattedDaysDisplay = daysOpen ? DayFomatter(daysOpen) : "";
 
     // Fetch current settings on component mount
     useEffect(() => {
@@ -302,6 +305,11 @@ const Settings = () => {
                                                     ))}
                                                 </div>
                                             </div>
+                                            {daysOpen && (
+                                                <div className="mb-2">
+                                                    <p className="text-muted">Current schedule: <strong>{formattedDaysDisplay}</strong></p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

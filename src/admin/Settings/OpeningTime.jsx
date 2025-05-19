@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import DayFomatter from "../Hooks/DayFomatter";
 import { useSettings } from "./SettingsProvider";
 
 // A component to be displayed at top of the user page if the shop is closed
@@ -20,13 +21,9 @@ const OpeningTime = () => {
 
         if (days_open?.toLowerCase() === 'everyday') {
             daysArray = [...allDays];
-        } else if (days_open) {
-            // Handle comma-separated list (remove trailing comma if present)
-            const cleanDaysOpen = days_open.endsWith(',') ? days_open.slice(0, -1) : days_open;
-            // Split the string and filter out any empty entries
-            daysArray = cleanDaysOpen.split(",")
-                .map(day => day.trim())
-                .filter(day => day && allDays.includes(day)); // Only include valid day names
+        } else if (days_open && days_open.includes(",")) {
+            const days = days_open.split(",").map(day => day.trim());
+            daysArray = allDays.filter(day => days.includes(day));
         }
 
         // Check if the shop is currently open
@@ -41,7 +38,7 @@ const OpeningTime = () => {
             const isCurrentDayOpen = daysArray.includes(currentDay);
             if (!isCurrentDayOpen) return false;
 
-            // opening and closing times
+            // Parse opening and closing times
             const parseTime = (timeStr) => {
                 if (!timeStr) return null;
 
@@ -99,22 +96,11 @@ const OpeningTime = () => {
     // Return null if shop is open (won't display anything)
     if (isShopOpen) return null;
 
-    // if shop is emergency closed
+    // Determine if shop is emergency closed
     const isEmergencyClosed = settings && !(Number(settings.is_open));
 
-    // Format days for display in a more readable way
-    const formatDaysForDisplay = (daysString) => {
-        if (!daysString) return '';
-        
-        // Remove trailing comma if present
-        const cleanDays = daysString.endsWith(', ') ? daysString.slice(0, -1) : daysString;
-        const daysArray = cleanDays.split(', ').filter(day => day.trim());
-        
-        if (daysArray.length === 7) return 'Everyday';
-        
-        // For better readability in the notification
-        return daysArray.join(', ');
-    };
+    // Format days string for display
+    const formattedDays = settings?.days_open ? DayFomatter(settings.days_open) : "";
 
     // Display closed message if shop is closed
     return (
@@ -125,7 +111,7 @@ const OpeningTime = () => {
                     <span className="fw-medium">We're currently closed.</span>
                     {/* Only show opening times if not emergency closed */}
                     {settings?.opening_time && settings?.days_open && !isEmergencyClosed && (
-                        <span className="ms-1">Open {formatDaysForDisplay(settings.days_open)} from {settings.opening_time} to {settings.closing_time}</span>
+                        <span className="ms-1">Open {formattedDays} from {settings.opening_time} to {settings.closing_time}</span>
                     )}
                 </div>
             </div>
