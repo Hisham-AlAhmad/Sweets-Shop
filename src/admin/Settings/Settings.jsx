@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import DayFomatter from "../Hooks/DayFomatter";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
@@ -7,11 +7,13 @@ const Settings = () => {
     // State variables for form fields - ensure they always have string/boolean values
     const [openingTime, setOpeningTime] = useState("");
     const [closingTime, setClosingTime] = useState("");
-    const [daysOpen, setDaysOpen] = useState("");
+    const [daysOpen, setDaysOpen] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [deliveryCost, setDeliveryCost] = useState("");
     const [storeAddress, setStoreAddress] = useState("");
     const [phoneNum, setPhoneNum] = useState("");
+    const [daysOpenString, setDaysOpenString] = useState("");
+    const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     // UI state
     const [message, setMessage] = useState("");
@@ -21,8 +23,18 @@ const Settings = () => {
 
     const { logout } = useAuth();
     const navigate = useNavigate();
-
-    const formattedDaysDisplay = daysOpen ? DayFomatter(daysOpen) : "";
+    
+    useEffect(() => {
+        if(daysOpen.length == 7) {
+            setDaysOpenString("Everyday");
+        } else if(daysOpen.length > 0) {
+            setDaysOpenString(daysOpen.sort((a, b) => {
+                return daysOrder.indexOf(a) - daysOrder.indexOf(b);
+            }).join(", "));
+        } else {
+            setDaysOpenString("Closed");
+        }
+    }, [daysOpen]);
 
     // Fetch current settings on component mount
     useEffect(() => {
@@ -53,7 +65,13 @@ const Settings = () => {
                 if (data) {
                     setOpeningTime(data.opening_time || "");
                     setClosingTime(data.closing_time || "");
-                    setDaysOpen(data.days_open || "");
+                    if (data.days_open === "Everyday") {
+                        setDaysOpen(daysOrder);
+                    } else if (data.days_open === "Closed") {
+                        setDaysOpen([]);
+                    } else {
+                        setDaysOpen(data.days_open.split(', '));
+                    }
                     // Convert numeric database value to boolean
                     setIsOpen(data.is_open == 1);
                     setDeliveryCost(data.delivery_cost?.toString() || "");
@@ -83,7 +101,7 @@ const Settings = () => {
             const formData = {
                 openingTime,
                 closingTime,
-                daysOpen,
+                daysOpen: daysOpenString,
                 isOpen: isOpen === true || isOpen === "true",
                 deliveryCost: Number(deliveryCost),
                 storeAddress,
@@ -292,9 +310,9 @@ const Settings = () => {
                                                                 checked={daysOpen.includes(day)}
                                                                 onChange={(e) => {
                                                                     if (e.target.checked) {
-                                                                        setDaysOpen((prev) => prev + day + ",");
+                                                                        setDaysOpen((prev) => [...prev, day]);
                                                                     } else {
-                                                                        setDaysOpen((prev) => prev.replace(day + ",", ""));
+                                                                        setDaysOpen((prev) => [...prev].filter((d) => d != day));
                                                                     }
                                                                 }}
                                                             />
@@ -307,7 +325,7 @@ const Settings = () => {
                                             </div>
                                             {daysOpen && (
                                                 <div className="mb-2">
-                                                    <p className="text-muted">Current schedule: <strong>{formattedDaysDisplay}</strong></p>
+                                                    <p className="text-muted">Current schedule: <strong>{daysOpenString}</strong></p>
                                                 </div>
                                             )}
                                         </div>
