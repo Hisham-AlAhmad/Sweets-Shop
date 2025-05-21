@@ -32,7 +32,7 @@ const Settings = () => {
                 return daysOrder.indexOf(a) - daysOrder.indexOf(b);
             }).join(", "));
         } else {
-            setDaysOpenString("Closed");
+            setDaysOpenString("To Be Announced");
         }
     }, [daysOpen]);
 
@@ -67,7 +67,7 @@ const Settings = () => {
                     setClosingTime(data.closing_time || "");
                     if (data.days_open === "Everyday") {
                         setDaysOpen(daysOrder);
-                    } else if (data.days_open === "Closed") {
+                    } else if (data.days_open === "To Be Announced") {
                         setDaysOpen([]);
                     } else {
                         setDaysOpen(data.days_open.split(', '));

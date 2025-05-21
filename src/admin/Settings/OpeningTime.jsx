@@ -110,7 +110,7 @@ const OpeningTime = () => {
                 <div>
                     <span className="fw-medium">We're currently closed.</span>
                     {/* Only show opening times if not emergency closed */}
-                    {settings?.opening_time && settings?.days_open && !isEmergencyClosed && (
+                    {settings?.opening_time && settings?.days_open && !isEmergencyClosed && formattedDays!="To Be Announced" && (
                         <span className="ms-1">Open {formattedDays} from {settings.opening_time} to {settings.closing_time}</span>
                     )}
                 </div>

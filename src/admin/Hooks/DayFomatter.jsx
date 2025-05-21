@@ -12,7 +12,7 @@
  */
 const DayFormatter = (daysString) => {
     if (!daysString || daysString.trim() === "") {
-        return "Closed";
+        return "To Be Announced";
     }
 
     const allDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -41,7 +41,7 @@ const DayFormatter = (daysString) => {
         return `Everyday except ${missingDays.join(", ")}`;
     }
 
-    return "Closed"; // fallback
+    return "To Be Announced"; // fallback
 };
 
 export default DayFormatter;
