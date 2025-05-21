@@ -26,7 +26,7 @@ const Footer = () => {
                     <div className="row g-5">
                         <div className="col-lg-3 col-md-6 mx-auto">
                             <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Opening</h4>
-                            <h5 className="text-light fw-normal">{DayFomatter(days_open.slice(0, -1))}</h5>
+                            <h5 className="text-light fw-normal">{DayFomatter(days_open)}</h5>
                             <p>{opening_time} - {closing_time}</p>
                             <img className="h-auto w-25 w-lg-50 m-auto" src="/img/freshTime_noBg.png" alt="logo image" />
                         </div>
