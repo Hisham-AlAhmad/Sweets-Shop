@@ -222,7 +222,7 @@ elseif ($method === 'POST') {
                 $sizes = json_decode($data['product_sizes'], true);
                 foreach ($sizes as $size) {
                     $size_stmt = $conn->prepare("INSERT INTO product_sizes (product_id, sizes_id, price, cost) VALUES (?, ?, ?, ?)");
-                    $size_stmt->bind_param("iid", $product_id, $size['size_id'], $size['price'], $size['cost']);
+                    $size_stmt->bind_param("iiii", $product_id, $size['size_id'], $size['price'], $size['cost']);
                     $size_stmt->execute();
                     $size_stmt->close();
                 }

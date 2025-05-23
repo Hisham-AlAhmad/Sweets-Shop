@@ -20,7 +20,7 @@ if ($method !== 'GET' && $method !== 'POST') {
 }
 
 if ($method === 'GET') {
-    $result = $conn->query("SELECT * FROM feedback");
+    $result = $conn->query("SELECT * FROM feedback ORDER BY created_at DESC");
     $headers = getallheaders();
     $headers['Authorization'] = isset($headers['Authorization']) ? $headers['Authorization'] : null;
 

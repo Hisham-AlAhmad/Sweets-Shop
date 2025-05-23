@@ -31,7 +31,8 @@ if ($method === 'GET') {
               LEFT JOIN customer ON orders.customer_id = customer.id
               LEFT JOIN product_orders ON orders.id = product_orders.order_id
               LEFT JOIN products ON product_orders.product_id = products.id
-              GROUP BY orders.id";
+              GROUP BY orders.id
+              ORDER BY orders.order_date DESC";
 
     $result = $conn->query($query);
 
